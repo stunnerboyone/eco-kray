@@ -2,9 +2,6 @@
 
 ini_set('max_execution_time', 900);
 
-// После установки темы JOURNAL 3 при попытке обращения к модулю выходит сообщение об ошибке
-//	Warning: Use of undefined constant VERSION ...
-//	Notice: Undefined variable: params in /var/www/storage/modification/system/library/db.php ...
 // Чтобы определить переменную VERSION как номер текщей версии OpenCart
 // находим в index.php соответствующую строку кода,
 // например
