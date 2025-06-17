@@ -1,0 +1,257 @@
+/* ============================
+   СТИЛІ КАРУСЕЛІ (опційно)
+============================ */
+.custom-carousel {
+  padding: 20px 0;
+  max-width: 1400px;
+  margin-inline: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.custom-carousel .carousel-slide {
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.custom-carousel .carousel-slide img {
+  width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.custom-carousel .carousel-slide:hover img {
+  transform: scale(1.05);
+}
+
+/* ============================
+   КОНТЕЙНЕР ДЛЯ ВСІХ ТОВАРІВ
+============================ */
+.box-product {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.box-product.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 240px));
+}
+
+/* ============================
+   СТИЛІ КАРТОК ТОВАРУ
+============================ */
+.product-thumb {
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 24px 12px 12px 12px;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 380px;
+  width: 240px;
+  overflow: hidden;
+}
+
+.product-thumb:hover {
+  transform: translateY(-4px);
+}
+
+.product-thumb .image {
+  width: 100%;
+  height: 200px;
+  text-align: center;
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.product-thumb .image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.special-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: red;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.stock_status {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #999;
+  color: #fff;
+  padding: 2px 6px;
+  font-size: 12px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+/* ============================
+   ІНФОРМАЦІЯ ПРО ТОВАР
+============================ */
+.caption {
+  text-align: center;
+  padding: 0 10px;
+}
+
+.caption h4 {
+  font-size: 16px;
+  margin: 8px 0;
+  height: auto;
+}
+
+.price {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.price-old {
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 5px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  margin: 8px 0;
+  height: 60px;
+  overflow: hidden;
+}
+
+/* ============================
+   РЕЙТИНГ
+============================ */
+.rating {
+  margin-bottom: 6px;
+}
+
+.fa-stack {
+  font-size: 12px;
+  color: #ffcc00;
+}
+
+/* ============================
+   КНОПКИ: КУПИТИ, QUICKVIEW, WISHLIST
+============================ */
+.cart_button {
+  background-color: #c67d4e;
+  width: 100%;
+  color: white;
+  padding: 8px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.cart_button:hover {
+  background-color: #45a049;
+}
+
+.out_of_stock {
+  background-color: #ccc !important;
+  cursor: not-allowed;
+}
+
+.product_hover_block {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.buttons-product-wrapper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 12px;
+  gap: 15px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-wishlist {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border: 8px solid #c67d4e;
+  background-image: url(../image/wishlist.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #c67d4e;
+  background-size: contain;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.custom-wishlist:hover {
+  background-color: #45a049;
+  border-color: #45a049;
+}
+
+/* ============================
+   АДАПТИВНИЙ ДИЗАЙН
+============================ */
+@media (max-width: 1400px) {
+  .product-thumb {
+    flex: 0 0 calc(33.333% - 20px);
+  }
+}
+
+@media (max-width: 992px) {
+  .product-thumb {
+    flex: 0 0 calc(50% - 20px);
+  }
+  .caption h4 {
+    font-size: 15px;
+    min-height: auto;
+  }
+  .description {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-thumb {
+    flex: 0 0 100%;
+  }
+  .product_hover_block {
+    flex-direction: column;
+    align-items: center;
+  }
+  .cart_button {
+    width: 100%;
+  }
+}
+

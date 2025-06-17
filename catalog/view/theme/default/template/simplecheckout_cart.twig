@@ -1,0 +1,102 @@
+<div class="simplecheckout-block" id="simplecheckout_cart" {{ hide ? 'data-hide="true"' : '' }} {{ has_error ? 'data-error="true"' : '' }}>
+{% if display_header %}
+    <div class="checkout-heading panel-heading text_title">{{ heading_title }}</div>
+{% endif %}
+{% if attention %}
+    <div class="alert alert-danger simplecheckout-warning-block">{{ attention }}</div>
+{% endif %}
+{% if error_warning %}
+    <div class="alert alert-danger simplecheckout-warning-block">{{ error_warning }}</div>
+{% endif %}
+    <div class="ifnums">
+        {{ elsi_mnogo_tarifov_otmecheno }}
+    </div>
+    <div class="tarifs cart_tarifs">
+        <div class="items cart_items">
+            {% for product in products %}
+                <div class="item {{ product['model'] }} {% if product['name'] == 'Demo' or product['name'] == 'Junior' or product['name'] == 'Middle' or product['name'] == 'Senior' or product['name'] == 'Professional' or product['name'] == 'Unlimited' %}{{ product['premium_tarif'] }}{% endif %}">
+                    {% if product['name'] == 'Demo' or product['name'] == 'Junior' or product['name'] == 'Middle' or product['name'] == 'Senior' or product['name'] == 'Professional' or product['name'] == 'Unlimited' %}
+                    <div class="item_top">
+                        <div class="item_top_left">
+                            <div class="item_top_left_info">
+                                <img src="logow.svg" alt="{{ product['name'] }}">
+                                <p>{{ cart_premium_account }}</p>
+                            </div>
+                            <ul class="item_top_left_middle">
+                                <li>{{ cart_premium_account_2 }}</li>
+                                {% if product['name'] == 'Demo' %}
+                                {% else %}
+                                <li>{{ cart_premium_account_3 }}</li>
+                                <li>{{ cart_premium_account_4 }}</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <div class="item_top_right">
+                            <img src="/catalog/view/theme/default/img/head_full.svg" alt="">
+                        </div>
+                    </div>
+                    <p class="text">{{ premium_na }} {{ product['time_premium'] }} {{ days }}</p>
+                    {% else %}
+                        {% if product['thumb'] %}
+                        <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" /></a></div>
+                        {% endif %}
+                    {% endif %}
+                    <p class="name">{{ product['name'] }}</p>
+                    <div class="price">
+                        <span class="stock">{{ product['total'] }}</span>
+                    </div>
+                    <button type="button" class="remove" title="{{ button_remove }}" onclick="cart.remove('{{ product.cart_id }}');"></button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="cart_static_content">
+        {% for total in totals %}
+            <div class="simplecheckout-cart-total" id="total_{{ total['code'] }}">
+                <span><b>{{ total['title'] }}:</b></span>
+                <span class="simplecheckout-cart-total-value">{{ total['text'] }}</span>
+                <span class="simplecheckout-cart-total-remove">
+                    {% if total['code'] == 'coupon' %}
+                        <i data-onclick="removeCoupon" title="{{ button_remove }}" class="fa fa-times-circle"></i>
+                    {% endif %}
+                    {% if total['code'] == 'voucher' %}
+                        <i data-onclick="removeVoucher" title="{{ button_remove }}" class="fa fa-times-circle"></i>
+                    {% endif %}
+                    {% if total['code'] == 'reward' %}
+                        <i data-onclick="removeReward" title="{{ button_remove }}" class="fa fa-times-circle"></i>
+                    {% endif %}
+                </span>
+            </div>
+        {% endfor %}
+
+        {% for product in products %}
+            {% if product['name'] == 'Demo' %}
+            {% else %}
+                {% if modules['coupon'] is defined %}
+                    <div class="simplecheckout-cart-total" id="coupon_enter">
+                        <span class="inputs"><input class="form-control" type="text" data-onchange="reloadAll" name="coupon" value="{{ coupon }}" placeholder="Введите купон" /></span>
+                    </div>
+                {% endif %}
+                {% if modules['coupon'] is defined or (modules['reward'] is defined and points > 0) or modules['voucher'] is defined %}
+                    <div class="simplecheckout-cart-total simplecheckout-cart-buttons" id="reload_button">
+                        <span class="inputs buttons"><a id="simplecheckout_button_cart" data-onclick="reloadAll" class="button btn-primary button_oc btn"><span>{{ button_update }}</span></a></span>
+                    </div>
+                {% endif %}
+                <input type="hidden" name="remove" value="" id="simplecheckout_remove">
+            {% endif %}
+        {% endfor %}
+        <div style="display:none;" id="simplecheckout_cart_total">{{ cart_total }}</div>
+        {% if display_weight %}
+            <div style="display:none;" id="simplecheckout_cart_weight">{{ weight }}</div>
+        {% endif %}
+        {% if not display_model %}
+            <style>
+            .simplecheckout-cart col.model,
+            .simplecheckout-cart th.model,
+            .simplecheckout-cart td.model {
+                display: none;
+            }
+            </style>
+        {% endif %}
+    </div>
+</div>

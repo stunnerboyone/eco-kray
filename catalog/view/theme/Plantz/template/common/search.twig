@@ -1,0 +1,38 @@
+
+<div id="search" class="input-group">
+    <span class="search_button"></span><span class="search-title">{{ text_search_title }}</span>
+		{#<div class="search_box">
+          <select name="category_id" class="form-control-select">
+            <option value="0">{{ text_category }}</option>
+            {% for category_1 in categories %}
+            {% if category_1.category_id == category_id %}
+            <option value="{{ category_1.category_id }}" selected="selected">{{ category_1.name }}</option>
+            {% else %}
+            <option value="{{ category_1.category_id }}">{{ category_1.name }}</option>
+            {% endif %}
+            {% for category_2 in category_1.children %}
+            {% if category_2.category_id == category_id %}
+            <option value="{{ category_2.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_2.name }}</option>
+            {% else %}
+            <option value="{{ category_2.category_id }}">&nbsp;&nbsp;&nbsp;{{ category_2.name }}</option>
+            {% endif %}
+            {% for category_3 in category_2.children %}
+            {% if category_3.category_id == category_id %}
+            <option value="{{ category_3.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3.name }}</option>
+            {% else %}
+            <option value="{{ category_3.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3.name }}</option>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+          </select>
+        </div>	#}
+<div class="search_toggle">
+    <div id="searchbox">
+        <input type="text" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control input-lg" />
+        <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-lg"><i class="fa fa-search"></i>{{button_search}}</button>
+        </span>
+    </div>
+</div>
+  </div>

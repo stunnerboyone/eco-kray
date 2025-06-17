@@ -1,0 +1,57 @@
+# 1. To use URL Alias you need to be running apache with mod_rewrite enabled.
+# 2. In your opencart directory rename htaccess.txt to .htaccess.
+
+# Enable mod_rewrite
+#RewriteEngine On
+#RewriteCond %{HTTP:Authorization} ^(.*)
+#RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+
+# SEO URL Settings
+# If your opencart installation does not run on the main web folder, make sure to specify the folder.
+# i.e., if it runs in /shop/, use RewriteBase /shop/
+RewriteBase /
+
+# Prevent Directory Listing
+Options -Indexes
+
+# Prevent Direct Access to certain files
+<FilesMatch "(?i)((\.tpl|\.twig|\.ini|\.log|(?<!robots)\.txt))">
+    Require all denied
+</FilesMatch>
+
+# Handle specific URL requests
+RewriteRule ^sitemap.xml$ index.php?route=extension/feed/google_sitemap [L]
+RewriteRule ^googlebase.xml$ index.php?route=extension/feed/google_base [L]
+RewriteRule ^system/storage/(.*) index.php?route=error/not_found [L]
+
+# Rewriting rule for SEO URLs (e.g., product, category pages)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !.*\.(ico|gif|jpg|jpeg|png|js|css)
+RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
+
+# Additional settings (for certain servers) - Uncomment if necessary
+
+# Uncomment if your server has register_globals enabled and you experience issues
+# php_flag register_globals off
+
+# Disable magic_quotes_gpc if it's enabled (optional)
+# php_flag magic_quotes_gpc Off
+
+# Increase maximum upload file size (uncomment if necessary)
+# php_value upload_max_filesize 999M
+
+# Increase post max size (uncomment if you have a lot of product options)
+# php_value post_max_size 999M
+
+# Set max execution time for scripts (uncomment if necessary)
+# php_value max_execution_time 200
+
+# Increase input time for large forms (uncomment if necessary)
+# php_value max_input_time 200
+
+# Disable open_basedir restrictions (uncomment if your server allows it)
+# php_admin_value open_basedir none
+
+

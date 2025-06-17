@@ -1,0 +1,94 @@
+<div class="box bestseller">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="box-desc">{{heading_desc}}</div>
+  <div class="box-heading">{{ heading_title }}</div>
+  <div class="box-content">
+		{% set sliderFor = 5 %}
+		{% set productCount = products|length %}
+	{% if productCount >= sliderFor %}
+		<div class="customNavigation">
+			<a class="fa prev fa-arrow-left">&nbsp;</a>
+			<a class="fa next fa-arrow-right">&nbsp;</a>
+		</div>	
+	{% endif %}
+	
+	<div class="box-product {% if productCount >= sliderFor %}product-carousel{% else %} productbox-grid{% endif %}" id="{% if productCount >= sliderFor %}bestseller-carousel{% else %}bestseller-grid{% endif %}">
+  {% for product in products %}
+  <div class="{% if productCount >= sliderFor %}slider-item{% else %}product-items{% endif %}">
+    <div class="product-block product-thumb transition">
+	  <div class="product-block-inner">	  	 	
+		<div class="image {% if product.qty == 0 %}outstock{% endif %}">
+			{% if product.thumb_swap %}
+					<a href="{{ product.href }}">
+					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive reg-image"/>
+					<div class="image_content">
+      				<img class="img-responsive hover-image" src="{{ product.thumb_swap }}" title="{{ product.name }}" alt="{{ product.name }}"/>
+      					</div>
+					</a>
+					{% else %}
+					<a href="{{ product.href }}">
+					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive"/></a>
+			{% endif %}
+			{% if product.qty == 0 %}
+	            	<span class="stock_status">{{text_outstock}}</span>
+	            {% endif %}
+	            <div class="product_hover_block" {% if product.qty < 1 %} style="visibility:hidden;" {% endif %}>
+					<button class="compare_button" type="button"  title="{{ button_compare }} " onclick="compare.add('{{ product.product_id }} ');"></button>
+					<div class="quickview-button">
+								<a class="quickbox"  title="{{ button_quickview }}" href="{{ product.quick }}"></a>
+					</div>
+					<button class="wishlist" type="button"  title="{{ button_wishlist }} " onclick="wishlist.add('{{ product.product_id }} ');"></button>
+				</div>
+				
+				<div class="action">
+					{% if product.qty > 0 %}
+						<button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');" title="{{ button_cart }}" >{{ button_cart }}</button>
+						{% else %}
+						<button type="button" class="cart_button out_of_stock" title="{{text_outstock}}" >{{text_outstock}}</button>
+					{% endif %}
+				</div>
+					{% if product.rating %}
+					 <div class="rating">
+					 {% for i in 1..5 %}
+					 {% if product.rating < i %}
+					 <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span>
+					 {% else %}
+					 <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
+					 {% endif %}
+					 {% endfor %}
+					 </div>
+				{% endif %}
+				</div>
+      	<div class="product-details">
+			<div class="caption">
+				<span class="product-cat">{{ product.catname }}</span>
+				<h4><a href="{{ product.href }} ">{{ product.name }} </a></h4>
+				{# <p class="desc"><?php echo $product['description']; ?></p> #}
+				
+				{% if product.price %}
+        			<p class="price">
+       			    {% if not product.special %}
+          			{{ product.price }}
+         			{% else %}
+         			<span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+			        {% endif %}
+  		            {% if product.tax %}
+		            <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+          			{% endif %}
+			        </p>
+	            {% endif %}
+			</div>		
+ 	    
+			
+	  	   </div>
+  	</div>
+	</div>
+</div>
+  
+ {% endfor %}
+</div>
+  </div>
+</div></div>  
+</div>
+<span class="bestseller_default_width" style="display:none; visibility:hidden"></span>

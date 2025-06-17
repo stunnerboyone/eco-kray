@@ -1,0 +1,90 @@
+<div class="hometab box bottom-to-top hb-animate-element">
+  <div class="container">
+    <div class="row">
+      <div class="tab-head">
+        <div class="hometab-heading box-heading">{{ heading_title }}</div>
+        <div id="tabs" class="htabs">
+          <ul class='etabs'>
+            {% if latestproducts %}<li class='tab'><a href="#tab-latest">{{ tab_latest }}</a></li>{% endif %}
+            {% if bestsellersproducts %}<li class='tab'><a href="#tab-bestseller">{{ tab_bestseller }}</a></li>{% endif %}
+            {% if specialproducts %}<li class='tab'><a href="#tab-special">{{ tab_special }}</a></li>{% endif %}
+          </ul>
+        </div>
+      </div>
+
+      {% macro render_products(products) %}
+      <div class="box">
+        <div class="box-content">
+          <div class="box-product product-grid">
+            {% for product in products %}
+              <div class="product-card">
+                <div class="product-thumb">
+                  <div class="image {% if product.qty == 0 %}outstock{% endif %}">
+                    <a href="{{ product.href }}">
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" />
+                    </a>
+                    {% if product.special %}
+                      <span class="special-tag">{{ product.percentsaving }}%</span>
+                    {% endif %}
+                    {% if product.qty == 0 %}
+                      <span class="stock_status">{{ text_outstock }}</span>
+                    {% endif %}
+                  </div>
+
+                  <div class="caption">
+                    <span class="product-cat">{{ product.catname }}</span>
+                    <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                    {% if product.price %}
+                      <p class="price">
+                        {% if not product.special %}
+                          {{ product.price }}
+                        {% else %}
+                          <span class="price-new">{{ product.special }}</span>
+                          <span class="price-old">{{ product.price }}</span>
+                        {% endif %}
+                      </p>
+                    {% endif %}
+                    <div class="buttons-product-wrapper">
+                      <div class="action">
+                        {% if product.qty > 0 %}
+                          <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');">В КОШИК</button>
+                        {% else %}
+                          <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
+                        {% endif %}
+                      </div>
+                      <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endmacro %}
+
+      {% if latestproducts %}
+        <div id="tab-latest" class="tab-content">
+          {{ _self.render_products(latestproducts) }}
+        </div>
+      {% endif %}
+
+      {% if bestsellersproducts %}
+        <div id="tab-bestseller" class="tab-content">
+          {{ _self.render_products(bestsellersproducts) }}
+        </div>
+      {% endif %}
+
+      {% if specialproducts %}
+        <div id="tab-special" class="tab-content">
+          {{ _self.render_products(specialproducts) }}
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$('#tabs a').tabs();
+</script>

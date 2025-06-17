@@ -1,0 +1,659 @@
+{% if not ajax and not popup and not as_module %}
+{% set simple_page = 'simpleedit' %}
+{% set heading_title = heading_title  ~ (display_weight ? '&nbsp;(<span id="weight">' ~ weight  ~ '</span>)' : '') %}
+{% include simple_header %}
+{% if logged %}
+    <style>
+        .row-customer_firstname,
+        .row-customer_email {
+            opacity: .2;
+            pointer-events: none;
+        }
+    </style>
+{% endif %}
+<style>
+    .row-customer_customer_group_id {
+        display: none;
+    }
+    .agree_pay {
+        margin-top: 35px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        opacity: .5;
+        padding-left: 36px;
+        position: relative;
+    }
+    .agree_pay p {
+        font-size: 12px;
+        color: #90abc0;
+    }
+    .agree_pay p a {
+        color: #90abc0;
+        font-size: 12px;
+        border-bottom: 1px solid #90abc0;
+    }
+    .agree_pay input {
+        display: none;
+    }
+    .agree_pay label {
+        position: absolute;
+        left: 0;
+        top: -4px;
+        border: 1px solid #a0a0a0;
+        background: 0 0;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        display: flex;
+        transition: all .3s;
+    }
+    .agree_pay input:checked+label {
+        border: 1px solid #627d91;
+        background: #627d91;
+    }
+    .agree_pay input:checked+label:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        -webkit-mask: url(/catalog/view/theme/default/img/icons/check.svg) no-repeat center;
+        mask: url(/catalog/view/theme/default/img/icons/check.svg) no-repeat center;
+        -webkit-mask-size: 12px;
+        mask-size: 12px;
+        content: '';
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+    }
+    .item_top {
+        margin-bottom: 35px;
+        background: #233341;
+        width: calc(100% - 70px);
+        padding: 35px;
+        padding-bottom: 0px;
+        display: none;
+    }
+    .item_top_left_info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+    .item_top_left_info img {
+        width: 60px;
+        margin-right: 25px;
+    }
+    .item_top_left_info p {
+        display: flex;
+        flex-direction: column;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1;
+    }
+    .item_top_left_info span {
+        color: #ff9d1d;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 1;
+    }
+    .item_top_left_middle {
+        margin-bottom: 35px;
+    }
+    .item_top_left_middle li {
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 10px;
+        padding-left: 25px;
+        position: relative;
+    }
+    .item_top_left_middle li:last-child {
+        margin-bottom: 0px;
+    }
+    .item_top_left_middle li:before {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        content: '';
+        -webkit-mask: url(/catalog/view/theme/default/img/icons/arrow.svg) no-repeat center;
+        mask: url(/catalog/view/theme/default/img/icons/arrow.svg) no-repeat center;
+        background-color: #ff9d1d;
+        -webkit-mask-size: 14px;
+        mask-size: 14px;
+        height: 14px;
+        width: 14px;
+        transform: rotate(-90deg);
+    }
+    .item_top_right {
+        margin-top: auto;
+        margin-left: auto;
+    }
+    .item_top_right img {
+        width: 160px;
+        display: flex;
+    }
+    .ifnums {
+        background: #942929;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 14px 25px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 35px;
+        animation: ifnumsAnimate 1s ease-in-out infinite;
+        display: none;
+    }
+    @keyframes ifnumsAnimate {
+        0% {box-shadow: 0px 0px 0px #2f3942;}
+        50% {box-shadow: 0px 0px 100px #942929;}
+        100% {box-shadow: 0px 0px 0px #2f3942;}
+    }
+    .ifnums.active {
+        display: block;
+    }
+    .simplecheckout-button-right.offline button {
+        pointer-events: none;
+        background: #000;
+    }
+    .simplecheckout-button-right.offline {
+        pointer-events: none;
+        opacity: .1;
+    }
+    #simplecheckout_payment .checkout-heading,
+    .row-customer_lastname,
+    .bootstrap-datetimepicker-widget {
+        display: none;
+    }
+    #simplecheckout_customer input {
+        border: 2px solid #3f4a52;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        display: block;
+        background: transparent;
+        color: #fff;
+    }
+    #simplecheckout_customer input::placeholder {
+        color: #b1b4b7;
+    }
+    #simplecheckout_customer .form-group {
+        margin-bottom: 15px;
+    }
+    #simplecheckout_customer .form-group:last-child {
+        margin-bottom: 0px;
+    }
+    #simplecheckout_customer .checkout-heading {
+        font-size: 25px;
+        margin-bottom: 35px;
+        font-weight: 700;
+    }
+    .tarifs .cart_items .item {
+        width: 100%;
+        margin-bottom: 35px;
+        margin-right: 0px;
+        padding: 0px;
+    }
+    .tarifs .cart_items .item:last-child {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        display: flex;
+    }
+    .tarifs .items .premium_tarif .item_top {
+        display: flex;
+    }
+    .tarifs .cart_items .item button {
+        padding: 0px;
+        height: 34px;
+        width: 34px;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #303c44;
+    }
+    .tarifs .cart_items .item button:before {
+        position: absolute;
+        content: '';
+        -webkit-mask: url(/catalog/view/theme/default/img/icons/delete.svg) no-repeat center;
+        mask: url(/catalog/view/theme/default/img/icons/delete.svg) no-repeat center;
+        background-color: #6e7b84;
+        -webkit-mask-size: 16px;
+        mask-size: 16px;
+        height: 34px;
+        width: 34px;
+    }
+    .tarifs .cart_items .item button:hover {
+        box-shadow: none;
+    }
+    .tarifs .cart_items .item button.active:before {
+        background-color: #303c44;
+    }
+    .tarifs .cart_items .item button.active {
+        background: #fff;
+        animation: buttonRemoveAnimate 1s ease-in-out infinite;
+    }
+    @keyframes buttonRemoveAnimate {
+        0% {box-shadow: 0px 0px 0px #2f3942;}
+        50% {box-shadow: 0px 0px 30px #fff;}
+        100% {box-shadow: 0px 0px 0px #2f3942;}
+    }
+    .cart_tarifs {
+        margin-bottom: 35px;
+    }
+    .cart_tarifs .items {
+        grid-template-columns: 1fr;
+    }
+    {% if logged %} 
+    #simplecheckout_payment .checkout-heading {
+        margin-top: 0px !important;
+    }
+    {% endif %}
+    .payment_icons ul {
+        background: rgb(25,34,40);
+        background: linear-gradient(-90deg, rgb(42 51 57) 0%, rgb(35 43 49) 100%);
+        padding: 15px;
+        padding-bottom: 5px;
+        position: relative;
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 40px;
+    }
+    .payment_icons ul:after {
+        position: absolute;
+        top: -9px;
+        left: 15px;
+        height: 15px;
+        width: 15px;
+        background: #242b31;
+        border-top: 1px solid #242b31;
+        border-left: 1px solid #242b31;
+        transform: rotate(45deg);
+        content: '';
+        display: inline-flex;
+    }
+    .payment_icons li {
+        display: inline-flex;
+        align-items: center;
+        font-weight: 600;
+        margin-right: 15px;
+        padding-bottom: 10px;
+    }
+    .payment_icons li img {
+        max-width: 40px;
+        width: 100%;
+        max-height: 25px;
+        height: 25px;
+    }
+    .VIP_checkout .add_cart {
+        display: none;
+        visibility: hidden;
+    }
+    /*#simplecheckout_payment .simplecheckout-block-content .radio_block:nth-of-type(1) .bank {
+        display: none;
+    }
+    #simplecheckout_payment .simplecheckout-block-content .radio_block:nth-of-type(2) .payment_wfp {
+        display: none;
+    }*/
+    .bank p {
+        font-size: 13px;
+        display: block;
+        color: #555;
+        letter-spacing: 0.3px;
+    }
+    @media (max-width: 854px) {
+        
+    }
+    @media (max-width: 500px) {
+        .text_wtp ul {
+            box-shadow: 6px 6px 10px #e4e4e4;
+        }
+        .payment_icons li img {
+            max-width: 40px;
+        }
+    }
+    @media (max-width: 320px) {
+        .text_wtp ul {
+            box-shadow: none;
+        }
+        .payment_icons li img {
+            max-width: 35px;
+        }
+    }
+    .payment_icons {
+        padding-top: 3px;
+        display: none;
+    }
+    .payment_icons.active {
+        display: initial;
+    }
+/*MODAL_FONDY*/
+.f-header {
+    display: none !important;
+}
+html #f.f-embed .f-wrapper {
+    height: initial !important;
+    max-height: initial !important;
+}
+#f .f-container {
+    background: hsl(206deg 17% 16%) !important;
+}
+#f .f-order-desc-text {
+    background: transparent !important;
+}
+#f .f-container-sm {
+    padding-top: 20px !important;
+    max-width: 100% !important;
+}
+</style>
+<style>
+    {% if left_column_width %}
+        .simplecheckout-left-column {
+            width: {{ left_column_width }}%;
+        }
+        @media only screen and (max-width:1024px) {
+            .simplecheckout-left-column {
+                width: 100%;
+            }
+        }
+    {% endif %}
+    {% if right_column_width %}
+        .simplecheckout-right-column {
+            width: {{ right_column_width }}%;
+        }
+        @media only screen and (max-width:1024px) {
+            .simplecheckout-right-column {
+                width: 100%;
+            }
+        }
+    {% endif %}
+    {% if customer_with_payment_address %}
+        #simplecheckout_customer {
+            margin-bottom: 0;
+        }
+        #simplecheckout_customer .simplecheckout-block-content {
+            border-bottom-width: 0;
+            padding-bottom: 0;
+        }
+        #simplecheckout_payment_address div.checkout-heading {
+            display: none;
+        }
+        #simplecheckout_payment_address .simplecheckout-block-content {
+            border-top-width: 0;
+            padding-top: 0;
+        }
+    {% endif %}
+    {% if customer_with_shipping_address %}
+        #simplecheckout_customer {
+            margin-bottom: 0;
+        }
+        #simplecheckout_customer .simplecheckout-block-content {
+            border-bottom-width: 0;
+            padding-bottom: 0;
+        }
+        #simplecheckout_shipping_address div.checkout-heading {
+            display: none;
+        }
+        #simplecheckout_shipping_address .simplecheckout-block-content {
+            border-top-width: 0;
+            padding-top: 0;
+        }
+    {% endif %}
+</style>
+<div class="simple-content">
+{% endif %}
+    {% if not ajax or (ajax and popup) %}
+    <script type="text/javascript">
+        {% if popup %} 
+            var simpleScriptsInterval = window.setInterval(function(){
+                if (typeof jQuery !== 'undefined' && jQuery.isReady) {
+                    window.clearInterval(simpleScriptsInterval);
+
+                    if (typeof Simplecheckout !== "function") {
+                        {% for script in simple_scripts %}
+                            $("head").append('<script src="' + '{{ script }}' + '"></' + 'script>');
+                        {% endfor %}
+
+                        {% for style in simple_styles %}
+                            $("head").append('<link href="' + '{{ style }}' + '" rel="stylesheet"/>');
+                        {% endfor %}                         
+                    }
+                }
+            },0);
+        {% endif %}
+
+        var startSimpleInterval_{{ group }} = window.setInterval(function(){
+            if (typeof jQuery !== 'undefined' && typeof Simplecheckout === "function" && jQuery.isReady) {
+                window.clearInterval(startSimpleInterval_{{ group }});
+
+                var simplecheckout_{{ group }} = new Simplecheckout({
+                    mainRoute: "checkout/simplecheckout",
+                    additionalParams: "{{ additional_params }}",
+                    additionalPath: "{{ additional_path }}",
+                    mainUrl: "{{ action }}",
+                    mainContainer: "#simplecheckout_form_{{ group }}",
+                    currentTheme: "{{ current_theme }}",
+                    loginBoxBefore: "{{ login_type == 'flat' ? '#simplecheckout_customer .simplecheckout-block-content:first' : '' }}",
+                    displayProceedText: {{ display_proceed_text ? 1 : 0 }},
+                    scrollToError: {{ scroll_to_error ? 1 : 0 }},
+                    scrollToPaymentForm: {{ scroll_to_payment_form ? 1 : 0 }},
+                    notificationDefault: {{ notification_default ? 1 : 0 }},
+                    notificationToasts: {{ notification_toasts ? 1 : 0 }},
+                    notificationCheckForm: {{ notification_check_form ? 1 : 0 }},
+                    notificationCheckFormText: "{{ notification_check_form_text }}",
+                    useAutocomplete: {{ use_autocomplete ? 1 : 0 }},
+                    useGoogleApi: {{ use_google_api ? 1 : 0 }},
+                    useStorage: {{ use_storage ? 1 : 0 }},
+                    popup: {{ popup or as_module ? 1 : 0 }},
+                    agreementCheckboxStep: {{ agreement_checkbox_step ? agreement_checkbox_step : '\'0\'' }},
+                    enableAutoReloaingOfPaymentFrom: {{ enable_reloading_of_payment_form ? 1 : 0 }},
+                    javascriptCallback: function() {try{ {{ javascript_callback }} } catch (e) {console.log(e)}},
+                    stepButtons: {{ step_buttons }},
+                    menuType: {{ menu_type ? menu_type : '1' }},
+                    languageCode: "{{ language_code }}"
+                });
+
+                if (typeof toastr !== 'undefined') {
+                    toastr.options.positionClass = "{{ notification_position ? notification_position : 'toast-top-right' }}";
+                    toastr.options.timeOut = "{{ notification_timeout ? notification_timeout : '5000' }}";
+                    toastr.options.progressBar = true;
+                }
+
+                $(document).ajaxComplete(function(e, xhr, settings) {
+                    if (settings.url.indexOf("route=module/cart&remove") > 0 || (settings.url.indexOf("route=module/cart") > 0 && settings.type == "POST") || settings.url.indexOf("route=checkout/cart/add") > 0 || settings.url.indexOf("route=checkout/cart/remove") > 0) {
+                        window.resetSimpleQuantity = true;
+                        simplecheckout_{{ group }}.reloadAll();
+                    }
+                });
+
+                $(document).ajaxSend(function(e, xhr, settings) {
+                    if (settings.url.indexOf("checkout/simplecheckout&group") > 0 && typeof window.resetSimpleQuantity !== "undefined" && window.resetSimpleQuantity) {
+                        settings.data = settings.data.replace(/quantity.+?&/g,"");
+                        window.resetSimpleQuantity = false;
+                    }
+                });
+
+                simplecheckout_{{ group }}.init();
+                
+            }
+        },0);
+    </script>
+    {% endif %}
+    <div id="simplecheckout_form_{{ group }}" {{ display_error and has_error ? 'data-error="true"' : '' }} {{ logged ? 'data-logged="true"' : '' }}>
+        <div class="simplecheckout">
+            {% if not cart_empty %}
+                {% if steps_count > 1 %}
+                    {% if menu_type == '2' %}
+                        <div id="simplecheckout_step_menu" class="simplecheckout-vertical-menu simplecheckout-top-menu">
+                            {% for i in 1..steps_count %}
+                                <div class="checkout-heading simple-step-vertical" style="display:none" data-onclick="gotoStep" data-step="{{ i }}"><h4 class="panel-title">{{ step_names[i-1] }}</h4></div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div id="simplecheckout_step_menu">
+                            {% for i in 1..steps_count %}
+                                <span class="simple-step" data-onclick="gotoStep" data-step="{{ i }}">{{ step_names[i-1] }}</span>{% if i < steps_count %}<span class="simple-step-delimiter" data-step="{{ i+1 }}"><img src="{{ additional_path }}catalog/view/image/next_gray.png"></span>{% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if steps_count > 1 and menu_type == '2' %}
+                    <div class="simplecheckout-steps-wrapper">
+                {% endif %}
+
+                {% if errors is not empty and display_error %}
+                    {% for error in errors %}
+                        <div class="alert alert-danger simplecheckout-warning-block" data-error="true">
+                            {{ error }}
+                        </div>
+                    {% endfor %}                 
+                {% endif %}
+
+                {%
+                    set replace = {
+                        '{three_column}'     : '<div class="simplecheckout-three-column">',
+                        '{/three_column}'    : '</div>',
+                        '{left_column}'      : '<div class="simplecheckout-left-column">',
+                        '{/left_column}'     : '</div>',
+                        '{right_column}'     : '<div class="simplecheckout-right-column">',
+                        '{/right_column}'    : '</div>',
+                        '{step}'             : '<div class="simplecheckout-step">',
+                        '{/step}'            : '</div>',
+                        '{clear_both}'       : '<div style="width:100%;clear:both;height:1px"></div>',
+                        '{customer}'         : simple_blocks['customer'],
+                        '{payment_address}'  : simple_blocks['payment_address'],
+                        '{shipping_address}' : simple_blocks['shipping_address'],
+                        '{cart}'             : simple_blocks['cart'],
+                        '{shipping}'         : simple_blocks['shipping'],
+                        '{payment}'          : simple_blocks['payment'],
+                        '{agreement}'        : simple_blocks['agreement'],
+                        '{help}'             : simple_blocks['help'],
+                        '{summary}'          : simple_blocks['summary'],
+                        '{comment}'          : simple_blocks['comment'],
+                        '{payment_form}'     : '<div class="simplecheckout-block" id="simplecheckout_payment_form">' ~ simple_blocks['payment_form'] ~ '</div>'
+                    }
+                %}
+
+                {% for key, value in simple_blocks %}
+                    {% set key_clear = key %}
+                    {% set key = '{' ~ key ~ '}' %}
+                    {% if replace[key] is not defined %}
+                        {% set replace = replace|merge({(key): '<div class="simplecheckout-block" id="' ~ key_clear ~ '">' ~ value ~ '</div>'}) %}
+                    {% endif %}
+                {% endfor %}
+
+                {{ simple_template|replace(replace) }}
+                
+                <div id="simplecheckout_bottom" style="width:100%;height:1px;clear:both;"></div>
+                <div class="simplecheckout-proceed-payment" id="simplecheckout_proceed_payment" style="display:none;">{{ text_proceed_payment }}</div>
+                
+                {% if display_agreement_checkbox %}
+                    <div class="alert alert-danger simplecheckout-warning-block" id="agreement_warning" {% if display_error and has_error %}data-error="true"{% else %}style="display:none;"{% endif %}>
+                        <div class="agreement_all">
+                            {% for agreement_id, warning_agreement in error_warning_agreement %}
+                                <div class="agreement_{{ agreement_id }}">{{ warning_agreement }}</div>
+                            {% endfor %}
+                        </div>                    
+                    </div>
+                {% endif %}  
+
+                <div class="simplecheckout-button-block buttons" id="buttons">
+                    <div class="simplecheckout-button-right">
+                        {% if display_agreement_checkbox %}
+                            <span id="agreement_checkbox">
+                                {% for agreement_id, text_agreement in text_agreements %}
+                                    <div class="checkbox"><label><input type="checkbox" name="agreements[]" value="{{ agreement_id }}" {{ agreement_id in agreements ? 'checked="checked"' : '' }} />{{ text_agreement }}</label></div>
+                                {% endfor %}
+                            </span>
+                        {% endif %}                
+                        {% if steps_count > 1 %}
+                        <a class="button btn-primary button_oc btn" data-onclick="nextStep" id="simplecheckout_button_next"><span>{{ button_next }}</span></a>
+                        {% endif %}
+                        <a class="button btn-primary button_oc btn" {{ block_order ? 'disabled' : ''}} data-onclick="createOrder" id="simplecheckout_button_confirm">{{ button_order }}</a>
+                        <!-- <div class="info_text" style="font-weight: 700;font-size: 14px;padding: 15px;background: #fdd8d8;margin-top: 25px;color: #5a0202;text-align: center;">
+                            Обработка заказа и выдача ссылки на файл после оплаты может занять до 10-ти минут.<br> Извините за временные трудности :)
+                        </div> -->
+                    </div>
+                    <div class="agree_pay">
+                        <input type="radio" checked="checked" id="agree_pay" />
+                        <label for="agree_pay"></label>
+                        {{ agree_text }}
+                    </div>
+                    <div class="simplecheckout-button-left">
+                        {% if display_back_button %}
+                        <a class="button btn-primary button_oc btn" data-onclick="backHistory" id="simplecheckout_button_back"><span>{{ button_back }}</span></a>
+                        {% endif %}
+                        {% if steps_count > 1 %}
+                        <a class="button btn-primary button_oc btn" data-onclick="previousStep" id="simplecheckout_button_prev"><span>{{ button_prev }}</span></a>
+                        {% endif %}
+                    </div>
+                </div>    
+
+                {% if steps_count > 1 and menu_type == '2' %}
+                    </div>
+                {% endif %}
+                
+                {% if steps_count > 1 and menu_type == '2' %}
+                    <div id="simplecheckout_step_menu" class="simplecheckout-vertical-menu simplecheckout-bottom-menu">
+                        {% for i in 1..steps_count %}
+                            <div class="checkout-heading simple-step-vertical" style="display:none" data-onclick="gotoStep" data-step="{{ i }}"><h4 class="panel-title">{{ step_names[i-1] }}</h4></div>
+                        {% endfor %}
+                    </div>
+                {% endif %}           
+            
+            {% else %}
+            <div class="lg_block">
+                <h1 class="text_title">{{ error_stock }}</h1>
+                <p class="lg_block_text">{{ error_stock_info }}</p>
+                <a href="{{ continue }}" class="link_home">{{ to_home }}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% if not ajax and not popup and not as_module %}
+</div>
+{% include simple_footer %}
+{% endif %}
+<script>
+    var textNullCart = $(".simplecheckout").find(".text_title");
+    if(textNullCart.text() === "Подписка не выбрана :(") {
+        // $(".breadcrumb").remove();
+        $("body").addClass("textNullCart");
+    } else {
+
+    }
+</script>
+<script>
+    $(".simplecheckout-button-right").appendTo(".simplecheckout-right-column");
+    $(".agree_pay").appendTo(".simplecheckout-right-column");
+</script>
+<script src="catalog/view/javascript/date.js"></script>
+<script>
+    function addTimeToLastname(){
+      var nowTimeText = Date.today().toString("yyyy-MM-d 8:00:00");
+      $("#customer_lastname").val(nowTimeText);
+    }
+    setTimeout(addTimeToLastname, 2000);
+</script>
+<script>
+    // if($('.cart_items .item').length <= 1) {
+    //     $(".ifnums").removeClass('active');
+    //     $(".simplecheckout-button-right").removeClass('offline');
+    //     $(".tarifs .cart_items .item button").removeClass('active');
+    // } else {
+    //     $(".ifnums").addClass('active');
+    //     $(".simplecheckout-button-right").addClass('offline');
+    //     $(".tarifs .cart_items .item button").addClass('active');
+    // }
+</script> 
+<script>
+// setInterval(function() {
+//     if($("html").find("#f").length == 1) {
+//         $(".simplecheckout-button-right").remove();
+//         $("#simplecheckout_button_confirm").remove();
+//         $(".agree_pay").remove();
+//     }
+// }, 1000);
+</script>

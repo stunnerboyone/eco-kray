@@ -1,0 +1,16 @@
+<form action="{{ action }}" method="post">
+    <input type="hidden" name="amt" value="{{ amt }}"/>
+    <input type="hidden" name="ccy" value="{{ ccy }}" />
+    <input type="hidden" name="merchant" value="{{ merchant }}" />
+    <input type="hidden" name="order" value="{{ order }}" />
+    <input type="hidden" name="details" value="{{ details }}" />
+    <input type="hidden" name="ext_details" value="" />
+    <input type="hidden" name="pay_way" value="privat24" />
+    <input type="hidden" name="return_url" value="{{ return_url }}" />
+    <input type="hidden" name="server_url" value="{{ server_url }}" />
+    <div class="buttons">
+      <div class="pull-right">
+        <input type="submit" value="{{ button_confirm }}" class="btn btn-primary" />
+      </div>
+    </div>
+</form>

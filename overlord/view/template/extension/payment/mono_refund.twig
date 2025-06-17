@@ -1,0 +1,94 @@
+
+
+<style>
+</style>
+
+<div class="table-responsive card-body">
+    <table class="table mono-subtable">
+        {% if is_refunded %}
+            <tr>
+                <th>Invoice Id</th>
+                <td class="value">{{ payment_id }}</td>
+            </tr>
+            <tr>
+                <th>Amount Refunded</th>
+                <td class="value">{{ amount_refunded }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <th>Invoice Id</th>
+                <td class="value">{{ payment_id }}</td>
+            </tr>
+            <tr>
+                <th>Amount Paid</th>
+                <td class="value">{{ amount }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="value">
+                    <strong>
+                        <span id="refund_span_{{ payment_id }}">
+                        <a class="btn btn-primary" 
+                           href="javascript:void(0);" 
+                           onclick="$('#refund_span_{{ payment_id }}').hide();$('#refund_form_{{ payment_id }}').show();">
+                            Refund
+                        </a>
+                        </span>
+                        <form id="refund_form_{{ payment_id }}" method="post"
+                              action="#" 
+                              class="form-horizontal" style="display:none" onsubmit="return false">
+                            <div class="">
+                                    <label for="mono_amount" class="form-control-label label-on-top col-12">
+                                        Enter the amount<span class="text-danger">*</span>
+                                    </label>
+                                 <div class="col-sm">
+                                    <div class="input-group">
+                                        <input type="text" id="mono_amount" required="required" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="text-left">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-secondary" 
+                                    onclick="$('#refund_span_{{ payment_id }}').show();$('#refund_form_{{ payment_id }}').hide();">
+                                    Cancel
+                                </button>
+                                
+                                <input type="hidden" id="payment_id" value="{{ payment_id }}" />
+                                <button type="submit" name="mono_refund" id="mono_refund" class="btn btn-primary">Refund Payment</button>
+                            </div>
+                        </form>
+                    </strong>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+</div>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+    $('#mono_refund').click(function(e){
+        var mono_amount = $('#mono_amount').val();
+        var payment_id = $('#payment_id').val();
+        
+        $.ajax({
+		url: 'index.php?route=extension/payment/mono/refund&user_token={{ user_token }}',
+                type: 'post',
+                data: 'order_id={{ order_id }}&payment_id='+payment_id+'&mono_amount='+mono_amount,
+		dataType: 'json',
+		beforeSend: function() {
+                    $('#mono_refund').button('loading');
+		},
+		complete: function() {
+                    $('#mono_refund').button('reset');
+		},
+		success: function(json) {
+                document.location.reload();
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+                    document.location.reload();
+		}
+	});
+    });
+});
+//--></script> 

@@ -1,0 +1,90 @@
+	<div class="box special bottom-to-top hb-animate-element">
+		<div class="container">
+			<div class="row">
+  <div class="box-heading">{{ heading_title }}</div>
+
+  <div class="box-content">
+		{% set sliderFor = 5 %}
+		{% set productCount = products|length %}
+	{% if productCount >= sliderFor %}
+		<div class="customNavigation">
+			<a class="fa prev wdspecial_prev fa-arrow-left">&nbsp;</a>
+			<a class="fa next wdspecial_next fa-arrow-right">&nbsp;</a>
+		</div>	
+	{% endif %}
+	
+	<div class="box-product">
+  {% for product in products %}
+    <div class="product-card">
+      <div class="product-thumb">
+        <div class="image {% if product.qty == 0 %}outstock{% endif %}">
+          <a href="{{ product.href }}">
+            <img src="{{ product.thumb }}" alt="{{ product.name }}" />
+          </a>
+          {% if product.special %}
+            <span class="special-tag">{{ product.percentsaving }}%</span>
+          {% endif %}
+          {% if product.qty == 0 %}
+            <span class="stock_status">{{ text_outstock }}</span>
+          {% endif %}
+        </div>
+
+        <div class="caption">
+          <span class="product-cat">{{ product.catname }}</span>
+          <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+
+          {% if product.price %}
+          <p class="price">
+            {% if not product.special %}
+              {{ product.price }}
+            {% else %}
+              <span class="price-new">{{ product.special }}</span>
+              <span class="price-old">{{ product.price }}</span>
+            {% endif %}
+          </p>
+          {% endif %}
+
+          <div class="buttons-product-wrapper">
+            <div class="action">
+              {% if product.qty > 0 %}
+                <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');">{{ button_cart }}</button>
+              {% else %}
+                <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
+              {% endif %}
+            </div>
+            <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
+          </div>
+        </div>     
+      </div>
+    </div>
+  {% endfor %}
+</div>
+  </div>
+</div>
+</div>
+</div>
+<span class="special_default_width" style="display:none; visibility:hidden"></span>
+
+<script type="text/javascript"><!--
+
+$(document).ready(function(){
+	$('.specialcarousel').owlCarousel({
+		items: 4,
+		singleItem: false,
+		navigation: false,
+		pagination: false,
+		itemsDesktop : [1499,4],
+		itemsDesktopSmall :	[991,3],
+		itemsTablet :	[650,2],
+		itemsTabletSmall :	[650,2],
+		itemsMobile :	[319,1]
+	});
+	// Custom Navigation Events
+	$(".wdspecial_next").click(function(){
+		$('.specialcarousel').trigger('owl.next');
+	})
+	$(".wdspecial_prev").click(function(){
+		$('.specialcarousel').trigger('owl.prev');
+	});	
+});	
+--></script>

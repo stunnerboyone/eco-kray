@@ -1,0 +1,54 @@
+<div class="cart-dropdown">
+  <button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="cart-button">
+    <div class="cart_detail">
+      <div class="cart_image"><i class="material-icons-outlined shopping-cart"></i></div>
+      <span id="cart-total" class="cart_total">{{ cart_count }}</span>
+    </div>
+  </button>
+
+  <div id="cart" class="cart-dropdown-menu">
+    {% if products or vouchers %}
+      <div class="cart-items">
+        {% for product in products %}
+          <div class="cart-item">
+            {% if product.thumb %}
+              <div class="cart-thumb"><a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" /></a></div>
+            {% endif %}
+            <div class="cart-info">
+              <a href="{{ product.href }}">{{ product.name }}</a>
+              {% if product.option %}
+                {% for option in product.option %}
+                  <div class="option">- {{ option.name }}: {{ option.value }}</div>
+                {% endfor %}
+              {% endif %}
+              {% if product.recurring %}
+                <div class="option">- {{ text_recurring }} {{ product.recurring }}</div>
+              {% endif %}
+              <div class="quantity">x{{ product.quantity }}</div>
+              <div class="price">{{ product.total }}</div>
+            </div>
+            <div class="cart-remove">
+              <button onclick="cart.remove('{{ product.cart_id }}');" class="remove-button"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart-totals">
+        {% for total in totals %}
+          <div "class="cart-total-row">
+            <span>{{ total.title }}</span>
+            <strong>{{ total.text }}</strong>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="cart-buttons">
+        <a href="{{ cart }}" class="btn btn-view-cart">{{ text_cart }}</a>
+        <a href="{{ checkout }}" class="btn btn-checkout">{{ text_checkout }}</a>
+      </div>
+    {% else %}
+      <p class="cart-empty">{{ text_empty_cart }}</p>
+    {% endif %}
+  </div>
+</div>

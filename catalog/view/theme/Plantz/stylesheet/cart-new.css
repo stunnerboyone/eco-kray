@@ -1,0 +1,119 @@
+.cart-dropdown {
+  position: relative;
+}
+
+.cart-button {
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+}
+
+.cart-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  min-width: 500px;
+  max-width: 800px;
+  z-index: 999;
+  padding: 16px;
+  display: none;
+}
+
+.cart-dropdown.open .cart-dropdown-menu {
+  display: block;
+}
+
+.cart-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.cart-thumb img {
+  width: 60px;
+  height: auto;
+}
+
+.cart-info {
+  flex: 1;
+}
+
+.cart-remove {
+  display: flex;
+  align-items: baseline;
+}
+
+.remove-button {
+  background-color: #c67d4e;
+  border-radius: 3px;
+  border: none;
+}
+
+.remove-button:hover {
+  background-color: #8d021f;
+}
+
+.cart-remove .fa {
+  color: #ffffff;
+}
+
+
+.cart-totals {
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.cart_total {
+  color: #000000 !important;
+}
+
+.cart_detail {
+  display: flex;
+  align-items: end;
+
+}
+
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-buttons {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.cart-buttons .btn {
+  flex: 1;
+  background-color: #c67d4e;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+  padding: 8px 24px;
+  color: #ffffff;
+}
+
+.cart-buttons .btn:hover {
+  background-color: #45a049;
+}
+
+@media (max-width: 767px) {
+  .cart-dropdown-menu {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    left: 0;
+    width: 100vw;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 0;
+  }
+}
