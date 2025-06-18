@@ -37,6 +37,13 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /www/stunnerboyone.live/
           exclude: |
-            .git*
-            .github*
-            system/storage/**
+            .git/
+            .git/**
+            **/.git/
+            **/.git/**
+            .github/
+            .github/**
+            system/**
+            image/**
+            config.php
+            overlord/config.php

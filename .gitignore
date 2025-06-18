@@ -1,5 +1,5 @@
 .git
 config.php
-/overlord/config.php
-/system
-/image/cache
+overlord/config.php
+system
+image
