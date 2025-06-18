@@ -13,23 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check if commit is a merge
-        id: mergecheck
-        run: |
-          git fetch origin main
-          MERGE_COMMIT=$(git log -1 --pretty=%P | grep " " || true)
-          if [[ -n "$MERGE_COMMIT" ]]; then
-            echo "is_merge=true" >> $GITHUB_OUTPUT
-          else
-            echo "is_merge=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Cancel if not a merge commit
-        if: steps.mergecheck.outputs.is_merge != 'true'
-        run: echo "⛔ Skipping deploy: not a merge commit"
-
       - name: FTP Deploy to PRODUCTION
-        if: steps.mergecheck.outputs.is_merge == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -39,11 +23,9 @@ jobs:
           exclude: |
             .git/
             .git/**
-            **/.git/
-            **/.git/**
             .github/
             .github/**
-            system/**
-            image/**
+            system/storage/**
+            image/cache/**
             config.php
             overlord/config.php
