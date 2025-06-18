@@ -51,6 +51,7 @@
 
 .product-card {
   position: relative;
+  perspective: 1000px;
 }
 .product-thumb {
   box-sizing: border-box;
@@ -64,12 +65,15 @@
   justify-content: space-between;
   width: 240px;
   overflow: hidden;
-  max-height: 380px;
+  transform: scaleY(1);
+  transform-origin: top;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product-thumb:hover {
-  max-height: 600px;
+  transform: scaleY(1.3); /* або більше, залежно від вмісту */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 1;
 }
 
 .product-card_title {
@@ -77,14 +81,13 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: all 0.3s ease;
   max-height: 3.2em;
 }
 
 .product-thumb:hover .product-card_title {
   -webkit-line-clamp: unset;
   max-height: 100vh;
-  overflow: visible;
 }
 
 .product-thumb .image {
