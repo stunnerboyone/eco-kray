@@ -309,112 +309,115 @@
         {% endfor %} </p>
         {% endif %}
       {{ content_bottom }}
-      {% if products %}
-      <div class="box related_prd">
-        <div class="container">
-          <div class="row">
-            <div class="box-head"> 
-              <div class="box-heading">{{ text_related }}</div>
-            </div>
-            <div class="box-content">
-              <div id="products-related" class="related-products">
-      
-                {% set sliderFor = 5 %}
-                {% set productCount = products|length %} 
-      
-                {% if productCount >= sliderFor %}
-                <div class="customNavigation">
-                  <a class="fa prev fa-arrow-left">&nbsp;</a>
-                  <a class="fa next fa-arrow-right">&nbsp;</a>
-                </div>  
-                {% endif %}
-      
-                <div class="box-product {% if productCount >= sliderFor %}product-carousel owl-carousel owl-theme{% else %}productbox-grid{% endif %}" id="{% if productCount >= sliderFor %}related-carousel{% else %}related-grid{% endif %}">
-                  {% for product in products %}
-                  <div class="item">
-                    <div class="product-card">
-                      <div class="product-thumb">
-                        <div class="image {% if product.qty == 0 %}outstock{% endif %}">
-                          <a href="{{ product.href }}">
-                            <img src="{{ product.thumb }}" alt="{{ product.name }}" />
-                          </a>
-                          {% if product.special %}
-                          <span class="special-tag">{{ product.percentsaving }}%</span>
-                          {% endif %}
-                          {% if product.qty == 0 %}
-                          <span class="stock_status">{{ text_outstock }}</span>
-                          {% endif %}
-                        </div>
-      
-                        <div class="caption">
-                          <span class="product-cat">{{ product.catname }}</span>
-                          <h4 class="product-card_title"><a href="{{ product.href }}">{{ product.name }}</a></h4>
-      
-                          {% if product.price %}
-                          <p class="price">
-                            {% if not product.special %}
-                              {{ product.price }}
-                            {% else %}
-                              <span class="price-new">{{ product.special }}</span>
-                              <span class="price-old">{{ product.price }}</span>
-                            {% endif %}
-                          </p>
-                          {% endif %}
-      
-                          <div class="buttons-product-wrapper">
-                            <div class="action">
-                              {% if product.qty > 0 %}
-                                <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');">{{ button_cart }}</button>
-                              {% else %}
-                                <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
-                              {% endif %}
-                            </div>
-                            <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
-                          </div>
-                        </div>     
-                      </div>
-                    </div>
+{% if products %}
+<div class="box related_prd">
+  <div class="container">
+    <div class="row">
+      <div class="box-head"> 
+        <div class="box-heading">{{ text_related }}</div>
+      </div>
+      <div class="box-content">
+        <div id="products-related" class="related-products">
+
+          {% set sliderFor = 5 %}
+          {% set productCount = products|length %} 
+
+          {% if productCount >= sliderFor %}
+          <div class="customNavigation">
+            <a class="fa prev fa-arrow-left">&nbsp;</a>
+            <a class="fa next fa-arrow-right">&nbsp;</a>
+          </div>  
+          {% endif %}
+
+          <div class="box-product {% if productCount >= sliderFor %}product-carousel owl-carousel owl-theme{% else %}productbox-grid{% endif %}" id="{% if productCount >= sliderFor %}related-carousel{% else %}related-grid{% endif %}">
+            {% for product in products %}
+            <div class="{% if productCount >= sliderFor %}item{% else %}product-items{% endif %}">
+              <div class="product-card">
+                <div class="product-thumb">
+                  <div class="image {% if product.qty == 0 %}outstock{% endif %}">
+                    <a href="{{ product.href }}">
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" />
+                    </a>
+                    {% if product.special %}
+                    <span class="special-tag">{{ product.percentsaving }}%</span>
+                    {% endif %}
+                    {% if product.qty == 0 %}
+                    <span class="stock_status">{{ text_outstock }}</span>
+                    {% endif %}
                   </div>
-                  {% endfor %}
+
+                  <div class="caption">
+                    <span class="product-cat">{{ product.catname }}</span>
+                    <h4 class="product-card_title"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+
+                    {% if product.price %}
+                    <p class="price">
+                      {% if not product.special %}
+                        {{ product.price }}
+                      {% else %}
+                        <span class="price-new">{{ product.special }}</span>
+                        <span class="price-old">{{ product.price }}</span>
+                      {% endif %}
+                    </p>
+                    {% endif %}
+
+                    <div class="buttons-product-wrapper">
+                      <div class="action">
+                        {% if product.qty > 0 %}
+                          <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');">{{ button_cart }}</button>
+                        {% else %}
+                          <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
+                        {% endif %}
+                      </div>
+                      <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
+                    </div>
+                  </div>     
                 </div>
-      
-                <span class="related_default_width" style="display:none; visibility:hidden"></span>
               </div>
             </div>
+            {% endfor %}
           </div>
+
+          <span class="related_default_width" style="display:none; visibility:hidden"></span>
         </div>
       </div>
-      
-      <script>
-      $(document).ready(function () {
-        $('#related-carousel.owl-carousel').owlCarousel({
-          items: 5,
-          loop: false,
-          nav: true,
-          navText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],
-          dots: false,
-          margin: 20,
-          responsive: {
-            0: {
-              items: 1
-            },
-            576: {
-              items: 2
-            },
-            768: {
-              items: 3
-            },
-            992: {
-              items: 4
-            },
-            1200: {
-              items: 5
-            }
-          }
-        });
-      });
-      </script>
-      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function () {
+  if ($('#related-carousel.owl-carousel').length) {
+    $('#related-carousel.owl-carousel').owlCarousel({
+      items: 5,
+      loop: false,
+      nav: true,
+      navText: ['<i class="fa fa-arrow-left"></i>', '<i class="fa fa-arrow-right"></i>'],
+      dots: false,
+      margin: 20,
+      responsive: {
+        0: {
+          items: 1
+        },
+        576: {
+          items: 2
+        },
+        768: {
+          items: 3
+        },
+        992: {
+          items: 4
+        },
+        1200: {
+          items: 5
+        }
+      }
+    });
+  }
+});
+</script>
+{% endif %}
+
 
     </div>
 
