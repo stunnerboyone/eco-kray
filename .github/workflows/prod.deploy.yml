@@ -23,9 +23,11 @@ jobs:
           exclude: |
             .git/
             .git/**
+            **/.git/
+            **/.git/**
             .github/
             .github/**
-            system/storage/**
-            image/cache/**
+            system/**
+            image/**
             config.php
             overlord/config.php
