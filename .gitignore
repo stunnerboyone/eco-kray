@@ -1,5 +1,9 @@
-.git
+.git/
+.git/**
+**/.git/
+**/.git/**
+system/**
+image/**
 config.php
 overlord/config.php
-system
-image
+node_modules/

@@ -1,0 +1,6 @@
+{
+  "printWidth": 120,
+  "tabWidth": 2,
+  "twigSingleQuote": true,
+  "plugins": ["@zackad/prettier-plugin-twig"]
+}
