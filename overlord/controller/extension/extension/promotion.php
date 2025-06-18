@@ -15,7 +15,7 @@ class ControllerExtensionExtensionPromotion extends Controller {
 		curl_close($curl);
 
 		if ($response) {
-			return $response;
+			return '';
 		} else {
 			return '';
 		}
