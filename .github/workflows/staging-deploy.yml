@@ -1,0 +1,34 @@
+name: Deploy to STAGING
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: FTP Deploy to STAGING
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /www/staging.stunnerboyone.live/
+          exclude: |
+            .git/
+            .git/**
+            **/.git/
+            **/.git/**
+            .github/
+            .github/**
+            system/**
+            image/**
+            config.php
+            overlord/config.php
+
