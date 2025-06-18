@@ -1,26 +1,29 @@
-name: Deploy OpenCart via FTP
+name: Deploy to STAGING
 
 on:
   push:
     branches:
-      - main
+      - staging
 
 jobs:
-  ftp-deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: FTP Deploy
+      - name: FTP Deploy to STAGING
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /www/stunnerboyone.live/
+          server-dir: /www/staging.stunnerboyone.live/
           exclude: |
-            **/.git*
-            **/.github*
+            .git*
+            .github*
             system/storage/**
+            config.php
+            overlord/config.php
+
