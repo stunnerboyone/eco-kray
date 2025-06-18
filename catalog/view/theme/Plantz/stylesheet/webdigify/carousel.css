@@ -23,6 +23,7 @@
 
 .product-carousel .slider-wrapper {
   display: flex !important;
+	
   gap: 20px;
   position: relative;
   transform: translate3d(0px, 0px, 0px);
