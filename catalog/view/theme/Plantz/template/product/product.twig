@@ -76,20 +76,7 @@
           
           <div class="product-detail-left">
           <h3 class="product-title">{{ heading_title }}</h3>
-           {% if review_status %}
-          <div class="rating-wrapper">
-            {% for i in 1..5 %}
-              {% if rating < i %}
-                <span class="fa fa-stack"><i class="fa fa-star off fa-stack-2x"></i></span>
-              {% else %}
-                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>
-              {% endif %}
-              {% endfor %}
-              <a href="" class="review-count" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">{{ reviews }}</a>  
-              <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;" class="write-review"><i class="fa fa-pencil"></i>{{ text_write }}</a>
-          </div>
-          {% endif %}
-            <div class="description">
+          <div class="description">
         <table class="product-description">
 
             {% if manufacturer %}
