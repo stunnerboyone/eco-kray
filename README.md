@@ -1,77 +1,11 @@
-# OpenCart
+ФГ «Екокрай» вирощує натуральні фрукти, овочі та ягоди на чистих полях Полтавщини. Переробне підприємство розташоване в старовинних Лубнах, його передмісті – в с. Засулля, обабіч чарівних лук річки Сули.
+Висаджено – 20 сортів яблук, 9 сортів груш, 7 сортів сливи, а також персики, черешні та абрикоси, і широкий асортимент ягід – жимолость, суниця садова, малина, ожина, чорна смородина, порічка, аґрус. У 2019 році додали овочі: помідори, огірки, морква, столовий буряк, капуста, гарбузи. Сад та ягідник повністю обладнані системою краплинного зрошення. В садівництві у процесі вирощування культур ми застосовуємо добрива і засоби захисту, дозволені в органічному землеробстві. Наш наступний крок – підтвердження органічного виробництва сертифікацією.
 
-## Overview
+В 2018 році ми встановили обладнання для виготовлення соку прямого віджиму. Якість такого соку, виготовленого на обладнанні австрійського виробника, дуже сподобалась покупцям. Поступово ми почали експериментувати – робити купажі, додавати до яблучного соку інші фрукти, ягоди та овочі. На сьогодні лінійка соків налічує 13 видів. У виробництві нашої продукції ми не використовуємо консерванти, барвники і ароматизатори. Вся наша сировина проходить ретельний лабораторний контроль на відсутність нітратів, радіонуклідів, важких металів і мікотоксинів
+Свіжі, стиглі, щойно зібрані з поля фрукти та ягоди відразу надходять у цех на переробку. Сировину перебирають, перетирають на спеціальній машині італійського виробництва та вичавлюють сік. Головний секрет – зробити все швидко! Свіжий сік проходить через систему фільтрів і подається в пастеризатор, де нагрівається до температури 85 °С і відразу запаковується у скляні пляшки об’ємом 0,3, 0,5, 1 л та 3-літрові пакети типу baginbox. Саме при вказаній температурі досягається мікробна чистота продукту і зберігаються всі смакові властивості плодів та ягід. Секрет якісних соків в сировині, вона повинна бути свіжою, без дефектів і явних пошкоджень, не допускаються недозрілі або перестиглі фрукти. Основою всіх купажів є яблучний сік, до якого у певній пропорції додається сік літньої ягоди. Наша перевага – це власна сировина, її сортові якості незмінні з року в рік. У виробництві соків ми враховуємо сортність яблук. Наприклад, Симиренко та Ліголь – кисло-солодкі, Голден і Джона Голд – солодші. Більшість наших соків – не містять доданого цукру.
 
-OpenCart is a free open source ecommerce platform for online merchants. OpenCart provides a professional and reliable foundation from which to build a successful online store.
+Наступний крок – започаткували сушіння плодів і ягід. Під ТМ «Еко-Край» ми виготовляємо яблучні чіпси, цукати і пастилу. Стабільний попит на ці види продукції спонукав нас розширювати обсяги виробництва сухофруктів та лінійку пастили. За основу для всіх видів пастили беремо яблучне пюре. Пастила вирізняється корисністю, смаковими властивостями та зручністю споживання. Це обумовлено помірною температурою сушки фруктово-ягідної основи. Для пакування пастили і яблучних чіпсів застосовуємо екологічний крафтовий пакет (дой-пак) з віконцем, який зберігає смак, аромат і низьку вологість виробів. Маємо також овочеву пастилу, наприклад томатно-яблучна смакує не гірше в,ялених томатів, при тому не містить жиру.
+Нещодавно започаткована продуктова лінійка авторських натуральних соусів – для справжньої насолоди Ваших смакових рецепторів. Впевнені, що така продукція задовольнить самого вибагливого поціновувача.
 
-## Reporting a bug
 
-Read the instructions below before you create a bug report.
-
- 1. Search the [OpenCart forum](http://forum.opencart.com/viewforum.php?f=191), ask the community if they have seen the bug or know how to fix it.
- 2. Check all open and closed issues on the [GitHub bug tracker](https://github.com/opencart/opencart/issues).
- 3. If your bug is related to the OpenCart core code then please create a bug report on GitHub.
- 4. READ the [changelog for the master branch](https://github.com/opencart/opencart/blob/master/changelog.md)
- 5. Use [Google](http://www.google.com) to search for your issue.
- 6. Make sure that your bug/issue is not related to your hosting environment.
-
-If you are not sure about your issue, it is always best to ask the community on our [bug forum thread](http://forum.opencart.com/viewforum.php?f=191)
-
-**Important!**
-- If your bug report is not related to the core code (such as a 3rd party module or your server configuration) then the issue will be closed without a reason. You must contact the extension developer, use the forum or find a commercial partner to resolve a 3rd party code issue.
-- If you would like to report a serious security bug please PM an OpenCart moderator/administrator on the forum. Please do not report concept/ideas/unproven security flaws - all security reports are taken seriously but you must include the EXACT details steps to reproduce it. Please DO NOT post security flaws in a public location.
-
-## Making a suggestion
-
-Please do not create a bug report if you think something needs improving / adding (such as features or change to code standards etc).
-
-We welcome public suggestions on our [User Voice site](http://opencart.uservoice.com).
-
-## How to contribute
-
-Fork the repository, edit and [submit a pull request](https://github.com/opencart/opencart/wiki/Creating-a-pull-request).
-
-Please be very clear on your commit messages and pull request, empty pull request messages may be rejected without reason.
-
-Your code standards should match the [OpenCart coding standards](https://github.com/opencart/opencart/wiki/Coding-standards). We use an automated code scanner to check for most basic mistakes - if the test fails your pull request will be rejected.
-
-## Versioning
-
-The version is broken down into 4 points e.g 1.2.3.4 We use MAJOR.MINOR.FEATURE.PATCH to describe the version numbers.
-
-A MAJOR is very rare, it would only be considered if the source was effectively re-written or a clean break was desired for other reasons. This increment would likely break most 3rd party modules.
-
-A MINOR is when there are significant changes that affect core structures. This increment would likely break some 3rd party modules.
-
-A FEATURE version is when new extensions or features are added (such as a payment gateway, shipping module etc). Updating a feature version is at a low risk of breaking 3rd party modules.
-
-A PATCH version is when a fix is added, it should be considered safe to update patch versions e.g 1.2.3.4 to 1.2.3.5
-
-## Releases
-
-OpenCart will announce to developers 1 week prior to public release of FEATURE versions, this is to allow for testing of their own modules for compatibility. For bigger releases (ones that contain many core changes, features and fixes) an extended period will be considered following an announced release candidate (RC). Patch versions (which are considered safe to update with) may have a significantly reduced developer release period.
-
-The master branch will always contain an "_rc" postfix of the next intended version. The next "_rc" version may change at any time.
-
-Developer release source code will not change once tagged.
-
-If a bug is found in an announced developer release that is significant (such as a major feature is broken) then the release will be pulled. A patch version will be issued to replace it, depending on the severity of the patch an extended testing period may be announced. If the developer release version was never made public then the preceding patch version tag will be removed.
-
-To receive developer notifications about release information, sign up to the newsletter on the [OpenCart website](http://www.opencart.com) - located in the footer. Then choose the developer news option.
-
-## How to install
-
-Please read the installation instructions included in the repository or download file.
-
-## License
-
-[GNU General Public License version 3 (GPLv3)](https://github.com/opencart/opencart/blob/master/license.txt)
-
-## Links
-
-- [OpenCart homepage](http://www.opencart.com/)
-- [OpenCart forums](http://forum.opencart.com/)
-- [OpenCart blog](http://www.opencart.com/index.php?route=feature/blog)
-- [How to documents](http://docs.opencart.com/)
-- [Newsletter](http://newsletter.opencart.com/h/r/B660EBBE4980C85C)
-- [User Voice suggestions](http://opencart.uservoice.com)
+З метою реалізації політики максимальної якості та безпеки харчових продуктів , ФГ «ЕкоКрай» пройшло сертифікацію ДСТУ ISO 22000:2019. Соки нашого виробництва зайняли перше місце в трьох номінаціях на V Міжнародній виставці «Технології та інновації» 22-23.10.2020, та найбільш стійке визнання ми відчуваємо від наших шанувальників, які радо споживають смачну продукцію ТМ «Еко-Край» завдяки фірмовим магазинам та дистрибуції партнерів. До гармонії здорового життя – разом!
