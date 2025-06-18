@@ -7318,8 +7318,8 @@ h2.price {margin: 0;}
     padding: 10px;
 }
 .col-sm-3.category_img {
-	height: 250px;
-    width: 250px;
+	height: 200px;
+    width: 200px;
     background: #fff8f3;
     display: flex;
     text-align: center;
@@ -10575,7 +10575,7 @@ button.wishlist {
 	margin: 0 0 0 0;
 }
 .category_img img {
-	width: auto;
+	width: 100%;
 }
 .newsletter #txtemail {
 	height: 40px;
