@@ -230,9 +230,6 @@ var cart = {
           // Update cart total
           $("#cart-total").html(json["total"]);
 
-          // Scroll to top
-          $("html, body").animate({ scrollTop: 0 }, "slow");
-
           // Load mini-cart
           $("#cart > ul").load("index.php?route=common/cart/info ul li");
         }
