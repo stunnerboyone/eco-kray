@@ -168,58 +168,6 @@ function refreshCart() {
   });
 }
 
-// var cart = {
-//   add: function(product_id, quantity) {
-//     $.ajax({
-//       url: 'index.php?route=checkout/cart/add',
-//       type: 'post',
-//       data: 'product_id=' + product_id + '&quantity=' + (quantity || 1),
-//       dataType: 'json',
-//       success: function(json) {
-//         if (json['redirect']) {
-//           return location = json['redirect'];
-//         }
-//         if (json['success']) {
-//           // показ повідомлення
-//           $.notify({ message: json['success'] }, { /* … */ });
-//           // повністю оновлюємо контейнер
-//           refreshCart();
-//         }
-//       }
-//     });
-//   },
-//   update: function(key, quantity) {
-//     $.ajax({
-//       url: 'index.php?route=checkout/cart/edit',
-//       type: 'post',
-//       data: 'key=' + key + '&quantity=' + (quantity || 1),
-//       dataType: 'json',
-//       success: function(json) {
-//         if (['checkout/cart','checkout/checkout'].includes(getURLVar('route'))) {
-//           location = 'index.php?route=checkout/cart';
-//         } else {
-//           refreshCart();
-//         }
-//       }
-//     });
-//   },
-//   remove: function(key) {
-//     $.ajax({
-//       url: 'index.php?route=checkout/cart/remove',
-//       type: 'post',
-//       data: 'key=' + key,
-//       dataType: 'json',
-//       success: function(json) {
-//         if (['checkout/cart','checkout/checkout'].includes(getURLVar('route'))) {
-//           location = 'index.php?route=checkout/cart';
-//         } else {
-//           refreshCart();
-//         }
-//       }
-//     });
-//   }
-// };
-
 var voucher = {
   add: function () {},
   remove: function (key) {
