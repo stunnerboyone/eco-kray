@@ -2,6 +2,8 @@
 class ControllerProductCategory extends Controller {
 	public function index() {
 		$this->load->language('product/category');
+		$this->document->addScript('catalog/view/javascript/simplecheckout.js');
+
 
 		$this->load->model('catalog/category');
 
