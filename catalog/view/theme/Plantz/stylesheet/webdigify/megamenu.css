@@ -19,10 +19,17 @@
 
 @media (max-width: 991px) {
   .col-sm-4.header-logo {
+    height:;
     margin-left: 40px;
   }
   .container-fluid {
     padding-inline: 40px;
+  }
+  .header-logo img {
+    display: inline-block;
+    max-height: 55px;
+    max-width: 127.17px;
+    margin-inline: auto;
   }
 }
 
@@ -40,11 +47,6 @@
     display: inline-block;
     width: 100%;
     align-items: center;
-    margin-inline: auto;
-  }
-
-  .header-logo img {
-    display: inline-block;
     margin-inline: auto;
   }
   .container-fluid {
