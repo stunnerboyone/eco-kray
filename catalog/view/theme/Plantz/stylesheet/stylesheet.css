@@ -1254,15 +1254,18 @@ span.content a.contact-info {
     padding: 0;
     margin: 0;
   }
+  #logo {
+    display: flex;
+    margin-left: 40px;
+  }
 }
 
 /*************ENd Contact Link***************/
 /* logo */
 .header-logo {
   float: left;
-  display: flex;
-  margin-left: 40px;
 }
+
 .header-cart {
   float: left;
 }
