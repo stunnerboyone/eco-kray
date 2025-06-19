@@ -1260,6 +1260,8 @@ span.content a.contact-info {
 /* logo */
 .header-logo {
   float: left;
+}
+#logo {
   display: flex;
   margin-left: 40px;
 }
