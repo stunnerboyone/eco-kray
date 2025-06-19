@@ -1243,9 +1243,6 @@ span.content a.contact-info {
   background: url(../image/webdigify/call-icon.png) no-repeat left center;
 }
 @media (max-width: 991px) {
-  .nav2 {
-    display: none !important;
-  }
   .header_top .header_right {
     display: none;
   }
