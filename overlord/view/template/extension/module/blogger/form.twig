@@ -99,7 +99,7 @@
                         >
                           {{ blogger_description[language['language_id']] is defined
                             ? blogger_description[language['language_id']]['description']
-                            : '' }}гніда
+                            : '' }}
                         </textarea>
                         {% if error_description[language['language_id']] is defined %}
                           <div class="text-danger">
@@ -193,8 +193,42 @@
 <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
 <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
 <script type="text/javascript">
-  <!-- 
+  <!--  
 $('#language a:first').tab('show');
-// -->
+
+$('textarea[data-toggle=\'summernote\']').each(function() {
+  var element = this;
+  var height = $(element).attr('data-height') ? $(element).attr('data-height') : 300;
+
+  $(element).summernote({
+    height: height,
+    disableDragAndDrop: true,
+    emptyPara: '',
+    codemirror: { // codemirror options
+      mode: 'text/html',
+      htmlMode: true,
+      lineNumbers: true,
+      theme: 'monokai'
+    },
+    toolbar: [
+      ['style', ['style']],
+      ['font', ['bold', 'italic', 'underline', 'clear']],
+      ['fontname', ['fontname']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['table', ['table']],
+      ['insert', ['link', 'image', 'video']],
+      ['view', ['fullscreen', 'codeview', 'help']]
+    ],
+    callbacks: {
+      onImageUpload: function(files) {
+        for (var i = 0; i < files.length; i++) {
+          sendFile(files[i], element);
+        }
+      }
+    }
+  });
+});
+//  -->
 </script>
 {{ footer }}
