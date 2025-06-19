@@ -78,48 +78,4 @@
         </div>
     </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.innerWidth <= 991) {
-      var nav2 = document.querySelector('.nav2');
-      if (nav2) {
-        var clone = nav2.cloneNode(true);
-        clone.classList.add('nav2-mobile');
-
-        var menu = document.querySelector('.ul-top-items');
-        if (menu) {
-          var li = document.createElement('li');
-          li.classList.add('li-top-item');
-          li.appendChild(clone);
-          menu.appendChild(li);
-        }
-
-        // приховати оригінал
-        nav2.style.display = 'none';
-      }
-    }
-  });
-</script>
-<style>
-@media (max-width: 991px) {
-  .nav2-mobile {
-    display: block;
-    padding: 15px;
-    border-top: 1px solid #ddd;
-  }
-
-  .nav2-mobile .header_cart,
-  .nav2-mobile .account,
-  .nav2-mobile .header_search {
-    margin-bottom: 15px;
-  }
-
-  .nav2-mobile .cart-dropdown-menu,
-  .nav2-mobile .dropdown-menu {
-    display: block !important; /* розкрити меню без hover */
-    position: static;
-    box-shadow: none;
-  }
-}
-</style>
 {{ footer }}
