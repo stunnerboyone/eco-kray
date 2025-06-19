@@ -193,4 +193,10 @@ $(document).ready(function(){
       cart.classList.toggle("open");
     });
   });
+
+  $(document).ready(function () {
+  if (typeof Simplecheckout === 'function' && Simplecheckout.init) {
+    Simplecheckout.init();
+  }
+});
 </script>
