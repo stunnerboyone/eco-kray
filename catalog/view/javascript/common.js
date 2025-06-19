@@ -198,6 +198,62 @@ var voucher = {
   },
 };
 
+var cart = {
+  add: function (product_id, quantity) {
+    $.ajax({
+      url: "index.php?route=checkout/cart/add",
+      type: "post",
+      data: "product_id=" + product_id + "&quantity=" + (typeof quantity != "undefined" ? quantity : 1),
+      dataType: "json",
+      beforeSend: function () {
+        $("#cart > button").button("loading");
+      },
+      complete: function () {
+        $("#cart > button").button("reset");
+      },
+      success: function (json) {
+        $(".alert-dismissible").remove();
+
+        if (json["redirect"]) {
+          location = json["redirect"];
+        }
+
+        if (json["success"]) {
+          $("#content")
+            .parent()
+            .before(
+              '<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' +
+                json["success"] +
+                ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>',
+            );
+
+          // Update cart total
+          $("#cart-total").html(json["total"]);
+
+          // Scroll to top
+          $("html, body").animate({ scrollTop: 0 }, "slow");
+
+          // Load mini-cart
+          $("#cart > ul").load("index.php?route=common/cart/info ul li");
+        }
+      },
+    });
+  },
+
+  remove: function (key) {
+    $.ajax({
+      url: "index.php?route=checkout/cart/remove",
+      type: "post",
+      data: "key=" + key,
+      dataType: "json",
+      success: function (json) {
+        $("#cart-total").html(json["total"]);
+        $("#cart > ul").load("index.php?route=common/cart/info ul li");
+      },
+    });
+  },
+};
+
 var wishlist = {
   add: function (product_id) {
     $.ajax({
