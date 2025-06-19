@@ -259,28 +259,6 @@
         </div>
     </div>
 {% if not ajax and not popup and not as_module %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const refreshHeaderCart = () => {
-      $('#cart').load('index.php?route=common/cart/info #cart > *');
-    };
-
-    // оновлювати при кліку на видалення товару
-    $(document).on('click', '[data-onclick="removeProduct"]', function () {
-      setTimeout(refreshHeaderCart, 500);
-    });
-
-    // оновлювати при зміні кількості (через + або -)
-    $(document).on('click', '[data-onclick="increaseProductQuantity"], [data-onclick="decreaseProductQuantity"]', function () {
-      setTimeout(refreshHeaderCart, 700);
-    });
-
-    // при ручному редагуванні кількості
-    $(document).on('change', '.simple-input-count', function () {
-      setTimeout(refreshHeaderCart, 700);
-    });
-  });
-</script>
 </div>
 {% include simple_footer %}
 {% endif %}
