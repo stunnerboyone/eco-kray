@@ -71,6 +71,8 @@
 <script src="catalog/view/javascript/lightbox/lightbox-2.6.min.js"></script>
 <script src="catalog/view/javascript/webdigify/inview.js"></script>
 <script src="catalog/view/javascript/webdigify/megamenu.js"></script>
+<script src="catalog/view/javascript/simplecheckout.js"></script>
+
 
 
 <!-- ======= Quick view JS ========= -->
@@ -131,18 +133,14 @@ $(document).ready(function(){
   <div class="container-fluid">
 <div class="row">
   <div class="col-sm-4 header-logo">
-    <div style="color:red; width: 160px; height: 160px">DEBUG HEADER</div>
-    <div id="logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="eco-kray-logo" /></a>{% else %}
+    <div id="logo" class="main-logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" /></a>{% else %}
       <h1><a href="{{ home }}">{{ name }}</a></h1>
       {% endif %}
     </div>
   </div>
-  <div style="color: red">DEBUG HEADER</div>  
-     
-   
+
  <div class="headertop">
   {{ headertop }}
-  <p>hui</p>
   </div> 
 
   <div class="nav2">   
@@ -195,4 +193,10 @@ $(document).ready(function(){
       cart.classList.toggle("open");
     });
   });
+
+  $(document).ready(function () {
+  if (typeof Simplecheckout === 'function' && Simplecheckout.init) {
+    Simplecheckout.init();
+  }
+});
 </script>
