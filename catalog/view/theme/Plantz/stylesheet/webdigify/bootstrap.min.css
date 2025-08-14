@@ -30,19 +30,6 @@ body {
 	margin-left: 20px;
 }
 
-.product-thumb .image {
-  width: 285px;
-  height: 285px;
-  overflow: hidden;
-}
-
-.product-thumb .image img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  transform: scale(1.2);
-}
-
 article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary {
     display: block;
 }
