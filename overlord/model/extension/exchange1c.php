@@ -5653,298 +5653,265 @@ class ModelExtensionExchange1c extends Model {
 	 */
 	private function parseOffers($xml) {
 
-		$this->log("~Начало разбора предложений", 0);
+    $this->log("~Начало разбора предложений", 0);
 
-		if (!$xml->Предложение) {
-			$this->log("parseOffers(): Пустое предложение, пропущено");
-			return 0;
-		}
+    if (!$xml->Предложение) {
+        $this->log("parseOffers(): Пустое предложение, пропущено");
+        return 0;
+    }
 
-		$count_offers = count($xml->Предложение);
-		$this->statStart('offers');
-		$this->log("Предложений в файле: " . $count_offers);
-		$this->STAT['offers_num'] = count($xml->Предложение);
+    $count_offers = count($xml->Предложение);
+    $this->statStart('offers');
+    $this->log("Предложений в файле: " . $count_offers);
+    $this->STAT['offers_num'] = $count_offers;
 
-		$num_offer = 0;
+    $num_offer = 0;
 
-		// Перебираем все предложения
-		foreach ($xml->Предложение as $offer) {
+    foreach ($xml->Предложение as $offer) {
 
-			$this->log("~ПРЕДЛОЖЕНИЕ");
+        $this->log("~ПРЕДЛОЖЕНИЕ");
 
-			// Получаем Ид товара и характеристики
-			$guid = explode("#", (string)$offer->Ид);
+        // GUID товара/характеристики
+        $guid = explode("#", (string)$offer->Ид);
 
-			// Массив для хранения данных об одном предложении товара
-			$data = array(
-				'product_guid'	=> $guid[0],
-				'feature_guid'	=> isset($guid[1]) ? $guid[1] : ''
-			);
+        $data = array(
+            'product_guid' => $guid[0],
+            'feature_guid' => isset($guid[1]) ? $guid[1] : ''
+        );
 
-			// Есть ли связь Ид с товаром в таблице product_to_1c
-			// Получим старые данные товара
-			// Также получаем данные о всех характеристиках товара с остатками и ценами
-			// остатки нужны для расчета общего остатка, а цены для определения основной цены
-			$old_product = $this->getProductByGUID($data['product_guid'], $data['feature_guid']);
-			if ($this->ERROR) return $num_offer;
+        // Получим товар по GUID
+        $old_product = $this->getProductByGUID($data['product_guid'], $data['feature_guid']);
+        if ($this->ERROR) return $num_offer;
 
-			// Если товар не найден
-			if ($old_product == false) {
-				if ($this->config->get('exchange1c_product_not_found_stop_error')) {
-					$this->errorLog(2300, $data['product_guid']);
-					return $num_offer;
-				} else {
-					$this->log("Товар не найден по Ид " . $data['product_guid'] . ", предложение пропущено");
-					continue;
-				}
-			}
+        if ($old_product == false) {
+            if ($this->config->get('exchange1c_product_not_found_stop_error')) {
+                $this->errorLog(2300, $data['product_guid']);
+                return $num_offer;
+            } else {
+                $this->log("Товар не найден по Ид " . $data['product_guid'] . ", предложение пропущено");
+                continue;
+            }
+        }
 
-			$product_id = $old_product['product_id'];
+        $product_id = $old_product['product_id'];
 
-			// Если товар помечен на удаление, отключаем его
-			$data['delete'] = 0;
-			if ($offer->ПометкаУдаления) {
-				if ((string)$offer->ПометкаУдаления == 'true') {
-					$data['delete'] = 1;
-				}
-			} elseif ($offer['Статус'] == "Удален") {
-				// 1С:УНФ
-				$this->log("У предложения Статус = Удален");
-				$data['delete'] = 1;
-			} else {
-				$data['delete'] = $old_product['delete'];
-			}
-			if ($data['delete']) {
-				$this->log("Предложение пропущено, так как помечено на удаление");
-				if ($old_product['status'] == 1) {
-					$data['status'] = 0;
-					// Обновляем товар
-					$update = $this->updateOffers($product_id, $data, $old_product);
-					if ($this->ERROR) return $num_offer;
-				}
-				continue;
-			}
+        // Пометка на удаление
+        $data['delete'] = 0;
+        if ($offer->ПометкаУдаления) {
+            if ((string)$offer->ПометкаУдаления == 'true') $data['delete'] = 1;
+        } elseif ($offer['Статус'] == "Удален") {
+            $this->log("У предложения Статус = Удален");
+            $data['delete'] = 1;
+        } else {
+            $data['delete'] = $old_product['delete'];
+        }
+        if ($data['delete']) {
+            $this->log("Предложение пропущено, так как помечено на удаление");
+            if ($old_product['status'] == 1) {
+                $data['status'] = 0;
+                $update = $this->updateOffers($product_id, $data, $old_product);
+                if ($this->ERROR) return $num_offer;
+            }
+            continue;
+        }
 
-			$data['status'] = 1;
+        $data['status'] = 1;
 
-			$this->log("Предложение Ид: " . $data['product_guid'] . ", product_id = " . $product_id, 2);
+        $this->log("Предложение Ид: " . $data['product_guid'] . ", product_id = " . $product_id, 2);
 
-			// Штрихкод
-			if ($offer->Штрихкод) {
-				$data['ean'] = trim((string)$offer->Штрихкод);
-			}
+        // Штрихкод
+        if ($offer->Штрихкод) {
+            $data['ean'] = trim((string)$offer->Штрихкод);
+        }
 
-			// Артикул
-			if ($offer->Артикул) {
-				$data['sku'] = htmlspecialchars(trim((string)$offer->Артикул));
-			}
+        // Артикул
+        if ($offer->Артикул) {
+            $data['sku'] = htmlspecialchars(trim((string)$offer->Артикул));
+        }
 
-			// ОСТАТКИ
-			if ($this->config->get('exchange1c_export_system') == '1c_ut10.3') {
-				$data['quantity'] = 0;
-			}
-			if ($offer->Остатки || $offer->Количество || $offer->Склад) {
-				$data['quantity'] = $this->parseQuantity($offer, $data);
-				if ($this->ERROR) return $num_offer;
-			}
+        // Остатки
+        if ($this->config->get('exchange1c_export_system') == '1c_ut10.3') {
+            $data['quantity'] = 0;
+        }
+        if ($offer->Остатки || $offer->Количество || $offer->Склад) {
+            $data['quantity'] = $this->parseQuantity($offer, $data);
+            if ($this->ERROR) return $num_offer;
+        } else {
+            // на всякий випадок
+            if (!isset($data['quantity'])) $data['quantity'] = 0;
+        }
 
-			// ЦЕНЫ
-			if ($offer->Цены && $this->config->get('exchange1c_product_price_no_import') != 1) {
-			    $data['price'] = $this->parsePrices($offer->Цены, $product_id);
-			    if ($this->ERROR) return $num_offer;
-			
-			    if ($data['price'] == 0) {
-			        // ничего не пришло — оставляем старую
-			        $data['price'] = $old_product['price'];
-			    } else {
-			        // пришла валидная базовая цена — сразу пишем в oc_product.price
-			        $this->setProductBasePrice($product_id, $data['price']);
-			    }
-			}
+        // Цены (базовая)
+        if ($offer->Цены && $this->config->get('exchange1c_product_price_no_import') != 1) {
+            $data['price'] = $this->parsePrices($offer->Цены, $product_id);
+            if ($this->ERROR) return $num_offer;
 
-			$this->log($data, 2);
+            if ($data['price'] == 0) {
+                // нічого не прийшло — лишаємо стару
+                $data['price'] = $old_product['price'];
+            } else {
+                // прийшла валідна базова — пишемо в товар
+                $this->setProductBasePrice($product_id, $data['price']);
+                $this->log("BASE PRICE (plain): pid={$product_id}, price={$data['price']}");
+            }
+        }
 
-			// ЭТО ХАРАКТЕРИСТИКА
-			if ($data['feature_guid']) {
-				$this->log("Характеристика Ид: " . $data['feature_guid'], 2);
+        $this->log($data, 2);
 
-				// Если включено "Не загружать пустые"
-				if ($this->config->get('exchange1c_product_options_empty_ignore')) {
-					if (!$data['quantity']) {
-						continue;
-					}
-				}
+        // Характеристика
+        if ($data['feature_guid']) {
 
-				// Название характеристики из разницы наименований без скобок
-				// В зависимости он настроек наименование может быть из других полей! ДОРАБОТАТЬ
-				$data['feature_name'] = htmlspecialchars(trim((string)$offer->Наименование));
-				$data['feature_name'] = mb_substr($data['feature_name'], mb_strlen($old_product['name'])+2, -1);
-				$this->log($data['feature_name']);
+            $this->log("Характеристика Ид: " . $data['feature_guid'], 2);
 
-				$product_feature_id = $this->setProductFeature($product_id, $data);
+            if ($this->config->get('exchange1c_product_options_empty_ignore') && !$data['quantity']) {
+                continue;
+            }
 
-				if ($offer->ХарактеристикиТовара) {
+            // Имя характеристики (із назви пропозиції мінус ім’я товару)
+            $data['feature_name'] = htmlspecialchars(trim((string)$offer->Наименование));
+            $data['feature_name'] = mb_substr($data['feature_name'], mb_strlen($old_product['name']) + 2, -1);
+            $this->log($data['feature_name']);
 
-					// Читаем опции из файла
-					$data_options = $this->parseProductOptions($offer->ХарактеристикиТовара);
-					if ($this->ERROR) return $num_offer;
+            $product_feature_id = $this->setProductFeature($product_id, $data);
 
-					// Картинка для характеристики, берется только первая
-					if ($offer->Картинка && $this->config->get('exchange1c_option_image_import') != 1) {
-						$feature_image = (string)$offer->Картинка;
-					} else {
-						$feature_image = '';
-					}
+            if ($offer->ХарактеристикиТовара) {
+                $data_options = $this->parseProductOptions($offer->ХарактеристикиТовара);
+                if ($this->ERROR) return $num_offer;
 
-					// Сопоставим option_id и option_value_id значеням
-					$this->setProductOptions($product_id, $data_options, $data['quantity'], $feature_image, $product_feature_id);
-					if ($this->ERROR) return $num_offer;
+                $feature_image = ($offer->Картинка && $this->config->get('exchange1c_option_image_import') != 1)
+                               ? (string)$offer->Картинка : '';
 
-				}
+                $this->setProductOptions($product_id, $data_options, $data['quantity'], $feature_image, $product_feature_id);
+                if ($this->ERROR) return $num_offer;
+            }
 
-				// Необходимо рассчитать общий остаток по всем характеристикам
-				$data_quantity_price = $this->getProductFeaturesQuantityPrice($product_id);
-				$data['price_max'] = $data_quantity_price['price_max'];
-				$data_price = $data_quantity_price['price'];
-				// Получим массив остатков всех характеристик
-				$data_quantity = $data_quantity_price['quantity'];
+            // Перерахунок загальних залишків/цін
+            $data_quantity_price = $this->getProductFeaturesQuantityPrice($product_id);
+            $data['price_max'] = $data_quantity_price['price_max'];
+            $data_price        = $data_quantity_price['price'];
+            $data_quantity     = $data_quantity_price['quantity'];
 
-				// Остаток текущей характеристики
-				$data_quantity[$product_feature_id] = $data['quantity'];
-				// Если характеристика, остаток считаем по всем характеристикам
-				$data['quantity'] = $data_quantity_price['quantity_total'];
+            $data_quantity[$product_feature_id] = $data['quantity'];
+            $data['quantity'] = $data_quantity_price['quantity_total'];
 
-				// Не показывать товар если цены нулевые
-				if ($this->config->get('exchange1c_product_disable_if_price_zero') == 1 && $data['price_max'] == 0) {
-					$this->log("Товар отключен так как цена нулевая");
-					$data['status'] = 0;
-					$update = $this->updateOffers($product_id, $data, $old_product);
-					if ($this->ERROR) return $num_offer;
-					continue;
-				}
+            // Якщо усі ціни по нулям — вимикаємо
+            if ($this->config->get('exchange1c_product_disable_if_price_zero') == 1 && $data['price_max'] == 0) {
+                $this->log("Товар отключен так как цена нулевая");
+                $data['status'] = 0;
+                $update = $this->updateOffers($product_id, $data, $old_product);
+                if ($this->ERROR) return $num_offer;
+                continue;
+            }
 
-				if ($this->config->get('exchange1c_product_price_no_import') != 1) {
+            if ($this->config->get('exchange1c_product_price_no_import') != 1) {
+                // База за замовчуванням — стара
+                if ($old_product['price']) $data['price'] = $old_product['price'];
 
-					// Необходимо рассчитать основную цену товара и пересчитать разницу цен опций
-					if ($old_product['price']) {
-						$data['price'] = $old_product['price'];
-					}
+                // Вибір базової ціни за режимом
+                if ($this->config->get('exchange1c_feature_price_mode') == 'mode2') {
+                    $data['price'] = $data_quantity_price['price_min'];
+                } elseif ($this->config->get('exchange1c_feature_price_mode') == 'mode3') {
+                    if ($data['price'] == 0) {
+                        $data['price'] = $data_quantity_price['price_min'];
+                    }
+                }
 
-					// Расчет цен опций
-					if ($this->config->get('exchange1c_feature_price_mode') == 'mode2') {
-						// Установим в качестве основной цены предложение с минимальной ценой
-						$data['price'] = $data_quantity_price['price_min'];
-					} elseif ($this->config->get('exchange1c_feature_price_mode') == 'mode3') {
-						// Установим в качестве основной цены предложение с минимальной ценой только если основная цена не установлена
-						if ($data['price'] == 0) {
-							$data['price'] = $data_quantity_price['price_min'];
-						}
-					}
+                // Фактично записуємо базову ціну товару
+                if ((float)$data['price'] > 0) {
+                    $this->setProductBasePrice($product_id, $data['price']);
+                    $this->log("BASE PRICE (feature): pid={$product_id}, price={$data['price']}");
+                }
 
-					// ✅ Записуємо фінальну базову ціну в товар
-					if ($this->config->get('exchange1c_product_price_no_import') != 1 && (float)$data['price'] > 0) {
-					    $this->setProductBasePrice($product_id, $data['price']);
-					    $this->log("BASE PRICE (feature): pid={$product_id}, price={$data['price']}");
-					}
+                // Перерахунок націнок опцій
+                foreach ($data_price as $feature_price) {
+                    if (count($feature_price) > 1) {
+                        $this->log("ВНИМАНИЕ! Опций в товаре = " . count($feature_price) . ", цены/остатки у опций будут по последнему предложению! Нужен модуль связанных опций!");
+                    }
+                    foreach ($feature_price as $feature_value) {
+                        $option_price = $feature_value['price'] - $data['price'];
+                        $price_prefix = ($option_price >= 0) ? '+' : '-';
+                        $this->query("UPDATE `" . DB_PREFIX . "product_option_value`
+                                      SET `price` = '" . $option_price . "',
+                                          `price_prefix` = '" . $price_prefix . "'
+                                      WHERE `product_option_value_id` = " . $feature_value['product_option_value_id']);
+                    }
+                }
+            }
 
+        } else {
+            $data['feature_guid'] = '';
+        }
 
-					// Пересчитываем все цены у существующих опций
-					foreach ($data_price as $feature_price) {
-						if (count($feature_price) > 1) {
-							$this->log("ВНИМАНИЕ! Опций в товаре = " . count($feature_price) . ", цены и остатки у опций будут по последнему предложению! Необходим модуль связанные опции!");
-						}
-						foreach ($feature_price as $feature_value) {
-							$option_price = $feature_value['price'] - $data['price'];
-							$price_prefix = ($option_price >= 0) ? '+' : '-';
-							$this->query("UPDATE `" . DB_PREFIX . "product_option_value` SET `price` = '" . $option_price . "', `price_prefix` = '" . $price_prefix . "' WHERE `product_option_value_id` = " . $feature_value['product_option_value_id']);
+        // Статус на складе (stock_status_id)
+        if ($data['quantity']) {
+            if ((int)$this->config->get('exchange1c_product_stock_status_on')) {
+                $data['stock_status_id'] = (int)$this->config->get('exchange1c_product_stock_status_on');
+            }
+        } else {
+            if ((int)$this->config->get('exchange1c_product_stock_status_off')) {
+                $data['stock_status_id'] = (int)$this->config->get('exchange1c_product_stock_status_off');
+            }
+        }
 
-						} // foreach
-					} // foreach
-				} // if
+        // === Автовимк/вмик за кількістю (ГОЛОВНЕ) ===
+        $data['status'] = ((float)$data['quantity'] > 0) ? 1 : 0;
+        $this->log("Auto status by qty: qty=".(float)$data['quantity']." => status=".$data['status']);
 
-			} else {
-				$data['feature_guid'] = '';
-			}
+        // Оновлюємо товар як зазвичай
+        $update = $this->updateOffers($product_id, $data, $old_product);
+        if ($this->ERROR) return $num_offer;
 
-			// Статус на складе при наличии и отсутствии
-			if ($data['quantity']) {
-				if ((int)$this->config->get('exchange1c_product_stock_status_on')) {
-					$data['stock_status_id'] = (int)$this->config->get('exchange1c_product_stock_status_on');
-				}
-			} else {
-				if ((int)$this->config->get('exchange1c_product_stock_status_off')) {
-					$data['stock_status_id'] = (int)$this->config->get('exchange1c_product_stock_status_off');
-				}
-			}
+        // Закріплюємо статус напряму в таблиці product (щоб нічого не перекинуло)
+        $this->query("UPDATE `" . DB_PREFIX . "product`
+                      SET `status` = " . (int)$data['status'] . "
+                      WHERE `product_id` = " . (int)$product_id);
 
-			// ✅ Жорстке приховування товарів без залишку
-			if ((float)$data['quantity'] <= 0) {
-			    // вимикаємо товар повністю
-			    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `product_id` = " . (int)$product_id);
-			    $this->log("Товар вимкнено (quantity=0), pid={$product_id}");
-			} else {
-			    // вмикаємо назад, якщо знову з’явився залишок
-			    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 1 WHERE `product_id` = " . (int)$product_id);
-			    $this->log("Товар увімкнено (quantity>0), pid={$product_id}, qty=" . (float)$data['quantity']);
-			}
+        // Чистка порожніх опцій
+        $query = $this->query("SELECT `product_option_id` FROM `" . DB_PREFIX . "product_option` WHERE `product_id` = " . $product_id);
+        if ($query->num_rows) {
+            foreach ($query->rows as $row) {
+                $query_value = $this->query("SELECT `product_option_value_id` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $row['product_option_id']);
+                if (!$query_value->num_rows) {
+                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $row['product_option_id']);
+                    $this->log("Удалена пустая опция в товаре, product_option_id = " . $row['product_option_id']);
+                }
+            }
+        }
 
+        unset($data);
+        $num_offer++;
 
-			// Обновляем товар
-			$update = $this->updateOffers($product_id, $data, $old_product);
-			if ($this->ERROR) return $num_offer;
+    } // foreach
 
-			// Удалим пустые опции у товара
-			$query = $this->query("SELECT `product_option_id` FROM `" . DB_PREFIX . "product_option` WHERE `product_id` = " . $product_id);
-			if ($query->num_rows) {
-				foreach ($query->rows as $row) {
-					$query_value = $this->query("SELECT `product_option_value_id` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $row['product_option_id']);
-					if (!$query_value->num_rows) {
-						// нет значений, тогда удалим опцию
-						$this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $row['product_option_id']);
-						$this->log("Удалены пустая опциия в товаре, product_option_id = " . $row['product_option_id']);
-					}
-				}
-			}
+    // После загрузки — удалим неиспользуемые опции
+    $query = $this->query("SELECT `product_option_id`, `product_option_value_id` FROM `" . DB_PREFIX . "product_feature_value` WHERE `status` = 0");
+    if ($query->num_rows) {
+        $delete_options = array();
+        foreach ($query->rows as $feature_value) {
+            $delete_options[$feature_value['product_option_value_id']] = $feature_value['product_option_id'];
+        }
+        $this->log("К удалению опции:");
+        $this->log($delete_options);
+        foreach ($delete_options as $product_option_value_id => $product_option_id) {
+            if ($product_option_value_id == 0) {
+                $this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = 0");
+            } else {
+                $this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = " . $product_option_value_id);
+                $this->query("DELETE FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_value_id` = " . $product_option_value_id);
+                $query_count_options = $this->query("SELECT count(*) as `count` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $product_option_id);
+                if ($query_count_options->row['count'] == 0) {
+                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $product_option_id);
+                }
+            }
+        }
+    }
 
-			unset($data);
-			$num_offer++;
+    $this->logStat('offers');
+    $this->log("Загружено предложений " . $num_offer . " из " . $count_offers, 0);
 
-		} // foreach()
-
-		// После загрузки всех предложений удалим неиспользуемые опции
-		$query = $this->query("SELECT `product_option_id`, `product_option_value_id` FROM `" . DB_PREFIX . "product_feature_value` WHERE `status` = 0");
-		if ($query->num_rows) {
-			$delete_options = array();
-			foreach ($query->rows as $feature_value) {
-				$delete_options[$feature_value['product_option_value_id']] = $feature_value['product_option_id'];
-			}
-			$this->log("К удалению опции:");
-			$this->log($delete_options);
-			foreach ($delete_options as $product_option_value_id => $product_option_id) {
-				if ($product_option_value_id == 0) {
-					$this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = 0");
-				} else {
-					$this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = " . $product_option_value_id);
-					$this->query("DELETE FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_value_id` = " . $product_option_value_id);
-
-					// После удаления значений, если опция пустая удалим опцию
-					$query_count_options = $this->query("SELECT count(*) as `count` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $product_option_id);
-					if ($query_count_options->row['count'] == 0) {
-						$this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $product_option_id);
-					}
-				}
-			}
-
-
-		}
-
-		$this->logStat('offers');
-
-		$this->log("Загружено предложений " . $num_offer . " из " . $count_offers, 0);
-
-		return $num_offer;
-
+    return $num_offer;
 	} // parseOffers()
+
 
 
 	/**
