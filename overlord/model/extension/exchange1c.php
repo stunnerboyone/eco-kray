@@ -5906,6 +5906,12 @@ class ModelExtensionExchange1c extends Model {
         }
     }
 
+		// === ЖОРСТКА СИНХРОНІЗАЦІЯ: статус = (quantity > 0) ===
+		$this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `quantity` <= 0");
+		$this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 1 WHERE `quantity` > 0");
+		$this->log("Sync status with qty: done");
+
+
     $this->logStat('offers');
     $this->log("Загружено предложений " . $num_offer . " из " . $count_offers, 0);
 
