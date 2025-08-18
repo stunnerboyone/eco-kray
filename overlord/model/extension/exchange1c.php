@@ -5877,6 +5877,18 @@ class ModelExtensionExchange1c extends Model {
 				}
 			}
 
+			// ✅ Жорстке приховування товарів без залишку
+			if ((float)$data['quantity'] <= 0) {
+			    // вимикаємо товар повністю
+			    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `product_id` = " . (int)$product_id);
+			    $this->log("Товар вимкнено (quantity=0), pid={$product_id}");
+			} else {
+			    // вмикаємо назад, якщо знову з’явився залишок
+			    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 1 WHERE `product_id` = " . (int)$product_id);
+			    $this->log("Товар увімкнено (quantity>0), pid={$product_id}, qty=" . (float)$data['quantity']);
+			}
+
+
 			// Обновляем товар
 			$update = $this->updateOffers($product_id, $data, $old_product);
 			if ($this->ERROR) return $num_offer;
