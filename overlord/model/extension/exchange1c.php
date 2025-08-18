@@ -5625,6 +5625,26 @@ class ModelExtensionExchange1c extends Model {
 
 	} // setProductOptions()
 
+	private function setProductBasePrice($product_id, $price) {
+	    $pid   = (int)$product_id;
+	    $price = (float)$price;
+
+	    if ($pid <= 0) {
+	        $this->log("setProductBasePrice: wrong product_id={$pid}", 1);
+	        return;
+	    }
+
+	    $now = isset($this->NOW) ? $this->NOW : date('Y-m-d');
+
+	    $this->log("BASE PRICE: pid={$pid}, price={$price}");
+	    $this->query(
+	        "UPDATE `" . DB_PREFIX . "product`
+	         SET `price` = '" . $price . "',
+	             `date_modified` = '" . $now . "'
+	         WHERE `product_id` = " . $pid
+	    );
+	}
+
 
 	/**
 	 * ver 25
@@ -5730,11 +5750,16 @@ class ModelExtensionExchange1c extends Model {
 
 			// ЦЕНЫ
 			if ($offer->Цены && $this->config->get('exchange1c_product_price_no_import') != 1) {
-				$data['price'] = $this->parsePrices($offer->Цены, $product_id);
-				if ($this->ERROR) return $num_offer;
-				if ($data['price'] == 0) {
-					$data['price'] = $old_product['price'];
-				}
+			    $data['price'] = $this->parsePrices($offer->Цены, $product_id);
+			    if ($this->ERROR) return $num_offer;
+			
+			    if ($data['price'] == 0) {
+			        // ничего не пришло — оставляем старую
+			        $data['price'] = $old_product['price'];
+			    } else {
+			        // пришла валидная базовая цена — сразу пишем в oc_product.price
+			        $this->setProductBasePrice($product_id, $data['price']);
+			    }
 			}
 
 			$this->log($data, 2);
@@ -5815,6 +5840,13 @@ class ModelExtensionExchange1c extends Model {
 							$data['price'] = $data_quantity_price['price_min'];
 						}
 					}
+
+					// ✅ Записуємо фінальну базову ціну в товар
+					if ($this->config->get('exchange1c_product_price_no_import') != 1 && (float)$data['price'] > 0) {
+					    $this->setProductBasePrice($product_id, $data['price']);
+					    $this->log("BASE PRICE (feature): pid={$product_id}, price={$data['price']}");
+					}
+
 
 					// Пересчитываем все цены у существующих опций
 					foreach ($data_price as $feature_price) {
