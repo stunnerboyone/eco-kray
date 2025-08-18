@@ -5652,7 +5652,7 @@ class ModelExtensionExchange1c extends Model {
 	 * Разбор предложений
 	 */
 	private function parseOffers($xml) {
-
+	
     $this->log("~Начало разбора предложений", 0);
 
     if (!$xml->Предложение) {
@@ -5679,7 +5679,7 @@ class ModelExtensionExchange1c extends Model {
             'feature_guid' => isset($guid[1]) ? $guid[1] : ''
         );
 
-        // Получим товар по GUID
+        // Получим товар по GUID (+ данные по фичам)
         $old_product = $this->getProductByGUID($data['product_guid'], $data['feature_guid']);
         if ($this->ERROR) return $num_offer;
 
@@ -5705,6 +5705,7 @@ class ModelExtensionExchange1c extends Model {
         } else {
             $data['delete'] = $old_product['delete'];
         }
+
         if ($data['delete']) {
             $this->log("Предложение пропущено, так как помечено на удаление");
             if ($old_product['status'] == 1) {
@@ -5737,7 +5738,6 @@ class ModelExtensionExchange1c extends Model {
             $data['quantity'] = $this->parseQuantity($offer, $data);
             if ($this->ERROR) return $num_offer;
         } else {
-            // на всякий випадок
             if (!isset($data['quantity'])) $data['quantity'] = 0;
         }
 
@@ -5746,9 +5746,9 @@ class ModelExtensionExchange1c extends Model {
             $data['price'] = $this->parsePrices($offer->Цены, $product_id);
             if ($this->ERROR) return $num_offer;
 
-            if ($data['price'] == 0) {
+            if ((float)$data['price'] == 0) {
                 // нічого не прийшло — лишаємо стару
-                $data['price'] = $old_product['price'];
+                $data['price'] = (float)$old_product['price'];
             } else {
                 // прийшла валідна базова — пишемо в товар
                 $this->setProductBasePrice($product_id, $data['price']);
@@ -5795,7 +5795,7 @@ class ModelExtensionExchange1c extends Model {
             $data['quantity'] = $data_quantity_price['quantity_total'];
 
             // Якщо усі ціни по нулям — вимикаємо
-            if ($this->config->get('exchange1c_product_disable_if_price_zero') == 1 && $data['price_max'] == 0) {
+            if ($this->config->get('exchange1c_product_disable_if_price_zero') == 1 && (float)$data['price_max'] == 0) {
                 $this->log("Товар отключен так как цена нулевая");
                 $data['status'] = 0;
                 $update = $this->updateOffers($product_id, $data, $old_product);
@@ -5805,14 +5805,14 @@ class ModelExtensionExchange1c extends Model {
 
             if ($this->config->get('exchange1c_product_price_no_import') != 1) {
                 // База за замовчуванням — стара
-                if ($old_product['price']) $data['price'] = $old_product['price'];
+                if ((float)$old_product['price'] > 0) $data['price'] = (float)$old_product['price'];
 
                 // Вибір базової ціни за режимом
                 if ($this->config->get('exchange1c_feature_price_mode') == 'mode2') {
-                    $data['price'] = $data_quantity_price['price_min'];
+                    $data['price'] = (float)$data_quantity_price['price_min'];
                 } elseif ($this->config->get('exchange1c_feature_price_mode') == 'mode3') {
-                    if ($data['price'] == 0) {
-                        $data['price'] = $data_quantity_price['price_min'];
+                    if ((float)$data['price'] == 0) {
+                        $data['price'] = (float)$data_quantity_price['price_min'];
                     }
                 }
 
@@ -5831,9 +5831,9 @@ class ModelExtensionExchange1c extends Model {
                         $option_price = $feature_value['price'] - $data['price'];
                         $price_prefix = ($option_price >= 0) ? '+' : '-';
                         $this->query("UPDATE `" . DB_PREFIX . "product_option_value`
-                                      SET `price` = '" . $option_price . "',
-                                          `price_prefix` = '" . $price_prefix . "'
-                                      WHERE `product_option_value_id` = " . $feature_value['product_option_value_id']);
+                                      SET `price` = '" . (float)$option_price . "',
+                                          `price_prefix` = '" . $this->db->escape($price_prefix) . "'
+                                      WHERE `product_option_value_id` = " . (int)$feature_value['product_option_value_id']);
                     }
                 }
             }
@@ -5843,7 +5843,7 @@ class ModelExtensionExchange1c extends Model {
         }
 
         // Статус на складе (stock_status_id)
-        if ($data['quantity']) {
+        if ((float)$data['quantity'] > 0) {
             if ((int)$this->config->get('exchange1c_product_stock_status_on')) {
                 $data['stock_status_id'] = (int)$this->config->get('exchange1c_product_stock_status_on');
             }
@@ -5853,7 +5853,7 @@ class ModelExtensionExchange1c extends Model {
             }
         }
 
-        // === Автовимк/вмик за кількістю (ГОЛОВНЕ) ===
+        // Авто-статус за кількістю
         $data['status'] = ((float)$data['quantity'] > 0) ? 1 : 0;
         $this->log("Auto status by qty: qty=".(float)$data['quantity']." => status=".$data['status']);
 
@@ -5867,13 +5867,13 @@ class ModelExtensionExchange1c extends Model {
                       WHERE `product_id` = " . (int)$product_id);
 
         // Чистка порожніх опцій
-        $query = $this->query("SELECT `product_option_id` FROM `" . DB_PREFIX . "product_option` WHERE `product_id` = " . $product_id);
+        $query = $this->query("SELECT `product_option_id` FROM `" . DB_PREFIX . "product_option` WHERE `product_id` = " . (int)$product_id);
         if ($query->num_rows) {
             foreach ($query->rows as $row) {
-                $query_value = $this->query("SELECT `product_option_value_id` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $row['product_option_id']);
+                $query_value = $this->query("SELECT `product_option_value_id` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . (int)$row['product_option_id']);
                 if (!$query_value->num_rows) {
-                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $row['product_option_id']);
-                    $this->log("Удалена пустая опция в товаре, product_option_id = " . $row['product_option_id']);
+                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . (int)$row['product_option_id']);
+                    $this->log("Удалена пустая опция в товаре, product_option_id = " . (int)$row['product_option_id']);
                 }
             }
         }
@@ -5893,30 +5893,30 @@ class ModelExtensionExchange1c extends Model {
         $this->log("К удалению опции:");
         $this->log($delete_options);
         foreach ($delete_options as $product_option_value_id => $product_option_id) {
-            if ($product_option_value_id == 0) {
+            if ((int)$product_option_value_id == 0) {
                 $this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = 0");
             } else {
-                $this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = " . $product_option_value_id);
-                $this->query("DELETE FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_value_id` = " . $product_option_value_id);
-                $query_count_options = $this->query("SELECT count(*) as `count` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . $product_option_id);
-                if ($query_count_options->row['count'] == 0) {
-                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . $product_option_id);
+                $this->query("DELETE FROM `" . DB_PREFIX . "product_feature_value` WHERE `product_option_value_id` = " . (int)$product_option_value_id);
+                $this->query("DELETE FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_value_id` = " . (int)$product_option_value_id);
+                $query_count_options = $this->query("SELECT count(*) as `count` FROM `" . DB_PREFIX . "product_option_value` WHERE `product_option_id` = " . (int)$product_option_id);
+                if ((int)$query_count_options->row['count'] == 0) {
+                    $this->query("DELETE FROM `" . DB_PREFIX . "product_option` WHERE `product_option_id` = " . (int)$product_option_id);
                 }
             }
         }
     }
 
-		// === ЖОРСТКА СИНХРОНІЗАЦІЯ: статус = (quantity > 0) ===
-		$this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `quantity` <= 0");
-		$this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 1 WHERE `quantity` > 0");
-		$this->log("Sync status with qty: done");
-
+    // ЖОРСТКА СИНХРОНІЗАЦІЯ: статус = (quantity > 0) для всіх товарів
+    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 0 WHERE `quantity` <= 0");
+    $this->query("UPDATE `" . DB_PREFIX . "product` SET `status` = 1 WHERE `quantity` > 0");
+    $this->log("Sync status with qty: done");
 
     $this->logStat('offers');
-    $this->log("Загружено предложений " . $num_offer . " из " . $count_offers, 0);
-
-    return $num_offer;
+	    $this->log("Загружено предложений " . $num_offer . " из " . $count_offers, 0);
+		
+	    return $num_offer;
 	} // parseOffers()
+
 
 
 
