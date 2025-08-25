@@ -231,7 +231,8 @@ var cart = {
           $("#cart-total").html(json["total"]);
 
           // Load entire mini-cart HTML into #cart
-          $("#cart").load("index.php?route=common/cart/info");
+          refreshCart();
+
         }
       },
     });
@@ -247,7 +248,8 @@ var cart = {
         $("#cart-total").html(json["total"]);
 
         // Reload mini-cart content
-        $("#cart").load("index.php?route=common/cart/info");
+        refreshCart();
+
       },
     });
   },
