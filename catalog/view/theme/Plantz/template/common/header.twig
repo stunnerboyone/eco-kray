@@ -199,16 +199,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      $(".cart-dropdown-menu").load("index.php?route=common/cart/info ul li", function () {
+
+      $("#cart").load("index.php?route=common/cart/info", function () {
         cartDropdown.classList.toggle("open");
       });
     });
   }
 });
 
-$(document).ready(function () {
-  if (typeof Simplecheckout === 'function' && Simplecheckout.init) {
-    Simplecheckout.init();
-  }
-});
+// $(document).ready(function () {
+//   if (typeof Simplecheckout === 'function' && Simplecheckout.init) {
+//     Simplecheckout.init();
+//   }
+// });
+
 </script>
