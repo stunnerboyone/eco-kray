@@ -24,7 +24,7 @@
               {% if product.recurring %}
                 <div class="option">- {{ text_recurring }} {{ product.recurring }}</div>
               {% endif %}
-              <div class="quantity">x{{ product.quantity }}</div>
+              <div class="quantity">{{ text_quantity }}: {{ product.quantity }}</div>
               <div class="price">{{ product.total }}</div>
             </div>
             <div class="cart-remove">

@@ -48,7 +48,8 @@ class ControllerCommonCart extends Controller {
 		}
 
 		$data['text_items'] = $this->cart->countProducts();
-
+		$data['text_quantity'] = $this->language->get('text_quantity');
+		
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
 
@@ -137,7 +138,7 @@ class ControllerCommonCart extends Controller {
 
 		$data['cart'] = $this->url->link('checkout/cart');
 		$data['checkout'] = $this->url->link('checkout/checkout', '', true);
-
+		
 		return $this->load->view('common/cart', $data);
 	}
 
