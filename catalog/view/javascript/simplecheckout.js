@@ -1735,7 +1735,7 @@
 
             if (total) {
                 $.each(["#cart_total", "#cart-total", "#cart_menu .s_grand_total", "#cart .tb_items", "#cart .tb_total", "#menu_wrap #cart-total"], function(index, selector) {
-                    $(selector).html(total);
+                    $(selector).html(total.split('|')[0].trim());
                 });
 
                 $("#weight").text(weight);
