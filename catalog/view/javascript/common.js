@@ -224,14 +224,15 @@ var cart = {
             .before(
               '<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' +
                 json["success"] +
-                ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>',
+                ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>'
             );
 
           // Update cart total
           $("#cart-total").html(json["total"]);
 
-          // Load mini-cart
-          $("#cart > ul").load("index.php?route=common/cart/info ul li");
+          // Load entire mini-cart HTML into #cart
+          refreshCart();
+
         }
       },
     });
@@ -245,7 +246,10 @@ var cart = {
       dataType: "json",
       success: function (json) {
         $("#cart-total").html(json["total"]);
-        $("#cart > ul").load("index.php?route=common/cart/info ul li");
+
+        // Reload mini-cart content
+        refreshCart();
+
       },
     });
   },

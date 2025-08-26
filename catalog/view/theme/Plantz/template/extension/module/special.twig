@@ -48,7 +48,7 @@
           <div class="buttons-product-wrapper">
             <div class="action">
               {% if product.qty > 0 %}
-                <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');">{{ button_cart }}</button>
+                <button type="button" class="cart_button" class="cart_button" data-product-id="{{ product.product_id }};">{{ button_cart }}</button>
               {% else %}
                 <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
               {% endif %}

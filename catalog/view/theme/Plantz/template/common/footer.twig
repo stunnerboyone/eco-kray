@@ -214,4 +214,34 @@ $('#wdtestimonial-carousel').owlCarousel({
 			//--></script>
 		{% endif %}
 		<script src="catalog/view/javascript/simplecheckout.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    $(document).on('click', '.cart_button', function (e) {
+        e.preventDefault();
+
+        var product_id = $(this).data('product-id');
+        var quantity = 1;
+
+        if (typeof(cart) !== 'undefined' && typeof(cart.add) === 'function') {
+            cart.add(product_id, quantity);
+        } else {
+            $.ajax({
+                url: 'index.php?route=checkout/cart/add',
+                type: 'post',
+                data: { product_id: product_id, quantity: quantity },
+                dataType: 'json',
+                success: function (json) {
+                    if (json.redirect) {
+                        location = json.redirect;
+                    } else {
+                        location = 'index.php?route=checkout/simplecheckout';
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+
 </body></html>

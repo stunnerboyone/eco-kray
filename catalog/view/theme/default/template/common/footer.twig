@@ -48,8 +48,35 @@
 {% for script in scripts %}
 <script src="{{ script }}" type="text/javascript"></script>
 {% endfor %}
-<!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
+
+#simplecheckout listener
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    $(document).on('click', '.cart_button', function (e) {
+        e.preventDefault();
+
+        var product_id = $(this).data('product-id');
+        var quantity = 1; 
+
+        if (typeof(cart) !== 'undefined' && typeof(cart.add) === 'function') {
+            cart.add(product_id, quantity);
+        } else {
+            $.ajax({
+                url: 'index.php?route=checkout/cart/add',
+                type: 'post',
+                data: { product_id: product_id, quantity: quantity },
+                dataType: 'json',
+                success: function (json) {
+                    if (json.redirect) {
+                        location = json.redirect;
+                    } else {
+                        location = 'index.php?route=checkout/simplecheckout';
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+
 </body></html>

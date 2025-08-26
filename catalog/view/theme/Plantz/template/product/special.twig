@@ -106,7 +106,7 @@
                   	
               <div class="action">
                 {% if product.qty > 0 %}
-                 <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');" title="{{ button_cart }}" >{{ button_cart }}</button>
+                 <button type="button" class="cart_button" class="cart_button" data-product-id="{{ product.product_id }};" title="{{ button_cart }}" >{{ button_cart }}</button>
                  {% else %}
                  <button type="button" class="cart_button out_of_stock" title="{{text_outstock}}" >{{text_outstock}}</button>
                  {% endif %}
@@ -158,7 +158,7 @@
                     
                           <div class="action">
                             {% if product.qty > 0 %}
-                            <button type="button" class="cart_button" onclick="cart.add('{{ product.product_id }}');" title="{{ button_cart }}" >{{ button_cart }}</button>
+                            <button type="button" class="cart_button" class="cart_button" data-product-id="{{ product.product_id }};" title="{{ button_cart }}" >{{ button_cart }}</button>
                             {% else %}
                             <button type="button" class="cart_button out_of_stock" title="{{text_outstock}}" >{{text_outstock}}</button>
                             {% endif %}

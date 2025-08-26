@@ -6,7 +6,7 @@ $_['heading_title']            = 'Оформлення замовлення:';
 $_['text_success']             = 'Успішно: Ви додали <a href="%s">%s</a> до <a href="%s">вашого кошика</a>!';
 $_['text_remove']              = 'Успішно: Ви змінили вміст кошика!';
 $_['text_login']               = 'Увага: Щоб побачити ціни, потрібно <a href="%s">увійти</a> або <a href="%s">створити акаунт</a>!';
-$_['text_items']               = '<span class="item-count">%s</span><span class="mycart"> товарів</span> <span class="price"> %s </span>';
+$_['text_items']               = '<span class="item-count">%s</span>';
 $_['text_points']              = 'Бонусні бали: %s';
 $_['text_next']                = 'Що ви хочете зробити далі?';
 $_['text_next_choice']         = 'Виберіть, якщо у вас є знижковий код або бонусні бали, які ви хочете використати, або якщо хочете оцінити вартість доставки.';
