@@ -134,6 +134,12 @@ $(document).ready(function () {
   $(document).ajaxStop(function () {
     $("[data-toggle='tooltip']").tooltip({ container: "body" });
   });
+
+  // Debug cart clicks
+  $(document).on('click', '.cart-dropdown', function(e) {
+    console.log('Cart dropdown clicked:', e.target);
+    e.stopPropagation();
+  });
 });
 
 function refreshCart() {
