@@ -36,10 +36,12 @@
 
       <div class="cart-totals">
         {% for total in totals %}
-          <div "class="cart-total-row">
-            <span>{{ total.title }}</span>
-            <strong>{{ total.text }}</strong>
-          </div>
+          {% if total.code == 'total' %}
+            <div class="cart-total-row">
+              <span>{{ total.title }}:</span>
+              <strong>{{ total.text }}</strong>
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
 
