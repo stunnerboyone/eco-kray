@@ -229,10 +229,23 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 					$rating = false;
 				}
 
-				$categories = $this->model_catalog_product->getCategories($result['product_id']);
-					if ($categories){
-						$categories_info = $this->model_catalog_category->getCategory($categories[0]['category_id']);
-					}
+				$this->load->model('catalog/product');
+				$this->load->model('catalog/category');
+							
+				$category_name = '';
+				$categories = $this->model_catalog_product->getCategories((int)$result['product_id']);
+							
+				if (!empty($categories)) {
+				    // можна взяти першу категорію або пройтись по всіх і взяти першу з назвою
+				    foreach ($categories as $cat) {
+				        if (empty($cat['category_id'])) continue;
+				        $info = $this->model_catalog_category->getCategory((int)$cat['category_id']);
+				        if (!empty($info) && !empty($info['name'])) {
+				            $category_name = $info['name'];
+				            break;
+				        }
+				    }
+				}
 
 				$data['bestsellersproducts'][] = array(
 					'product_id'  => $result['product_id'],
