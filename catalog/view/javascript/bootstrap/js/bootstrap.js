@@ -779,24 +779,32 @@ if (typeof jQuery === 'undefined') {
   }
 
   function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
+    if (e && e.which === 3) return;
+
+    // Don't close cart dropdown when clicking inside it
+    if (e && $(e.target).closest('.cart-dropdown').length) {
+      console.log('clearMenus: Cart click detected - not closing');
+      return;
+    }
+
+    $(backdrop).remove();
+
     $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
+      var $this = $(this);
+      var $parent = getParent($this);
+      var relatedTarget = { relatedTarget: this };
 
-      if (!$parent.hasClass('open')) return
+      if (!$parent.hasClass('open')) return;
 
-      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
+      if (e && e.type === 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return;
 
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
+      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget));
 
-      if (e.isDefaultPrevented()) return
+      if (e.isDefaultPrevented()) return;
 
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget)
-    })
+      $this.attr('aria-expanded', 'false');
+      $parent.removeClass('open').trigger('hidden.bs.dropdown', relatedTarget);
+    });
   }
 
   Dropdown.prototype.toggle = function (e) {
@@ -900,7 +908,15 @@ if (typeof jQuery === 'undefined') {
   // ===================================
 
   $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
+    .on('click.bs.dropdown.data-api', function(e) {
+      console.log('Bootstrap click event:', e.target, 'Cart check:', $(e.target).closest('.cart-dropdown').length);
+      // Special handling for cart - don't close if clicking inside
+      if ($(e.target).closest('.cart-dropdown').length) {
+        console.log('Cart click detected - preventing close');
+        return;
+      }
+      clearMenus(e);
+    })
     .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
     .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
     .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)

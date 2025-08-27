@@ -48,6 +48,8 @@ class ControllerCommonCart extends Controller {
 		}
 
 		$data['text_items'] = $this->cart->countProducts();
+    $data['text_quantity'] = $this->language->get('text_quantity');
+		
 
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
@@ -130,6 +132,7 @@ class ControllerCommonCart extends Controller {
 
 		foreach ($totals as $total) {
 			$data['totals'][] = array(
+				'code'  => $total['code'],
 				'title' => $total['title'],
 				'text'  => $this->currency->format($total['value'], $this->session->data['currency']),
 			);
@@ -137,7 +140,7 @@ class ControllerCommonCart extends Controller {
 
 		$data['cart'] = $this->url->link('checkout/cart');
 		$data['checkout'] = $this->url->link('checkout/checkout', '', true);
-
+		
 		return $this->load->view('common/cart', $data);
 	}
 
@@ -145,4 +148,27 @@ class ControllerCommonCart extends Controller {
 	public function info() {
 		$this->response->setOutput($this->index());
 	}
+
+	public function edit() {
+		$this->load->language('common/cart');
+
+		$json = array();
+
+		// Update single item via AJAX
+		if (isset($this->request->post['key']) && isset($this->request->post['quantity'])) {
+			$this->cart->update($this->request->post['key'], $this->request->post['quantity']);
+			
+			$json['total'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($this->cart->getTotal(), $this->session->data['currency']));
+			
+			unset($this->session->data['shipping_method']);
+			unset($this->session->data['shipping_methods']);
+			unset($this->session->data['payment_method']);
+			unset($this->session->data['payment_methods']);
+			unset($this->session->data['reward']);
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
 }

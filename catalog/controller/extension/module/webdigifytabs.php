@@ -253,6 +253,7 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 					'thumb'       => $image,
 					'name'        => $result['name'],
 					'brand'        => $result['manufacturer'],
+
 					'catname' => $category_name,
 					'review'        => $result['reviews'],
 					'qty'    	  => $result['quantity'],
