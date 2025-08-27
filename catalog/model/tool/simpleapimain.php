@@ -151,25 +151,23 @@ class ModelToolSimpleApiMain extends Model {
                 'text' => $this->language->get('text_select')
             )
         );
-
-        $this->load->model('localisation/city');
-
-        $results = $this->model_localisation_city->getCitiesByZoneId($zoneId);
-
-        foreach ($results as $result) {
+    
+        $query = $this->db->query("SELECT Ref, Description FROM " . DB_PREFIX . "novaposhta_cities ORDER BY Description ASC");
+    
+        foreach ($query->rows as $row) {
             $values[] = array(
-                'id'   => $result['name'],
-                'text' => $result['name']
+                'id'   => $row['Ref'],
+                'text' => $row['Description']
             );
         }
-
-        if (!$results) {
+    
+        if (!$query->num_rows) {
             $values[] = array(
                 'id'   => 0,
                 'text' => $this->language->get('text_none')
             );
         }
-
+    
         return $values;
     }
 
