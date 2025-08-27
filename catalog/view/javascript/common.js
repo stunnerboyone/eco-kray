@@ -152,7 +152,7 @@ function refreshCart() {
       console.log("[refreshCart] Loaded HTML:", html);
 
       const $newTotal = $html.find("#cart-total");
-      const $newMenu = $html.find(".cart-dropdown-menu");
+      const $newCart = $html.find("#cart");
 
       if ($newTotal.length) {
         $("#cart-total").html($newTotal.html());
@@ -161,11 +161,11 @@ function refreshCart() {
         console.warn("[refreshCart] #cart-total NOT FOUND");
       }
 
-      if ($newMenu.length) {
-        $(".cart-dropdown-menu").html($newMenu.html());
-        console.log("[refreshCart] Updated cart-dropdown-menu");
+      if ($newCart.length) {
+        $("#cart").html($newCart.html());
+        console.log("[refreshCart] Updated cart content");
       } else {
-        console.warn("[refreshCart] .cart-dropdown-menu NOT FOUND");
+        console.warn("[refreshCart] #cart NOT FOUND");
       }
     },
     error: function (xhr) {
@@ -257,6 +257,31 @@ var cart = {
         refreshCart();
 
       },
+    });
+  },
+
+  update: function (key, quantity) {
+    if (quantity <= 0) {
+      cart.remove(key);
+      return;
+    }
+    
+    $.ajax({
+      url: "index.php?route=common/cart/edit",
+      type: "post",
+      data: "key=" + key + "&quantity=" + quantity,
+      dataType: "json",
+      success: function (json) {
+        if (json["total"]) {
+          $("#cart-total").html(json["total"]);
+        }
+
+        // Reload mini-cart content
+        refreshCart();
+      },
+      error: function() {
+        console.error("Cart update failed");
+      }
     });
   },
 };
