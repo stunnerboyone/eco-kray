@@ -48,8 +48,9 @@ class ControllerCommonCart extends Controller {
 		}
 
 		$data['text_items'] = $this->cart->countProducts();
-		$data['text_quantity'] = $this->language->get('text_quantity');
+    $data['text_quantity'] = $this->language->get('text_quantity');
 		
+
 		$this->load->model('tool/image');
 		$this->load->model('tool/upload');
 
@@ -169,4 +170,5 @@ class ControllerCommonCart extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
 }
