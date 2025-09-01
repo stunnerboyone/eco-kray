@@ -61,7 +61,7 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  max-height: 380px;
+  height: 380px;
 }
 
 /* Назва товару */
