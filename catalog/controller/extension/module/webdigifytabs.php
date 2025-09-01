@@ -24,11 +24,11 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 
 		if ($results) {
 			foreach ($results as $result) {
-				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+				// Skip products with placeholder image on homepage
+				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+					continue;
 				}
+				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
 
 					//added for image swap
 				
@@ -110,11 +110,11 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 
 		if ($results) {
 			foreach ($results as $result) {
-				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+				// Skip products with placeholder image on homepage
+				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+					continue;
 				}
+				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
 
 					//added for image swap
 				
@@ -186,11 +186,11 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 
 		if ($results) {
 			foreach ($results as $result) {
-				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+				// Skip products with placeholder image on homepage
+				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+					continue;
 				}
+				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
 
 				//added for image swap
 				
