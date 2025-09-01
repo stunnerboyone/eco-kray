@@ -249,17 +249,10 @@ class ControllerProductProduct extends Controller {
 
 
 			if ($product_info['quantity'] <= 0) {
-				$data['stock'] = $product_info['stock_status'];
-			} elseif ($this->config->get('config_stock_display')) {
-				$data['stock'] = $product_info['quantity'];
+				$data['stock'] = $this->language->get('text_outofstock');
+				$data['stock_qty'] = 'false';
 			} else {
 				$data['stock'] = $this->language->get('text_instock');
-			}
-
-			//stock status
-			if ($product_info['quantity'] <= 0) {
-				$data['stock_qty'] ='false';
-			} else {
 				$data['stock_qty'] = 'true';
 			}
 
@@ -302,7 +295,11 @@ class ControllerProductProduct extends Controller {
 				$data['special'] = false;
 			}
 			//calculate discount on product page
-			$data['percentsaving'] = round((($product_info['price'] - $product_info['special'])/$product_info['price'])*100, 0);
+			if ($product_info['price'] > 0) {
+				$data['percentsaving'] = round((($product_info['price'] - $product_info['special'])/$product_info['price'])*100, 0);
+			} else {
+				$data['percentsaving'] = 0;
+			}
 
 			if ($this->config->get('config_tax')) {
 				$data['tax'] = $this->currency->format((float)$product_info['special'] ? $product_info['special'] : $product_info['price'], $this->session->data['currency']);

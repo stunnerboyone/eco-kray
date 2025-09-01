@@ -49,10 +49,10 @@
             <li><span class="desc">{{ text_manufacturer }}</span><a href="{{ manufacturers }}">{{ manufacturer }}</a></li>
             {% endif %}
             <li><span class="desc">{{ text_model }}</span>{{ model }}</li>
+            <li><span class="desc"></span>{% if stock_qty == 'true' %}<span style="color:#228B22;">{{ text_instock }}</span>{% else %}<span style="color:#ff0000;">{{ text_outstock }}</span>{% endif %}</li>
             {% if reward %}
             <li><span class="desc">{{ text_reward }}</span>{{ reward }}</li>
             {% endif %}
-            <li><span class="desc">{{ text_stock }}</span>{{ stock }}</li>
           </ul>
 		  
 		  
@@ -199,13 +199,11 @@
             {% endif %}   
 		<div class="product-rightinfo">	 
 			<div class="form-group cart-block">
-				{% if stock_qty =='true' %}
+				{% if stock_qty == 'true' %}
               <label class="control-label qty" for="input-quantity">{{ entry_qty }}</label>
               <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" />
               <input type="hidden" name="product_id" value="{{ product_id }}" />
               <button type="button" id="button-cart2" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
-              {%else%}
-              <span style="color:#f00;">{{text_outstock}}</span>
               {% endif %}
               <div class="btn-group prd_page">
 

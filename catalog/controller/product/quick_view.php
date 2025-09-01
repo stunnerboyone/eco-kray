@@ -251,11 +251,11 @@ class ControllerProductQuickView extends Controller {
 			
 
 			if ($product_info['quantity'] <= 0) {
-				$data['stock'] = $product_info['stock_status'];
-			} elseif ($this->config->get('config_stock_display')) {
-				$data['stock'] = $product_info['quantity'];
+				$data['stock'] = $this->language->get('text_outofstock');
+				$data['stock_qty'] = 'false';
 			} else {
 				$data['stock'] = $this->language->get('text_instock');
+				$data['stock_qty'] = 'true';
 			}
 
 			$this->load->model('tool/image');

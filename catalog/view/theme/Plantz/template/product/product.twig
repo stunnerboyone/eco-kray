@@ -84,14 +84,14 @@
             {% if sku %}
             <tr><td><span class="desc">SKU :</span> </td><td class="description-right" >{{ sku }}</td></tr>
             {% endif %}
-             {% if stock_qty =='false' %}
-            <tr><td><span class="desc">{{ text_stock }}</span> </td><td class="description-right" >
-            <span style="color:#ff0000;">{{ stock }}</span>
-            </td></tr> {% endif %}
+             <tr><td></td><td class="description-right" >
+             {% if stock_qty == 'true' %}
+             <span style="color:#228B22;">{{ text_instock }}</span>
+             {% else %}
+             <span style="color:#ff0000;">{{ text_outstock }}</span>
+             {% endif %}
+             </td></tr>
           </table>
-          {% if stock_qty =='true' %}
-          	<span class="stock_msg" style="color:#228B22;">{{ text_productavail }} : {{qty_stock}}</span>
-          {% endif %}
 
         </div>
 
@@ -233,19 +233,16 @@
             </div>
             {% endif %}
             <div class="form-group qty">
-              {% if stock_qty =='true' %} 
+              {% if stock_qty == 'true' %}
               <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 op-box qty-plus-minus">
                   <button type="button" class="form-control pull-left btn-number btnminus" disabled="disabled" data-type="minus" data-field="quantity"></button>
-                {# <label class="control-label" for="input-quantity">{{ entry_qty }}</label> #}
-                 <input id="input-quantity" type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control input-number pull-left" />
+                  <input id="input-quantity" type="text" name="quantity" value="{{ minimum }}" size="2" class="form-control input-number pull-left" />
                   <input type="hidden" name="product_id" value="{{ product_id }}" />
-                   <button type="button" class="form-control pull-left btn-number btnplus" data-type="plus" data-field="quantity"></button>
-                   </div>
+                  <button type="button" class="form-control pull-left btn-number btnplus" data-type="plus" data-field="quantity"></button>
+              </div>
               <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block">{{ button_cart }}</button>
-              {% else %}
-              <button type="button" id="button" data-loading-text="{{ text_loading }}" class="btn btn-primary btn-lg btn-block disabled">{{ text_outstock }}</button> 
               {% endif %}
-               <div class="btn-group prd_page">
+              <div class="btn-group prd_page">
 
             <button type="button" class="btn btn-default wishlist" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');">{{ button_wishlist }}</button>          </div>
               <div id="tabs_info" class="product-tab {{ class }}">
