@@ -4,14 +4,21 @@ on:
   push:
     branches:
       - staging
+  pull_request:
+    branches:
+      - staging
 
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
 
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+
     steps:
-      - name: Checkout code
+      - name: Checkout code from source branch
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: FTP Deploy to STAGING
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -31,4 +38,3 @@ jobs:
             image/**
             config.php
             overlord/config.php
-
