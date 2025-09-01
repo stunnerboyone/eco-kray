@@ -84,14 +84,14 @@
             {% if sku %}
             <tr><td><span class="desc">SKU :</span> </td><td class="description-right" >{{ sku }}</td></tr>
             {% endif %}
-             {% if stock_qty =='false' %}
-            <tr><td><span class="desc">{{ text_stock }}</span> </td><td class="description-right" >
-            <span style="color:#ff0000;">{{ stock }}</span>
-            </td></tr> {% endif %}
+             <tr><td><span class="desc">{{ text_stock }}</span> </td><td class="description-right" >
+             {% if stock_qty == 'true' %}
+             <span style="color:#228B22;">{{ stock }}</span>
+             {% else %}
+             <span style="color:#ff0000;">{{ stock }}</span>
+             {% endif %}
+             </td></tr>
           </table>
-          {% if stock_qty =='true' %}
-          	<span class="stock_msg" style="color:#228B22;">{{ text_productavail }} : {{qty_stock}}</span>
-          {% endif %}
 
         </div>
 
