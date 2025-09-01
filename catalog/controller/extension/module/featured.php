@@ -15,6 +15,12 @@ class ControllerExtensionModuleFeatured extends Controller {
 			$setting['limit'] = 4;
 		}
 
+		// Check if we're on the homepage
+		$is_homepage = false;
+		if (isset($this->request->get['route']) && $this->request->get['route'] == 'common/home' || !isset($this->request->get['route'])) {
+			$is_homepage = true;
+		}
+
 		if (!empty($setting['product'])) {
 			$products = array_slice($setting['product'], 0, (int)$setting['limit']);
 
@@ -22,11 +28,13 @@ class ControllerExtensionModuleFeatured extends Controller {
 				$product_info = $this->model_catalog_product->getProduct($product_id);
 
 				if ($product_info) {
-					if ($product_info['image']) {
-						$image = $this->model_tool_image->resize($product_info['image'], $setting['width'], $setting['height']);
-					} else {
-						$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+					// Skip products with placeholder image only on homepage
+					if ($is_homepage && (empty($product_info['image']) || $product_info['image'] === 'placeholder.png' || strpos($product_info['image'], 'placeholder') !== false)) {
+						continue;
 					}
+					
+					// Resize the product image
+					$image = $this->model_tool_image->resize($product_info['image'] ?: 'placeholder.png', $setting['width'], $setting['height']);
 					//added for image swap
 				
 					$images = $this->model_catalog_product->getProductImages($product_info['product_id']);

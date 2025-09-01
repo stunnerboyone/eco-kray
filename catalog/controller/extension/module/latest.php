@@ -4,10 +4,15 @@ class ControllerExtensionModuleLatest extends Controller {
 		$this->load->language('extension/module/latest');
 
 		$this->load->model('catalog/product');
-
 		$this->load->model('tool/image');
 
 		$data['products'] = array();
+
+		// Check if we're on the homepage
+		$is_homepage = false;
+		if ((isset($this->request->get['route']) && $this->request->get['route'] == 'common/home') || !isset($this->request->get['route'])) {
+			$is_homepage = true;
+		}
 
 		$filter_data = array(
 			'sort'  => 'p.date_added',
@@ -20,11 +25,13 @@ class ControllerExtensionModuleLatest extends Controller {
 
 		if ($results) {
 			foreach ($results as $result) {
-				if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $setting['width'], $setting['height']);
+				// Skip products with placeholder image only on homepage
+				if ($is_homepage && (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false)) {
+					continue;
 				}
+				
+				// Resize the product image
+				$image = $this->model_tool_image->resize($result['image'] ?: 'placeholder.png', $setting['width'], $setting['height']);
 				//added for image swap
 				
 					$images = $this->model_catalog_product->getProductImages($result['product_id']);
