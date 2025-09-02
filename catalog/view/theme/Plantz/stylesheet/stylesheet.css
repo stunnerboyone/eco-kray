@@ -6188,14 +6188,12 @@ button.list-group-item:hover {
 }
 .list-group a {
   line-height: 30px;
-  text-transform: capitalize;
 }
 .fa.fa-pencil {
   margin-right: 5px;
 }
 #column-left .checkbox > label {
   color: #666;
-  text-transform: capitalize;
   font-size: 14px;
   line-height: 18px;
 }
