@@ -65,7 +65,7 @@
   -moz-transition: 0.9s ease-in-out;
   -ms-transition: 0.9s ease-in-out;
   -o-transition: 0.9s ease-in-out;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 .wd_category_feature .item {
   padding: 0 15px;
@@ -339,8 +339,6 @@
   }
   .wd_category_feature .wdfcat-items {
     padding-top: 0;
-  }
-  .wd_category_feature .list_carousel .wd_cat_content .cat-img img {
   }
   .wd_category_feature .list_carousel .wd_cat_content .cat-img img {
     width: 100%;
