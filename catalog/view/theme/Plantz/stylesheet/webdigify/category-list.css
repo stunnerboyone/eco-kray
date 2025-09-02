@@ -21,7 +21,6 @@
     width: 176px;
     height: 176px;
     border-radius: 50%;
-    background: #fff8f3;
     margin: auto;
     display: flex;
     text-align: center;
@@ -214,8 +213,6 @@
     position: relative;
 }
 .wd_category_feature .item .cat-img:after {
-    border-left: 1px solid #ffffff;
-    border-right: 1px solid #ffffff;
     opacity: 1;
     filter: alpha(opacity=100);
     -webkit-transform: scale(1);
@@ -228,8 +225,6 @@
     -o-transition: .4s ease-in-out;
 }
 .wd_category_feature .item .cat-img:before {
-    border-bottom: 1px solid #ffffff;
-    border-top: 1px solid #ffffff;
     opacity: 1;
     filter: alpha(opacity=100);
     -webkit-transform: scale(1);
