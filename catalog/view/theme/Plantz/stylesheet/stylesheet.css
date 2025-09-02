@@ -7984,7 +7984,6 @@ h2.price {
   width: 100px;
   height: auto;
   display: inline-block;
-  background: #fff8f3;
   border-radius: 50%;
 }
 .col-sm-2.category_img {
@@ -7996,7 +7995,6 @@ h2.price {
 .col-sm-3.category_img {
   height: 200px;
   width: 200px;
-  background: #fff8f3;
   display: flex;
   text-align: center;
   float: left;
@@ -8009,6 +8007,7 @@ h2.price {
   border: none;
   width: 100%;
   background-color: transparent;
+  transform: scale(1.28);
 }
 .category_list ul {
   padding: 0;
