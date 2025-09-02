@@ -8007,6 +8007,7 @@ h2.price {
   border: none;
   width: 100%;
   background-color: transparent;
+  transform: scale(1.28);
 }
 .category_list ul {
   padding: 0;
