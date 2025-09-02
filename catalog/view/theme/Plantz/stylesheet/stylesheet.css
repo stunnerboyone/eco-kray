@@ -279,7 +279,7 @@ div.required .control-label:before {
   position: absolute;
   top: 10px;
   left: 10px;
-  text-transform: capitalize;
+
   padding-inline-start: 7px;
   padding-inline-end: 2px;
   background: #c67d4e;
@@ -323,7 +323,7 @@ div.required .control-label:before {
   -khtml-border-radius: 50%;
   color: #ffffff;
   text-align: center;
-  text-transform: capitalize;
+
   padding: 23px 9px;
   font-size: 13px;
   font-weight: 500;
@@ -384,7 +384,6 @@ div.required .control-label:before {
   font-size: 20px;
   padding-top: 50%;
   font-weight: 500;
-  text-transform: capitalize;
 }
 .listing::before {
   content: "\f071";
@@ -497,7 +496,6 @@ footer .social-block h5 {
 #form-currency .currency-select {
   text-align: left;
   width: 100%;
-  text-transform: capitalize;
 }
 
 .dropdown-menu-right {
@@ -508,7 +506,6 @@ footer .social-block h5 {
   box-shadow: none;
 }
 .language-menu .btn.btn-link.btn-block.language-select {
-  text-transform: capitalize;
 }
 #form-language .dropdown-menu {
   border: none;
@@ -717,7 +714,7 @@ footer .social-block h5 {
   font-size: 14px;
   padding: 8px 7px !important;
   position: relative;
-  text-transform: capitalize;
+
   font-weight: 400;
 }
 .static_links ul.nav li .megamenu.column1 ul.list-unstyled li > a:hover {
@@ -878,7 +875,7 @@ footer .social-block h5 {
   margin: 1px 11px 0px 0;
   padding: 15px 20px !important;
   position: relative;
-  text-transform: capitalize;
+
   z-index: 6;
 }
 .list-unstyled.childs_2 > li {
@@ -1385,7 +1382,7 @@ a.banner_text::after {
 .col-sm-3.sort select.form-control {
   padding: 0;
   height: auto;
-  text-transform: capitalize;
+
   background-color: #fff;
   color: #333333;
   border: none;
@@ -1562,7 +1559,7 @@ span.search-title {
 }
 .header_search .btn.btn-default.btn-lg {
   border: none;
-  text-transform: capitalize;
+
   font-weight: 600;
   font-size: 13px;
   letter-spacing: 0.8px;
@@ -1585,7 +1582,7 @@ span.search-title {
 }
 .offer-title {
   float: left;
-  text-transform: capitalize;
+
   color: #7a7a7a;
 }
 .offer-inner {
@@ -1744,7 +1741,6 @@ span.search-title {
   letter-spacing: 0.3px;
   margin: 0 0 5px 0;
   font-family: "Roboto", sans-serif;
-  text-transform: capitalize;
 }
 @media (max-width: 1459px) {
   #wdsubbannercmsblock {
@@ -1917,7 +1913,7 @@ span.search-title {
   font-size: 24px;
   line-height: 26px;
   font-weight: 600;
-  text-transform: capitalize;
+
   color: #111111;
   margin: 0 0 18px;
   letter-spacing: 0;
@@ -1926,7 +1922,7 @@ span.search-title {
   font-size: 16px;
   line-height: 20px;
   font-weight: 400;
-  text-transform: capitalize;
+
   color: #111;
   margin: 0 0 25px;
   letter-spacing: 0;
@@ -1938,7 +1934,7 @@ span.search-title {
   font-weight: 400;
   line-height: 24px;
   color: #fff;
-  text-transform: capitalize;
+
   padding: 0 12px;
   border-radius: 5px;
   margin: 0 0 12px;
@@ -1961,7 +1957,7 @@ span.search-title {
   font:
     500 14px/20px "Roboto",
     sans-serif;
-  text-transform: capitalize;
+
   background: #111111;
   color: #ffffff;
   padding: 9px 20px;
@@ -2430,7 +2426,6 @@ header .header-cart a .fa {
   padding: 0;
   display: block;
   margin: 0px 0 15px;
-  text-transform: capitalize;
 }
 
 #wdcmsservice .wdservice:hover .service-icon span {
@@ -2578,7 +2573,7 @@ header .header-cart a .fa {
 
 #wdcmstopbanner .box-heading {
   letter-spacing: 0.5px;
-  text-transform: capitalize;
+
   font:
     500 54px/60px "Roboto",
     sans-serif;
@@ -2601,7 +2596,7 @@ header .header-cart a .fa {
     sans-serif;
   color: gray;
   margin: 0 0 30px;
-  text-transform: capitalize;
+
   display: inline-block;
   vertical-align: top;
   padding: 0;
@@ -2992,7 +2987,7 @@ header .header-cart a .fa {
 }
 #wdcmsbottombanner .box-heading {
   letter-spacing: 0.5px;
-  text-transform: capitalize;
+
   font:
     500 54px/60px "Roboto",
     sans-serif;
@@ -3013,7 +3008,7 @@ header .header-cart a .fa {
     sans-serif;
   color: gray;
   margin: 0 0 30px;
-  text-transform: capitalize;
+
   display: inline-block;
   vertical-align: bottom;
   padding: 0;
@@ -3370,7 +3365,7 @@ header .header-cart a .fa {
   color: #fff;
   display: block;
   position: relative;
-  text-transform: capitalize;
+
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
@@ -3409,7 +3404,7 @@ header .header-cart a .fa {
   font-weight: 500;
   letter-spacing: 0.5px;
   cursor: pointer;
-  text-transform: capitalize;
+
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -3901,7 +3896,6 @@ header .header-cart a .fa {
 }
 
 span.wdtestimonial-subtitle {
-  text-transform: capitalize;
   color: #fff;
   font-weight: 400;
   font-size: 14px;
@@ -3915,7 +3909,7 @@ span.wdtestimonial-subtitle {
   font:
     500 16px/18px "Roboto",
     sans-serif;
-  text-transform: capitalize;
+
   margin: 0;
   float: left;
   width: 100%;
@@ -4232,13 +4226,12 @@ span.wdtestimonial-subtitle {
   font-size: 24px;
   letter-spacing: 0.4px;
   color: #000;
-  text-transform: capitalize;
+
   font-weight: 600;
 }
 .cmsbanner-block .description .banner_text {
   color: #ff3300;
   margin: 50px 0 0 0;
-  text-transform: capitalize;
 }
 /* end of cms block */
 /* homepage sub banner2*/
@@ -4335,7 +4328,7 @@ span.wdtestimonial-subtitle {
   font-size: 13px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
+
   line-height: 16px;
   padding: 0 0 0 21px;
   margin: -20px 0 0 10px;
@@ -4445,7 +4438,6 @@ span.wdtestimonial-subtitle {
   transition: all 300ms ease 0s;
 }
 #cart {
-  text-transform: capitalize;
   text-align: right;
 }
 .shopping-cart .btn.btn-danger {
@@ -4467,7 +4459,6 @@ span.wdtestimonial-subtitle {
   font-weight: 400;
   color: #bdbdbd;
   line-height: 22px;
-  text-transform: capitalize;
 }
 #form-currency.active .btn-link.dropdown-toggle,
 #form-language.active .btn-link.dropdown-toggle,
@@ -4854,7 +4845,6 @@ nav.nav-container {
   padding: 0 0 10px;
   margin-bottom: 5px;
   text-align: left;
-  text-transform: capitalize;
 }
 #menu ul li .megamenu.column1 li > a,
 .main-menu > ul > li > ul > ul > li > a,
@@ -4863,7 +4853,7 @@ nav.nav-container {
   color: #777;
   padding: 0;
   font-weight: 400;
-  text-transform: capitalize;
+
   font-size: 13px;
 }
 #menu ul.nav li .megamenu ul.list-unstyled li > a:hover,
@@ -4887,7 +4877,7 @@ nav.nav-container {
   font-size: 13px;
   font-weight: normal;
   padding: 3px 0;
-  text-transform: capitalize;
+
   line-height: 22px;
 }
 .main-menu > ul > li ul > li > a:hover,
@@ -5461,7 +5451,7 @@ footer h5,
   font-size: 18px;
   margin: 0px 0 15px;
   position: relative;
-  text-transform: capitalize;
+
   color: #fff;
   font-weight: 500;
   line-height: 30px;
@@ -5589,7 +5579,7 @@ footer .desc-block p,
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 0.5px;
-  text-transform: capitalize;
+
   font-weight: 400;
   color: #bdbdbd;
 }
@@ -5651,7 +5641,6 @@ footer .desc-block p,
   width: 100%;
   line-height: 1.1;
   letter-spacing: 0.6px;
-  text-transform: capitalize;
 }
 .block_newsletter {
   padding: 0;
@@ -5672,7 +5661,6 @@ footer .desc-block p,
   width: 100%;
   margin: 0 0 10px;
   color: #111111;
-  text-transform: capitalize;
 }
 .block_newsletter h3 .title .material-icons {
   font-size: 0;
@@ -5817,7 +5805,6 @@ footer .desc-block p,
   font-size: 16px;
   font-weight: 500;
   margin: 0;
-  text-transform: capitalize;
 }
 .manufacture_block ul {
   float: left;
@@ -6383,7 +6370,6 @@ button.wishlist {
   color: #c67d4e;
 }
 .product-list .product-thumb h4 {
-  text-transform: capitalize;
   float: left;
   width: 100%;
   margin: 3px 0 5px;
@@ -6771,7 +6757,7 @@ h2.price {
     background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
     border: medium none;
     padding:7px 5px;
-    text-transform: capitalize;
+    
 } */
 .productpage .form-group.qty .wishlist:hover,
 .productpage .form-group.qty .compare:hover,
@@ -6820,7 +6806,6 @@ h2.price {
   color: #000000;
   border-bottom: 1px solid #eaeaea;
   letter-spacing: 0;
-  text-transform: capitalize;
 }
 
 .service-banner .box-heading {
@@ -6885,7 +6870,7 @@ h2.price {
   font-size: 32px;
   font-weight: 500;
   position: relative;
-  text-transform: capitalize;
+
   line-height: 35px;
   text-align: center;
   color: #222222;
@@ -8038,7 +8023,6 @@ h2.price {
   width: 100%;
   font-weight: 500;
   color: #111;
-  text-transform: capitalize;
 }
 .refine-search ul {
   padding: 0;
@@ -8148,7 +8132,7 @@ h2.price {
 }
 .left strong {
   font-size: 13px;
-  text-transform: capitalize;
+
   padding-bottom: 5px;
   display: block;
   color: #111111;
@@ -8265,7 +8249,7 @@ h2.price {
 .productpage .write-review,
 .productpage .review-count {
   margin: 0 10px;
-  text-transform: capitalize;
+
   color: #666;
 }
 .productpage .rating-wrapper,
@@ -8354,7 +8338,7 @@ h2.price {
   color: #7a7a7a;
   float: left;
   padding: 10px 15px;
-  text-transform: capitalize;
+
   margin-right: -1px;
 }
 #custom_tab.product-tabs a:first-child {
@@ -8593,7 +8577,6 @@ h2.price {
 .box .box-content ul li a,
 #content .content ul li a {
   display: inline-block;
-  text-transform: capitalize;
 }
 .box .box-content ul li a + a,
 .box .box-content ul li a + a:hover {
@@ -8808,7 +8791,7 @@ h2.price {
 }
 #content .collection-right-banner .image-title > h3 {
   font-size: 34px;
-  text-transform: capitalize;
+
   font-weight: 700;
   margin: 0;
   line-height: 36px;
@@ -8979,7 +8962,7 @@ h2.price {
 .blog-right h4 a {
   font-size: 16px;
   line-height: 24px;
-  text-transform: capitalize;
+
   width: 100%;
   overflow: hidden;
   color: #111;
@@ -9458,7 +9441,6 @@ h2.price {
   margin: 10px 0;
   padding: 0;
   position: relative;
-  text-transform: capitalize;
 }
 .blog-right-content .read-more a {
   color: #fff;
@@ -9930,7 +9912,6 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
   font-weight: 500;
   line-height: 30px;
   color: #111;
-  text-transform: capitalize;
 }
 #form-review > h3 {
   font-size: 16px;
@@ -9942,13 +9923,12 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
   line-height: 30px;
   margin: 0px 0 10px 0px;
   padding: 0px 0px 10px;
-  text-transform: capitalize;
+
   color: #222;
   border-bottom: 1px solid #eaeaea;
   font-family: "Roboto", sans-serif;
 }
 #content h3.product-option {
-  text-transform: capitalize;
   font-size: 16px;
   font-weight: 600;
 }
@@ -10007,7 +9987,7 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 }
 .productpage-quickview h3.product-title {
   font-weight: 500;
-  text-transform: capitalize;
+
   font-size: 18px;
   border-bottom: 1px solid #eaeaea;
   margin: 0 auto 10px;
@@ -10046,7 +10026,6 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
   color: #7e5cdd;
   font-weight: normal;
   padding: 7px 20px 6px !important;
-  text-transform: capitalize;
 }
 .quickview {
   display: inline-block;
@@ -10238,7 +10217,7 @@ h4:focus a {
 .stock_msg {
   display: block;
   padding: 10px 0 0 5px;
-  text-transform: capitalize;
+
   font-weight: 600;
 }
 #related-carousel {
@@ -10586,7 +10565,6 @@ h4:focus a {
     font-size: 14px;
     color: #666;
     font-weight: 400;
-    text-transform: capitalize;
   }
   .pull-left.wd-language,
   .pull-left.wd-currency {
@@ -12263,7 +12241,7 @@ h4:focus a {
   font:
     600 14px/21px "Roboto",
     sans-serif;
-  text-transform: capitalize;
+
   color: #111111;
   width: 13%;
 }
@@ -12909,7 +12887,7 @@ h4:focus a {
   font-weight: 400;
   margin-top: 0;
   line-height: 30px;
-  text-transform: capitalize;
+
   letter-spacing: 0.5px;
 }
 .slider-title {
@@ -13120,7 +13098,6 @@ h4:focus a {
   text-decoration: none;
   width: 100%;
   margin: 0 0 5px 0;
-  text-transform: capitalize;
 }
 .live-search ul li .product-image {
   float: left;
@@ -13247,4 +13224,4 @@ h4:focus a {
   }
 }
 
-/* ------------------------------------ ajex search CSS End -----------------------------------*/
+/* ------------------------------------ ajax search CSS End -----------------------------------*/
