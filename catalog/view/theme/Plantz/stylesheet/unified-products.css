@@ -125,6 +125,9 @@
 
 /* Інформація про товар */
 .caption {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
   padding: 0 10px;
 }
