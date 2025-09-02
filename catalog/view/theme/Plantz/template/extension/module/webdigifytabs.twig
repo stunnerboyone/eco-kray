@@ -32,27 +32,31 @@
                   </div>
 
                   <div class="caption">
-                    <span class="product-cat">{{ product.catname }}</span>
-                    <h4 class="product-card_title"><a href="{{ product.href }}">{{ product.name }}</a></h4>
-                    {% if product.price %}
-                      <p class="price">
-                        {% if not product.special %}
-                          {{ product.price }}
-                        {% else %}
-                          <span class="price-new">{{ product.special }}</span>
-                          <span class="price-old">{{ product.price }}</span>
-                        {% endif %}
-                      </p>
-                    {% endif %}
-                    <div class="buttons-product-wrapper">
-                      <div class="action">
-                        {% if product.qty > 0 %}
-                          <button type="button" class="cart_button" class="cart_button" data-product-id="{{ product.product_id }};">В КОШИК</button>
-                        {% else %}
-                          <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
-                        {% endif %}
+                    <div class="product-cart-top">
+                      <span class="product-cat">{{ product.catname }}</span>
+                      <h4 class="product-card_title"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+                    </div>
+                    <div class="product-cart-bottom">
+                      {% if product.price %}
+                        <p class="price">
+                          {% if not product.special %}
+                            {{ product.price }}
+                          {% else %}
+                            <span class="price-new">{{ product.special }}</span>
+                            <span class="price-old">{{ product.price }}</span>
+                          {% endif %}
+                        </p>
+                      {% endif %}
+                      <div class="buttons-product-wrapper">
+                        <div class="action">
+                          {% if product.qty > 0 %}
+                            <button type="button" class="cart_button" class="cart_button" data-product-id="{{ product.product_id }};">В КОШИК</button>
+                          {% else %}
+                            <button type="button" class="cart_button out_of_stock">{{ text_outstock }}</button>
+                          {% endif %}
+                        </div>
+                        <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
                       </div>
-                      <button class="custom-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"></button>
                     </div>
                   </div>
                 </div>
