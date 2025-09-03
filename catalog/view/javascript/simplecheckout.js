@@ -1,4 +1,9 @@
 (function($) {
+    if (typeof Simple === 'undefined') {
+        console.error('Simple object is not available. Make sure simple.js is loaded before simplecheckout.js');
+        return;
+    }
+
     window.Simplecheckout = function(params) {
         this.params = params;
 

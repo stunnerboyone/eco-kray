@@ -71,7 +71,21 @@
 <script src="catalog/view/javascript/lightbox/lightbox-2.6.min.js"></script>
 <script src="catalog/view/javascript/webdigify/inview.js"></script>
 <script src="catalog/view/javascript/webdigify/megamenu.js"></script>
+<script>
+    console.log('Before loading simple.js');
+    if (typeof Simple === 'undefined') {
+        console.log('Simple is not defined before loading simple.js');
+    }
+</script>
 <script src="catalog/view/javascript/simple.js"></script>
+<script>
+    console.log('After loading simple.js, before simplecheckout.js');
+    if (typeof Simple === 'undefined') {
+        console.error('Simple is still not defined after loading simple.js!');
+    } else {
+        console.log('Simple object is available:', Simple);
+    }
+</script>
 <script src="catalog/view/javascript/simplecheckout.js"></script>
 
 
