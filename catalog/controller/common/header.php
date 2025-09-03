@@ -35,6 +35,10 @@ class ControllerCommonHeader extends Controller {
 		$data['links'] = $this->document->getLinks();
 		$data['styles'] = $this->document->getStyles();
 		$data['scripts'] = $this->document->getScripts('header');
+		
+		// Add SimpleCheckout scripts
+		$this->document->addScript('catalog/view/javascript/simple.js');
+		$this->document->addScript('catalog/view/javascript/simplecheckout.js');
 		$data['lang'] = $this->language->get('code');
 		$data['direction'] = $this->language->get('direction');
 		

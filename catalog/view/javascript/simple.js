@@ -1,3 +1,14 @@
+// Define inherit in global scope first
+function inherit(proto) {
+    if (typeof Object.create === 'function') {
+        return Object.create(proto);
+    } else {
+        function F() {}
+        F.prototype = proto;
+        return new F();
+    }
+}
+
 (function($) {
     var Simple = function() {
     };
@@ -1008,7 +1019,12 @@
 
     $.ajaxSetup({ cache: false });
 
-    window.Simple = Simple;
+    // Create and expose a global Simple instance
+    window.Simple = new Simple();
+    
+    // Also expose the constructor and inherit function
+    window.Simple.Constructor = Simple;
+    window.Simple.inherit = inherit;
 })(jQuery || $);
 
 if (typeof String.prototype.trim !== "function") {

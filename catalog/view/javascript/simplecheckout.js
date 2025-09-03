@@ -1,4 +1,12 @@
 (function($) {
+    if (typeof Simple === 'undefined' || !(Simple instanceof Object)) {
+        console.error('Simple object is not properly initialized. Make sure simple.js is loaded before simplecheckout.js');
+        return;
+    }
+
+    // Use the existing Simple instance or create a new one if needed
+    var SimpleInstance = window.Simple || new Simple.Constructor();
+    
     window.Simplecheckout = function(params) {
         this.params = params;
 
@@ -1389,6 +1397,7 @@
         this.instances.push(this);
     };
 
+    // Set up prototype inheritance using the global inherit function
     Simplecheckout.prototype = inherit(window.Simple.prototype);
 
     /**
