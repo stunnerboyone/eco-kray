@@ -1397,7 +1397,8 @@
         this.instances.push(this);
     };
 
-    Simplecheckout.prototype = inherit(window.Simple.prototype);
+    // Use the inherit function from the Simple object
+    Simplecheckout.prototype = window.Simple.inherit(window.Simple.prototype);
 
     /**
      * It is parent of all blocks

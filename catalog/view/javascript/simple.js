@@ -1011,8 +1011,9 @@
     // Create and expose a global Simple instance
     window.Simple = new Simple();
     
-    // Also expose the constructor if needed
+    // Also expose the constructor and inherit function
     window.Simple.Constructor = Simple;
+    window.Simple.inherit = inherit;
 })(jQuery || $);
 
 if (typeof String.prototype.trim !== "function") {
