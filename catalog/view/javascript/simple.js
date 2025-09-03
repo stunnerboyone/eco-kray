@@ -1008,7 +1008,11 @@
 
     $.ajaxSetup({ cache: false });
 
-    window.Simple = Simple;
+    // Create and expose a global Simple instance
+    window.Simple = new Simple();
+    
+    // Also expose the constructor if needed
+    window.Simple.Constructor = Simple;
 })(jQuery || $);
 
 if (typeof String.prototype.trim !== "function") {
