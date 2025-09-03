@@ -1397,8 +1397,8 @@
         this.instances.push(this);
     };
 
-    // Use the inherit function from the Simple object
-    Simplecheckout.prototype = window.Simple.inherit(window.Simple.prototype);
+    // Set up prototype inheritance using the global inherit function
+    Simplecheckout.prototype = inherit(window.Simple.prototype);
 
     /**
      * It is parent of all blocks

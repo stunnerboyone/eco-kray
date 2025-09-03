@@ -1,3 +1,14 @@
+// Define inherit in global scope first
+function inherit(proto) {
+    if (typeof Object.create === 'function') {
+        return Object.create(proto);
+    } else {
+        function F() {}
+        F.prototype = proto;
+        return new F();
+    }
+}
+
 (function($) {
     var Simple = function() {
     };
