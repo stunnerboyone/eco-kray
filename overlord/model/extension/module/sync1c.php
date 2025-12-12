@@ -37,23 +37,38 @@ class ModelExtensionModuleSync1c extends Model {
     }
 
     public function getStats() {
-        $stats = array();
+        $stats = array(
+            'products_synced' => 0,
+            'categories_synced' => 0,
+            'orders_exported' => 0,
+            'last_sync' => 'Ніколи'
+        );
 
-        // Products synced
-        $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "product_to_1c");
-        $stats['products_synced'] = $query->row['total'];
+        try {
+            // Check if tables exist
+            $check = $this->db->query("SHOW TABLES LIKE '" . DB_PREFIX . "product_to_1c'");
+            if (!$check->num_rows) {
+                return $stats; // Tables not installed yet
+            }
 
-        // Categories synced
-        $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "category_to_1c");
-        $stats['categories_synced'] = $query->row['total'];
+            // Products synced
+            $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "product_to_1c");
+            $stats['products_synced'] = $query->row['total'];
 
-        // Orders exported
-        $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "order_to_1c WHERE exported = 1");
-        $stats['orders_exported'] = $query->row['total'];
+            // Categories synced
+            $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "category_to_1c");
+            $stats['categories_synced'] = $query->row['total'];
 
-        // Last sync
-        $query = $this->db->query("SELECT MAX(date_synced) as last_sync FROM " . DB_PREFIX . "product_to_1c");
-        $stats['last_sync'] = $query->row['last_sync'] ?: 'Ніколи';
+            // Orders exported
+            $query = $this->db->query("SELECT COUNT(*) as total FROM " . DB_PREFIX . "order_to_1c WHERE exported = 1");
+            $stats['orders_exported'] = $query->row['total'];
+
+            // Last sync
+            $query = $this->db->query("SELECT MAX(date_synced) as last_sync FROM " . DB_PREFIX . "product_to_1c");
+            $stats['last_sync'] = $query->row['last_sync'] ?: 'Ніколи';
+        } catch (Exception $e) {
+            // Tables don't exist yet
+        }
 
         return $stats;
     }
