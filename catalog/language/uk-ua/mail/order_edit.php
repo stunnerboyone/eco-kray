@@ -1,9 +1,9 @@
 <?php
 // Text
-$_['text_subject']      = '%s - Order Update %s';
-$_['text_order_id']     = 'Order ID:';
-$_['text_date_added']   = 'Date Added:';
-$_['text_order_status'] = 'Your order has been updated to the following status:';
-$_['text_comment']      = 'The comments for your order are:';
-$_['text_link']         = 'To view your order click on the link below:';
-$_['text_footer']       = 'Please reply to this email if you have any questions.';
+$_['text_subject']      = '%s - Оновлення замовлення %s';
+$_['text_order_id']     = 'ID замовлення:';
+$_['text_date_added']   = 'Дата додавання:';
+$_['text_order_status'] = 'Ваше замовлення оновлено до наступного статусу:';
+$_['text_comment']      = 'Коментар до вашого замовлення:';
+$_['text_link']         = 'Щоб переглянути замовлення, натисніть на посилання нижче:';
+$_['text_footer']       = 'Будь ласка, відповідайте на цей лист, якщо у вас виникли запитання.';

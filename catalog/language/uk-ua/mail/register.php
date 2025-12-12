@@ -1,15 +1,15 @@
 <?php
 // Text
-$_['text_subject']        = '%s - Thank you for registering';
-$_['text_welcome']        = 'Welcome and thank you for registering at %s!';
-$_['text_login']          = 'Your account has now been created and you can log in by using your email address and password by visiting our website or at the following URL:';
-$_['text_approval']       = 'Your account must be approved before you can login. Once approved you can log in by using your email address and password by visiting our website or at the following URL:';
-$_['text_service']        = 'Upon logging in, you will be able to access other services including reviewing past orders, printing invoices and editing your account information.';
-$_['text_thanks']         = 'Thanks,';
-$_['text_new_customer']   = 'New customer';
-$_['text_signup']         = 'A new customer has signed up:';
-$_['text_customer_group'] = 'Customer Group:';
-$_['text_firstname']      = 'First Name:';
-$_['text_lastname']       = 'Last Name:';
+$_['text_subject']        = '%s - Дякуємо за реєстрацію';
+$_['text_welcome']        = 'Ласкаво просимо і дякуємо за реєстрацію на %s!';
+$_['text_login']          = 'Ваш обліковий запис створено, і ви можете увійти, використовуючи вашу електронну адресу та пароль на нашому сайті або за таким посиланням:';
+$_['text_approval']       = 'Ваш обліковий запис має бути схвалений перед тим, як ви зможете увійти. Після схвалення ви зможете увійти, використовуючи вашу електронну адресу та пароль на нашому сайті або за таким посиланням:';
+$_['text_service']        = 'Після входу ви зможете отримати доступ до інших сервісів, включаючи перегляд минулих замовлень, друк рахунків та редагування інформації вашого облікового запису.';
+$_['text_thanks']         = 'Дякуємо,';
+$_['text_new_customer']   = 'Новий клієнт';
+$_['text_signup']         = 'Новий клієнт зареєструвався:';
+$_['text_customer_group'] = 'Група клієнтів:';
+$_['text_firstname']      = "Ім'я:";
+$_['text_lastname']       = 'Прізвище:';
 $_['text_email']          = 'E-Mail:';
-$_['text_telephone']      = 'Telephone:';
+$_['text_telephone']      = 'Телефон:';

@@ -1,17 +1,17 @@
 <?php
 // Text
-$_['text_subject']        = '%s - Affiliate Program';
-$_['text_welcome']        = 'Thank you for joining the %s Affiliate Program!';
-$_['text_login']          = 'Your account has now been created and you can log in by using your e-mail address and password by visiting our website or at the following URL:';
-$_['text_approval']       = 'Your account must be approved before you can login. Once approved you can log in by using your e-mail address and password by visiting our website or at the following URL:';
-$_['text_service']        = 'Upon logging in, you will be able to generate tracking codes, track commission payments and edit your account information.';
-$_['text_thanks']         = 'Thanks,';
-$_['text_new_affiliate']  = 'New Affiliate';
-$_['text_signup']         = 'A new affiliate has signed up:';
-$_['text_website']        = 'Web Site:';
-$_['text_customer_group'] = 'Customer Group:';
-$_['text_firstname']      = 'First Name:';
-$_['text_lastname']       = 'Last Name:';
-$_['text_company']        = 'Company:';
+$_['text_subject']        = '%s - Партнерська програма';
+$_['text_welcome']        = 'Дякуємо, що приєдналися до партнерської програми %s!';
+$_['text_login']          = 'Ваш обліковий запис створено, і ви можете увійти, використовуючи вашу електронну пошту та пароль на нашому сайті або за наступним посиланням:';
+$_['text_approval']       = 'Ваш обліковий запис має бути схвалений, перш ніж ви зможете увійти. Після схвалення ви зможете увійти, використовуючи вашу електронну пошту та пароль на нашому сайті або за наступним посиланням:';
+$_['text_service']        = 'Після входу до кабінету ви зможете генерувати трекінгові коди, відстежувати комісійні виплати та редагувати інформацію вашого профілю.';
+$_['text_thanks']         = 'Дякуємо,';
+$_['text_new_affiliate']  = 'Новий партнер';
+$_['text_signup']         = 'Новий партнер зареєструвався:';
+$_['text_website']        = 'Сайт:';
+$_['text_customer_group'] = 'Група користувачів:';
+$_['text_firstname']      = "Ім'я:";
+$_['text_lastname']       = 'Прізвище:';
+$_['text_company']        = 'Компанія:';
 $_['text_email']          = 'E-Mail:';
-$_['text_telephone']      = 'Telephone:';
+$_['text_telephone']      = 'Телефон:';
