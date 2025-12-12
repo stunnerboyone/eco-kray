@@ -1,0 +1,13 @@
+<div class="carousel-module owl-carousel owl-theme">
+  {% for banner in banners %}
+    <div class="carousel-slide">
+      {% if banner.link %}
+        <a href="{{ banner.link }}">
+          <img src="{{ banner.image }}" alt="{{ banner.title|e }}" loading="lazy" />
+        </a>
+      {% else %}
+        <img src="{{ banner.image }}" alt="{{ banner.title|e }}" loading="lazy" />
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

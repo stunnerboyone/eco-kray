@@ -1,0 +1,60 @@
+<div class="main-slider">
+<div id="spinner"></div>
+<div class="swiper-viewport">
+  <div id="slideshow{{ module }}" class="swiper-container" style="opacity: 1;">
+    <div class="swiper-wrapper"> 
+      {% for banner in banners %}
+        <div class="swiper-slide text-center">
+          {% if banner.link %}
+          <a href="{{ banner.link }}">
+            <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+          </a>
+          {% else %}
+          <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+          {% endif %}
+          {# <div class="slide-description">#}
+            
+              <div class="slider-content">
+               <div class="main-carousel-content">
+                <div class="slider-description">{{banner.description}}</div>
+                <div class="slider-title">{{banner.title}}</div>
+                <div class="slider-button"> <a href="{{ banner.link }}">{{banner.button}}</a></div>
+              </div>
+            </div>
+          </div> 
+       {#  </div>#}
+      {% endfor %}
+      
+       </div>
+  </div>
+
+  <div class="swiper-pagination slideshow{{ module }}"></div>
+  <div class="swiper-pager">
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+</div>
+</div>
+<script>
+	$(window).load(function() {		
+$('#slideshow{{ module }}').swiper({
+	mode: 'horizontal',
+	slidesPerView: 1,
+	pagination: '.slideshow{{ module }}',
+	paginationClickable: true,
+	nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
+    spaceBetween: 0,
+	   autoplay: 5500,
+    autoplayDisableOnInteraction: true,
+	loop: true,
+  effect:'fade'
+});
+	});	
+</script>
+<script>
+	// Can also be used with $(document).ready()
+	$(window).load(function() {		
+	  $("#spinner").fadeOut("slow");
+	});	
+</script>

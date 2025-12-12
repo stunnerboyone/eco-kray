@@ -1,0 +1,39 @@
+<?php
+// Environment (development or production)
+define('ENVIRONMENT', 'production');
+
+// HTTP
+define('HTTP_SERVER', 'http://your-domain.com/overlord/');
+define('HTTP_CATALOG', 'http://your-domain.com/');
+
+// HTTPS
+define('HTTPS_SERVER', 'https://your-domain.com/overlord/');
+define('HTTPS_CATALOG', 'https://your-domain.com/');
+
+// DIR
+define('DIR_APPLICATION', '/path/to/your/site/overlord/');
+define('DIR_SYSTEM', '/path/to/your/site/system/');
+define('DIR_IMAGE', '/path/to/your/site/image/');
+define('DIR_STORAGE', '/path/to/your/storage/');
+define('DIR_CATALOG', '/path/to/your/site/catalog/');
+define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
+define('DIR_TEMPLATE', DIR_APPLICATION . 'view/template/');
+define('DIR_CONFIG', DIR_SYSTEM . 'config/');
+define('DIR_CACHE', DIR_STORAGE . 'cache/');
+define('DIR_DOWNLOAD', DIR_STORAGE . 'download/');
+define('DIR_LOGS', DIR_STORAGE . 'logs/');
+define('DIR_MODIFICATION', DIR_STORAGE . 'modification/');
+define('DIR_SESSION', DIR_STORAGE . 'session/');
+define('DIR_UPLOAD', DIR_STORAGE . 'upload/');
+
+// DB
+define('DB_DRIVER', 'mysqli');
+define('DB_HOSTNAME', 'localhost');
+define('DB_USERNAME', 'your_db_username');
+define('DB_PASSWORD', 'your_db_password');
+define('DB_DATABASE', 'your_db_name');
+define('DB_PORT', '3306');
+define('DB_PREFIX', 'oc_');
+
+// OpenCart API
+define('OPENCART_SERVER', 'https://www.opencart.com/');

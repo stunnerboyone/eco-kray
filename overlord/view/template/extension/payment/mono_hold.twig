@@ -1,0 +1,41 @@
+
+
+<style>
+</style>
+
+<div class="table-responsive card-body">
+   <form id="refund_form_{{ payment_id }}" method="post"
+                              action="#" 
+                              class="form-horizontal" style="display:block" onsubmit="return false">
+                              <input type="hidden" id="amount" value="{{ amount }}" />
+                            <input type="hidden" id="payment_id" value="{{ payment_id }}" />
+                                <button type="submit" name="mono_hold" id="mono_hold" class="btn btn-primary">Сonfirm Hold</button>
+                        </form>
+</div>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+    $('#mono_hold').click(function(e){
+        var mono_amount = $('#amount').val();
+        var payment_id = $('#payment_id').val();
+        
+        $.ajax({
+		url: 'index.php?route=extension/payment/mono/hold&user_token={{ user_token }}',
+                type: 'post',
+                data: 'order_id={{ order_id }}&payment_id='+payment_id+'&mono_amount='+mono_amount,
+		dataType: 'json',
+		beforeSend: function() {
+                    $('#mono_hold').button('loading');
+		},
+		complete: function() {
+                    $('#mono_hold').button('reset');
+		},
+		success: function(json) {
+                document.location.reload();
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+                    document.location.reload();
+		}
+	});
+    });
+});
+//--></script> 

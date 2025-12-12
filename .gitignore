@@ -1,0 +1,42 @@
+# Git
+.git/
+.git/**
+**/.git/
+**/.git/**
+
+# System and uploads
+system/**
+image/**
+storage/**
+
+# Config files with credentials
+config.php
+overlord/config.php
+.env
+.env.*
+
+# Backups and temp files
+*.sql
+*.bak
+*.old
+*.orig
+*.save
+*.swp
+*.tmp
+*~
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# Node
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,519 @@
+/**
+ * Responsive Fixes for Plantz Theme
+ * Optimized breakpoints for products, catalogs, sliders
+ *
+ * Standardized Breakpoints:
+ * - 1200px+ : Desktop (4 columns)
+ * - 992px-1199px : Tablet Landscape (3 columns)
+ * - 768px-991px : Tablet Portrait (2 columns)
+ * - 576px-767px : Mobile Landscape (2 columns)
+ * - <576px : Mobile Portrait (1 column)
+ */
+
+/* ==========================================================================
+   1. PRODUCT GRID - Optimized Column Layout
+   ========================================================================== */
+
+/* Desktop: 4 columns */
+@media (min-width: 1200px) {
+  .product-layout.product-grid {
+    width: 25%;
+    min-height: 380px;
+  }
+
+  /* With sidebar: 3 columns */
+  #column-left + #content .product-layout.product-grid,
+  #content + #column-right .product-layout.product-grid {
+    width: 33.33%;
+  }
+
+  /* Both sidebars: 2 columns */
+  #column-left + #content + #column-right .product-layout.product-grid {
+    width: 50%;
+  }
+}
+
+/* Tablet Landscape: 3 columns */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .product-layout.product-grid {
+    width: 33.33%;
+    min-height: 360px;
+  }
+
+  /* With sidebar: 2 columns */
+  #column-left + #content .product-layout.product-grid,
+  #content + #column-right .product-layout.product-grid {
+    width: 50%;
+  }
+}
+
+/* Tablet Portrait: 2 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+  .product-layout.product-grid {
+    width: 50%;
+    min-height: 340px;
+  }
+
+  /* With sidebar: 2 columns maintained */
+  #column-left + #content .product-layout.product-grid,
+  #content + #column-right .product-layout.product-grid {
+    width: 50%;
+  }
+}
+
+/* Mobile Landscape: 2 columns */
+@media (min-width: 576px) and (max-width: 767px) {
+  .product-layout.product-grid {
+    width: 50%;
+    min-height: auto;
+    padding: 0 5px;
+  }
+
+  .product-layout.product-grid .product-block {
+    margin-bottom: 15px;
+  }
+}
+
+/* Mobile Portrait: 1 column */
+@media (max-width: 575px) {
+  .product-layout.product-grid {
+    width: 100%;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .product-layout.product-grid .product-block {
+    margin-bottom: 20px;
+  }
+}
+
+
+/* ==========================================================================
+   2. PRODUCT DETAIL PAGE - Better Tablet Support
+   ========================================================================== */
+
+/* Tablet: Stack columns earlier */
+@media (min-width: 768px) and (max-width: 991px) {
+  #content .col-sm-4.product-left,
+  #content .col-sm-6.product-left {
+    width: 100%;
+    float: none;
+    margin-bottom: 20px;
+  }
+
+  #content .col-sm-5.product-right,
+  #content .col-sm-6.product-right {
+    width: 100%;
+    float: none;
+    margin-left: 0;
+  }
+
+  .product-info .product-image {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+
+/* ==========================================================================
+   3. CAROUSEL NAVIGATION - Mobile-Friendly Controls
+   ========================================================================== */
+
+/* Keep navigation visible on all devices */
+@media (max-width: 991px) {
+  .customNavigation {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  /* Larger touch targets for mobile */
+  .customNavigation a {
+    width: 40px;
+    height: 40px;
+    opacity: 0.9;
+  }
+
+  .customNavigation a::before {
+    line-height: 40px;
+    font-size: 18px;
+  }
+
+  .customNavigation a.prev {
+    left: 5px !important;
+  }
+
+  .customNavigation a.next {
+    right: 5px !important;
+  }
+
+  /* Better visibility */
+  .customNavigation a {
+    background: rgba(198, 125, 78, 0.9);
+    border-radius: 4px;
+  }
+
+  .customNavigation a:active {
+    background: #222;
+    transform: scale(0.95);
+  }
+}
+
+/* Mobile: Even larger touch targets */
+@media (max-width: 576px) {
+  .customNavigation a {
+    width: 44px;
+    height: 44px;
+  }
+
+  .customNavigation a::before {
+    line-height: 44px;
+    font-size: 20px;
+  }
+}
+
+/* Swiper navigation mobile fixes */
+@media (max-width: 991px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    width: 40px !important;
+    height: 40px !important;
+    opacity: 0.9;
+  }
+
+  .main-slider .swiper-button-next,
+  .main-slider .swiper-button-prev {
+    display: flex !important;
+  }
+}
+
+
+/* ==========================================================================
+   4. OWL CAROUSEL - Touch Improvements
+   ========================================================================== */
+
+/* Enable smooth touch scrolling */
+.owl-carousel {
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.owl-carousel .owl-stage {
+  touch-action: pan-y;
+}
+
+/* Owl navigation mobile */
+@media (max-width: 991px) {
+  .owl-nav {
+    display: block !important;
+  }
+
+  .owl-nav .owl-prev,
+  .owl-nav .owl-next {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(198, 125, 78, 0.9) !important;
+    border-radius: 4px;
+    opacity: 1 !important;
+  }
+
+  .owl-nav .owl-prev {
+    left: 5px;
+  }
+
+  .owl-nav .owl-next {
+    right: 5px;
+  }
+}
+
+/* Pagination dots for mobile */
+@media (max-width: 767px) {
+  .owl-dots {
+    display: block !important;
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .owl-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background: #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .owl-dot.active {
+    background: #c67d4e;
+  }
+}
+
+
+/* ==========================================================================
+   5. PRODUCT CAROUSEL - Items Per Row
+   ========================================================================== */
+
+/* Ensure proper item counts per viewport */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .product-carousel .slider-item {
+    min-width: calc(33.33% - 15px);
+  }
+}
+
+@media (max-width: 991px) and (min-width: 768px) {
+  .product-carousel .slider-item {
+    min-width: calc(50% - 10px);
+  }
+
+  .product-carousel .slider-wrapper {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 767px) and (min-width: 576px) {
+  .product-carousel .slider-item {
+    min-width: calc(50% - 10px);
+  }
+
+  .product-carousel .slider-wrapper {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 575px) {
+  .product-carousel .slider-item {
+    min-width: calc(100% - 10px);
+  }
+
+  .product-carousel .slider-wrapper {
+    gap: 10px;
+  }
+}
+
+
+/* ==========================================================================
+   6. HEADER & MENU - Mobile Optimization
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  /* Better mobile header spacing */
+  .header_top {
+    padding: 10px 0;
+  }
+
+  .header-logo {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .header_search {
+    width: 100%;
+    padding: 10px 15px;
+  }
+
+  .header_cart {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    z-index: 999;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Stack header elements */
+  .header_top .row > div {
+    width: 100%;
+    float: none;
+  }
+
+  #logo img {
+    max-width: 150px;
+    height: auto;
+  }
+}
+
+
+/* ==========================================================================
+   7. CATEGORY LIST - Horizontal Scroll on Mobile
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .category_list ul {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 10px;
+  }
+
+  .category_list ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category_list ul li {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    min-width: 120px;
+    margin-right: 10px;
+  }
+}
+
+
+/* ==========================================================================
+   8. PRODUCT CARD - Mobile Tweaks
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .product-block .product-details {
+    padding: 10px;
+  }
+
+  .product-block .product-details h4 {
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+
+  .product-block .product-details .price {
+    font-size: 16px;
+  }
+
+  .product-block .product-details .price-old {
+    font-size: 12px;
+  }
+
+  /* Hide secondary actions on mobile cards */
+  .product-block .action button.wishlist,
+  .product-block .action button.compare {
+    display: none;
+  }
+
+  /* Full width add to cart */
+  .product-block .action .cart-button {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================================
+   9. COUNTDOWN TIMER - Mobile Optimization
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .countdown {
+    position: relative;
+    bottom: auto;
+    margin: 10px 0;
+  }
+
+  .countbox.hastime {
+    padding: 5px 10px 5px 30px;
+  }
+
+  .countbox.hastime::before {
+    font-size: 16px;
+    left: 10px;
+  }
+
+  .count-down .countbox strong {
+    font-size: 12px;
+    width: 30px;
+    height: 22px;
+    line-height: 24px;
+  }
+}
+
+
+/* ==========================================================================
+   10. FOOTER - Mobile Layout
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  .footer-blocks .col-sm-3 {
+    width: 50%;
+    padding: 0 15px;
+    margin-bottom: 20px;
+  }
+
+  .footer-blocks .col-sm-3.column.footerleft {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-blocks .col-sm-3 {
+    width: 100%;
+    text-align: center;
+  }
+
+  .social-block ul {
+    justify-content: center;
+  }
+}
+
+
+/* ==========================================================================
+   11. TOUCH-FRIENDLY IMPROVEMENTS
+   ========================================================================== */
+
+@media (max-width: 991px) {
+  /* Minimum touch target size (44px recommended) */
+  button,
+  .btn,
+  a.btn,
+  input[type="submit"],
+  .product-block .action button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better tap areas for links */
+  .product-block .product-details h4 a {
+    display: block;
+    padding: 5px 0;
+  }
+
+  /* Remove hover states on touch */
+  .product-block:hover .product_hover_block {
+    opacity: 1;
+  }
+}
+
+
+/* ==========================================================================
+   12. PERFORMANCE - Reduce Animations on Mobile
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  /* Reduce motion for better performance */
+  .product-block,
+  .product-block *,
+  .customNavigation a {
+    transition-duration: 0.2s !important;
+  }
+
+  /* Disable complex hover effects */
+  .product-block:hover .countdown {
+    opacity: 1;
+  }
+
+  .product-block:hover .stock_status {
+    opacity: 0.8;
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
