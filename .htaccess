@@ -3,11 +3,18 @@
 
 # Enable mod_rewrite and pass Authorization header
 RewriteEngine On
-RewriteCond %{HTTP:Authorization} ^(.*)
-RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+# Pass Authorization header to PHP (required for 1C sync)
+RewriteCond %{HTTP:Authorization} .+
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 # CGI/FastCGI fix for Authorization header
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# Alternative method for some hosts
+<IfModule mod_setenvif.c>
+    SetEnvIf Authorization "(.*)" PHP_AUTH_DIGEST=$1
+</IfModule>
 
 # SEO URL Settings
 # If your opencart installation does not run on the main web folder, make sure to specify the folder.

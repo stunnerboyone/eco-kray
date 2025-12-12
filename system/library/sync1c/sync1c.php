@@ -42,22 +42,70 @@ class Sync1C {
         $username = '';
         $password = '';
 
-        // Try different auth methods
+        // Try different auth methods (various hosting configurations)
         if (isset($_SERVER['PHP_AUTH_USER'])) {
             $username = $_SERVER['PHP_AUTH_USER'];
-            $password = $_SERVER['PHP_AUTH_PW'];
-        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+        }
+
+        // HTTP_AUTHORIZATION (mod_rewrite)
+        if (empty($username) && isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $auth = $_SERVER['HTTP_AUTHORIZATION'];
             if (strpos($auth, 'Basic ') === 0) {
                 $decoded = base64_decode(substr($auth, 6));
-                list($username, $password) = explode(':', $decoded, 2);
+                if (strpos($decoded, ':') !== false) {
+                    list($username, $password) = explode(':', $decoded, 2);
+                }
             }
-        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+        }
+
+        // REDIRECT_HTTP_AUTHORIZATION (CGI mode)
+        if (empty($username) && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
             $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
             if (strpos($auth, 'Basic ') === 0) {
                 $decoded = base64_decode(substr($auth, 6));
-                list($username, $password) = explode(':', $decoded, 2);
+                if (strpos($decoded, ':') !== false) {
+                    list($username, $password) = explode(':', $decoded, 2);
+                }
             }
+        }
+
+        // Try getallheaders() as fallback
+        if (empty($username) && function_exists('getallheaders')) {
+            $headers = getallheaders();
+            foreach ($headers as $key => $value) {
+                if (strtolower($key) === 'authorization') {
+                    if (strpos($value, 'Basic ') === 0) {
+                        $decoded = base64_decode(substr($value, 6));
+                        if (strpos($decoded, ':') !== false) {
+                            list($username, $password) = explode(':', $decoded, 2);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Try apache_request_headers() as another fallback
+        if (empty($username) && function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+            foreach ($headers as $key => $value) {
+                if (strtolower($key) === 'authorization') {
+                    if (strpos($value, 'Basic ') === 0) {
+                        $decoded = base64_decode(substr($value, 6));
+                        if (strpos($decoded, ':') !== false) {
+                            list($username, $password) = explode(':', $decoded, 2);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        // URL-based auth fallback (for hosts that strip Authorization header)
+        if (empty($username) && isset($_GET['user'])) {
+            $username = $_GET['user'];
+            $password = isset($_GET['pass']) ? $_GET['pass'] : '';
         }
 
         $this->log->write("Auth attempt: user=$username");
