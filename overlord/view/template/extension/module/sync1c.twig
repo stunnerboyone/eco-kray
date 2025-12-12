@@ -1,0 +1,113 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-sync1c" class="btn btn-primary"><i class="fa fa-save"></i> Зберегти</button>
+        <a href="{{ cancel }}" class="btn btn-default"><i class="fa fa-reply"></i> Назад</a>
+      </div>
+      <h1>Sync 1C - Обмін даними з 1С</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}</div>
+    {% endif %}
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-info-circle"></i> Інформація для 1С</h3></div>
+      <div class="panel-body">
+        <div class="alert alert-info">
+          <strong>URL для обміну:</strong><br>
+          <code>{{ sync_url }}</code>
+          <br><br>
+          <small>Вкажіть цю адресу в налаштуваннях обміну в 1С</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-bar-chart"></i> Статистика</h3></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="well text-center">
+              <h2>{{ stats.products_synced }}</h2>
+              <p>Товарів синхронізовано</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well text-center">
+              <h2>{{ stats.categories_synced }}</h2>
+              <p>Категорій синхронізовано</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well text-center">
+              <h2>{{ stats.orders_exported }}</h2>
+              <p>Замовлень експортовано</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="well text-center">
+              <h4>{{ stats.last_sync }}</h4>
+              <p>Остання синхронізація</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-sync1c">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"><i class="fa fa-cog"></i> Налаштування</h3></div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Статус</label>
+            <div class="col-sm-10">
+              <select name="sync1c_status" class="form-control">
+                <option value="1" {% if sync1c_status == 1 %}selected{% endif %}>Увімкнено</option>
+                <option value="0" {% if sync1c_status == 0 %}selected{% endif %}>Вимкнено</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Логін</label>
+            <div class="col-sm-10">
+              <input type="text" name="sync1c_username" value="{{ sync1c_username }}" class="form-control" />
+              <small class="help-block">Ім'я користувача для авторизації з 1С</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Пароль</label>
+            <div class="col-sm-10">
+              <input type="password" name="sync1c_password" value="{{ sync1c_password }}" class="form-control" />
+              <small class="help-block">Пароль для авторизації з 1С</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title pull-left"><i class="fa fa-file-text-o"></i> Лог обміну</h3>
+        <a href="{{ cancel }}&route=extension/module/sync1c/clearLog" class="btn btn-danger btn-sm pull-right">Очистити лог</a>
+        <div class="clearfix"></div>
+      </div>
+      <div class="panel-body">
+        <pre style="max-height: 400px; overflow-y: auto; background: #1e1e1e; color: #d4d4d4; padding: 15px; font-size: 12px;">{{ log }}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
+{{ footer }}
