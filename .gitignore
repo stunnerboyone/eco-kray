@@ -10,8 +10,6 @@ image/**
 storage/**
 
 # Config files with credentials
-config.php
-overlord/config.php
 .env
 .env.*
 
