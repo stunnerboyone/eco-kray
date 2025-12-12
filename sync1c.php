@@ -69,6 +69,14 @@ $sync = new Sync1C($registry);
 // Log request
 $log->write('=== REQUEST: ' . $_SERVER['REQUEST_URI'] . ' ===');
 
+// Handle session from cookie or query param
+if (isset($_GET['session_id'])) {
+    session_id($_GET['session_id']);
+    session_start();
+} elseif (isset($_COOKIE[session_name()])) {
+    // Session already started above
+}
+
 // Get request parameters
 $type = isset($_GET['type']) ? $_GET['type'] : '';
 $mode = isset($_GET['mode']) ? $_GET['mode'] : '';
