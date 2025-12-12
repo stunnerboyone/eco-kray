@@ -23,17 +23,20 @@
 <script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
 <script src="catalog/view/javascript/jquery.countdown.min.js"></script>
 <script src="catalog/view/javascript/jquery.countdown.js"></script>
-<!-- Font Awesome 6 (separate for icon fonts) -->
-<link href="catalog/view/javascript/font-awesome-6/css/all.min.css" rel="stylesheet" type="text/css" />
-<link href="catalog/view/javascript/font-awesome-6/css/v4-shims.min.css" rel="stylesheet" type="text/css" />
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-<!-- Combined Theme CSS (14 files merged) -->
+<!-- Critical CSS loads normally -->
 <link href="catalog/view/theme/{{ mytemplate }}/stylesheet/combined.min.css" rel="stylesheet" type="text/css" />
+<!-- Non-critical CSS deferred (Font Awesome, Google Fonts) -->
+<link rel="preload" href="catalog/view/javascript/font-awesome-6/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="catalog/view/javascript/font-awesome-6/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+</noscript>
 {% if direction == 'rtl' %}
 <link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ mytemplate }}/stylesheet/webdigify/rtl.css">
 {% endif %}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
 {% for style in styles %}
 <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
 {% endfor %}
