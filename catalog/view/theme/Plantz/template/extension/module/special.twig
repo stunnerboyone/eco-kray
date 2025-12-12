@@ -19,7 +19,7 @@
       <div class="product-thumb">
         <div class="image {% if product.qty == 0 %}outstock{% endif %}">
           <a href="{{ product.href }}">
-            <img src="{{ product.thumb }}" alt="{{ product.name }}" />
+            <img src="{{ product.thumb }}" alt="{{ product.name }}" loading="lazy" />
           </a>
           {% if product.special %}
             <span class="special-tag">{{ product.percentsaving }}%</span>

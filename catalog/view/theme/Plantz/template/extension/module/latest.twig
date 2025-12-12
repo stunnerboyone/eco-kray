@@ -20,12 +20,12 @@
 			<div class="image">
 			{% if product.thumb_swap %}
 					<a href="{{ product.href }}">
-					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive reg-image"/>
-					<div class="image_content"><img class="img-responsive hover-image" src="{{ product.thumb_swap }}" title="{{ product.name }}" alt="{{ product.name }}"/></div>
+					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive reg-image" loading="lazy"/>
+					<div class="image_content"><img class="img-responsive hover-image" src="{{ product.thumb_swap }}" title="{{ product.name }}" alt="{{ product.name }}" loading="lazy"/></div>
 					</a>
 					{% else %}
 					<a href="{{ product.href }}">
-					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive"/></a>
+					<img src="{{ product.thumb }}" title="{{ product.name }}" alt="{{ product.name }}" class="img-responsive" loading="lazy"/></a>
 			{% endif %}
 				
 			<div class="product_hover_block">
