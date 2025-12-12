@@ -4,11 +4,6 @@
 **/.git/
 **/.git/**
 
-# System and uploads
-system/**
-image/**
-storage/**
-
 # Config files with credentials
 .env
 .env.*
