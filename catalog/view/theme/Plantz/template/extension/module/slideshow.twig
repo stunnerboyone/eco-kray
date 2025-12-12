@@ -2,15 +2,15 @@
 <div id="spinner"></div>
 <div class="swiper-viewport">
   <div id="slideshow{{ module }}" class="swiper-container" style="opacity: 1;">
-    <div class="swiper-wrapper"> 
+    <div class="swiper-wrapper">
       {% for banner in banners %}
         <div class="swiper-slide text-center">
           {% if banner.link %}
           <a href="{{ banner.link }}">
-            <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+            <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" width="1400" height="900" {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} />
           </a>
           {% else %}
-          <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+          <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" width="1400" height="900" {% if loop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %} />
           {% endif %}
           {# <div class="slide-description">#}
             
