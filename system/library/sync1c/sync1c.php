@@ -367,6 +367,7 @@ class Sync1C {
                 WHERE product_id = '" . (int)$product_id . "'");
 
             $result = 'updated';
+            $this->log->write("[PRODUCT UPDATE] ID:$product_id | SKU:$sku | $name");
         } else {
             // Create product
             $this->db->query("INSERT INTO " . DB_PREFIX . "product SET
@@ -394,6 +395,7 @@ class Sync1C {
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_1c SET product_id = '" . (int)$product_id . "', guid = '" . $this->db->escape($guid) . "'");
 
             $result = 'created';
+            $this->log->write("[PRODUCT NEW] ID:$product_id | SKU:$sku | $name");
         }
 
         // Link to categories
@@ -455,12 +457,27 @@ class Sync1C {
                 }
             }
 
+            // Get product name for logging
+            $name_query = $this->db->query("SELECT name FROM " . DB_PREFIX . "product_description WHERE product_id = '" . (int)$product_id . "' LIMIT 1");
+            $product_name = $name_query->num_rows ? $name_query->row['name'] : 'Unknown';
+
+            // Get current values
+            $old_query = $this->db->query("SELECT price, quantity, status FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
+            $old_price = $old_query->num_rows ? $old_query->row['price'] : 0;
+            $old_qty = $old_query->num_rows ? $old_query->row['quantity'] : 0;
+            $status = $old_query->num_rows ? $old_query->row['status'] : 1;
+
             // Update product
             $this->db->query("UPDATE " . DB_PREFIX . "product SET
                 price = '" . (float)$price . "',
                 quantity = '" . (int)$quantity . "',
                 date_modified = NOW()
                 WHERE product_id = '" . (int)$product_id . "'");
+
+            // Log with details
+            $price_change = ($old_price != $price) ? " price:$old_price->$price" : "";
+            $qty_change = ($old_qty != $quantity) ? " qty:$old_qty->$quantity" : "";
+            $this->log->write("[OFFER] ID:$product_id | $product_name |$price_change$qty_change | status:$status");
 
             $stats['updated']++;
         }
