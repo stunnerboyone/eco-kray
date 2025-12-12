@@ -1,11 +1,13 @@
 # 1. To use URL Alias you need to be running apache with mod_rewrite enabled.
 # 2. In your opencart directory rename htaccess.txt to .htaccess.
 
-# Enable mod_rewrite
-#RewriteEngine On
-#RewriteCond %{HTTP:Authorization} ^(.*)
-#RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+# Enable mod_rewrite and pass Authorization header
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
 
+# CGI/FastCGI fix for Authorization header
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
 # SEO URL Settings
 # If your opencart installation does not run on the main web folder, make sure to specify the folder.
