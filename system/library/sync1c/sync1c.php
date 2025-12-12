@@ -116,19 +116,24 @@ class Sync1C {
 
         // Validate
         if ($username !== $config_user || $password !== $config_pass) {
-            $this->log->write('Auth FAILED');
+            $this->log->write("Auth FAILED: expected '$config_user', got '$username'");
             return "failure\nНеверное имя пользователя или пароль";
         }
 
-        // Start session
-        $this->session->start();
+        // Session should already be started in sync1c.php
         $session_id = session_id();
+        if (empty($session_id)) {
+            session_start();
+            $session_id = session_id();
+        }
+
         $this->session->data['sync1c_auth'] = true;
         $this->session->data['sync1c_time'] = time();
 
         $this->log->write("Auth SUCCESS, session: $session_id");
 
-        return "success\n" . session_name() . "\n" . $session_id;
+        $cookie_name = session_name();
+        return "success\n$cookie_name\n$session_id";
     }
 
     /**

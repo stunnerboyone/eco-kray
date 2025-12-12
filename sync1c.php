@@ -52,9 +52,10 @@ $response = new Response();
 $response->addHeader('Content-Type: text/plain; charset=utf-8');
 $registry->set('response', $response);
 
-// Session
+// Session - start it immediately
 $config->set('session_engine', 'file');
 $session = new Session('file', $registry);
+$session->start();
 $registry->set('session', $session);
 
 // Cache
