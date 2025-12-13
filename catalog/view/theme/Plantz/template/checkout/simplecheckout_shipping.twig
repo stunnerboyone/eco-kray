@@ -15,7 +15,7 @@
                         {% endif %}
                         {% if shipping_method['error'] is empty %}
                             {% for quote in shipping_method['quote'] %}
-                                <option value="{{ quote['code'] }}" {{ quote['dummy'] is not empty ? 'disabled="disabled"' : '' }} {{ quote['dummy'] is not empty ? 'data-dummy="true"' : '' }} {% if quote['code'] == code %}selected="selected"{% endif %}>{{ quote['title'] }}{{ quote['text'] is not empty ? ' - ' ~ quote['text'] : '' }}</option>
+                                <option value="{{ quote['code'] }}" {{ quote['dummy'] is not empty ? 'disabled="disabled"' : '' }} {{ quote['dummy'] is not empty ? 'data-dummy="true"' : '' }} {% if quote['code'] == code %}selected="selected"{% endif %}>{{ quote['title'] }}</option>
                                 {% if quote['code'] == code %}
                                     {% set current_method = quote %}
                                 {% endif %}
@@ -52,7 +52,7 @@
                             <div class="radio">
                                 <label for="{{ quote['code'] }}">
                                     <input type="radio" data-onchange="reloadAll" name="shipping_method" {{ quote['dummy'] is not empty ? 'disabled="disabled"' : '' }} {{ quote['dummy'] is not empty ? 'data-dummy="true"' : '' }} value="{{ quote['code'] }}" id="{{ quote['code'] }}" {% if quote['code'] == code %}checked="checked"{% endif %} />
-                                    {{ quote['title'] is not empty ? quote['title'] : '' }}{{ quote['text'] is not empty ? ' - ' ~ quote['text'] : '' }}
+                                    {{ quote['title'] is not empty ? quote['title'] : '' }}
                                 </label>
                             </div>
                             {% if quote['description'] is not empty and (display_for_selected is empty or (display_for_selected is not empty and quote['code'] == code)) %}

@@ -130,11 +130,6 @@
         </span>
     </div>
 {% endfor %}
-{% if modules['coupon'] is defined %}
-    <div class="simplecheckout-cart-total">
-        <span class="inputs">{{ entry_coupon }}&nbsp;<input class="form-control" type="text" data-onchange="reloadAll" name="coupon" value="{{ coupon }}" /></span>
-    </div>
-{% endif %}
 {% if modules['reward'] is defined and points > 0 %}
     <div class="simplecheckout-cart-total">
         <span class="inputs">{{ entry_reward }}&nbsp;<input class="form-control" type="text" name="reward" data-onchange="reloadAll" value="{{ reward }}" /></span>
