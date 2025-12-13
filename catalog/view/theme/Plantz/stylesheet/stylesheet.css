@@ -13857,3 +13857,276 @@ h4:focus a {
 }
 
 /* ======================================================================== */
+
+/* ========================================================================
+   DROPDOWN IMPROVEMENTS - Modern Design with Animations
+   Search, Account, and Cart dropdowns with smooth animations
+   ======================================================================== */
+
+/* Slide Down Animation */
+@keyframes slideDownFade {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Search Dropdown - Modern Design */
+#search .search_toggle {
+	margin-top: 15px !important;
+	padding: 20px !important;
+	background: #ffffff !important;
+	border: none !important;
+	border-radius: 16px !important;
+	box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+	animation: slideDownFade 0.3s ease-out;
+}
+
+#search input[type="text"],
+#searchbox input[type="text"] {
+	border: 2px solid #e0e0e0 !important;
+	border-radius: 12px !important;
+	padding: 14px 20px !important;
+	font-size: 15px !important;
+	transition: all 0.3s ease !important;
+}
+
+#search input[type="text"]:focus,
+#searchbox input[type="text"]:focus {
+	border-color: #88b04b !important;
+	box-shadow: 0 0 0 4px rgba(136, 176, 75, 0.1) !important;
+	outline: none !important;
+}
+
+#search .btn-default,
+#searchbox .btn-default {
+	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
+	color: #ffffff !important;
+	border: none !important;
+	border-radius: 12px !important;
+	padding: 14px 28px !important;
+	font-weight: 600 !important;
+	transition: all 0.3s ease !important;
+}
+
+#search .btn-default:hover,
+#searchbox .btn-default:hover {
+	background: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%) !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3) !important;
+}
+
+/* Live Search Results */
+.live-search {
+	margin-top: 10px !important;
+	background: #ffffff !important;
+	border: none !important;
+	border-radius: 12px !important;
+	box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+	overflow: hidden !important;
+}
+
+.live-search ul {
+	padding: 8px !important;
+}
+
+.live-search ul li {
+	padding: 12px 16px !important;
+	border-radius: 8px !important;
+	transition: all 0.2s ease !important;
+	cursor: pointer !important;
+}
+
+.live-search ul li:hover {
+	background: rgba(136, 176, 75, 0.08) !important;
+	transform: translateX(4px) !important;
+}
+
+.live-search ul li a {
+	color: #2b2b2b !important;
+	text-decoration: none !important;
+}
+
+.live-search ul li img {
+	border-radius: 6px !important;
+	transition: transform 0.3s ease !important;
+}
+
+.live-search ul li:hover img {
+	transform: scale(1.05) !important;
+}
+
+/* Account Dropdown - Modern Design */
+.dropdown.myaccount .dropdown-menu,
+.myaccount-menu {
+	margin-top: 15px !important;
+	padding: 12px !important;
+	background: #ffffff !important;
+	border: none !important;
+	border-radius: 16px !important;
+	box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+	min-width: 220px !important;
+	animation: slideDownFade 0.3s ease-out !important;
+}
+
+.dropdown.myaccount .dropdown-menu::before,
+.myaccount-menu::before {
+	content: "";
+	position: absolute;
+	top: -8px;
+	right: 20px;
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #ffffff;
+	filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
+}
+
+.dropdown.myaccount .dropdown-menu li,
+.myaccount-menu li {
+	margin-bottom: 4px !important;
+}
+
+.dropdown.myaccount .dropdown-menu li a,
+.myaccount-menu li a {
+	padding: 12px 16px !important;
+	border-radius: 10px !important;
+	color: #2b2b2b !important;
+	font-weight: 500 !important;
+	transition: all 0.2s ease !important;
+	display: block !important;
+}
+
+.dropdown.myaccount .dropdown-menu li a:hover,
+.myaccount-menu li a:hover {
+	background: linear-gradient(135deg, rgba(136, 176, 75, 0.1) 0%, rgba(136, 176, 75, 0.05) 100%) !important;
+	color: #88b04b !important;
+	transform: translateX(4px) !important;
+	text-decoration: none !important;
+}
+
+/* Add Material Icons to account menu */
+.dropdown.myaccount .dropdown-menu li a[href*="login"]::before {
+	content: "login";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+.dropdown.myaccount .dropdown-menu li a[href*="register"]::before {
+	content: "person_add";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+.dropdown.myaccount .dropdown-menu li a[href*="wishlist"]::before {
+	content: "favorite";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+.dropdown.myaccount .dropdown-menu li a[href*="checkout"]::before {
+	content: "shopping_cart";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+/* Cart Dropdown Arrow */
+.cart-dropdown-menu::before,
+#cart::before {
+	content: "";
+	position: absolute;
+	top: -8px;
+	right: 20px;
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #ffffff;
+	filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
+}
+
+.cart-dropdown.open .cart-dropdown-menu,
+.cart-dropdown.open #cart {
+	animation: slideDownFade 0.3s ease-out !important;
+}
+
+/* Cart Total Section Enhancement */
+.cart-totals {
+	background: linear-gradient(135deg, rgba(136, 176, 75, 0.08) 0%, rgba(136, 176, 75, 0.05) 100%) !important;
+	border-radius: 12px !important;
+	padding: 16px !important;
+	margin-top: 16px !important;
+	margin-bottom: 20px !important;
+}
+
+.cart-total-row span:first-child {
+	font-weight: 500 !important;
+	color: #666 !important;
+}
+
+.cart-total-row strong {
+	font-size: 20px !important;
+	color: #88b04b !important;
+	font-weight: 700 !important;
+}
+
+/* Quantity Controls */
+.quantity-controls button {
+	background: #f5f5f5 !important;
+	border: 1px solid #e0e0e0 !important;
+	border-radius: 6px !important;
+	transition: all 0.2s ease !important;
+}
+
+.quantity-controls button:hover {
+	background: #88b04b !important;
+	border-color: #88b04b !important;
+	color: #ffffff !important;
+	transform: scale(1.1) !important;
+}
+
+/* Custom Scrollbar */
+.cart-dropdown-menu::-webkit-scrollbar,
+#cart::-webkit-scrollbar,
+.live-search::-webkit-scrollbar {
+	width: 6px;
+}
+
+.cart-dropdown-menu::-webkit-scrollbar-track,
+#cart::-webkit-scrollbar-track,
+.live-search::-webkit-scrollbar-track {
+	background: #f5f5f5;
+	border-radius: 10px;
+}
+
+.cart-dropdown-menu::-webkit-scrollbar-thumb,
+#cart::-webkit-scrollbar-thumb,
+.live-search::-webkit-scrollbar-thumb {
+	background: #88b04b;
+	border-radius: 10px;
+}
+
+.cart-dropdown-menu::-webkit-scrollbar-thumb:hover,
+#cart::-webkit-scrollbar-thumb:hover,
+.live-search::-webkit-scrollbar-thumb:hover {
+	background: #6a8f3a;
+}
+
+/* ======================================================================== */
