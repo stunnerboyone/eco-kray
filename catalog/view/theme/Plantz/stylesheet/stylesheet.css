@@ -3227,16 +3227,6 @@ header .header-cart a .fa {
 	-webkit-transform: skewX(-25deg);
 	transform: skewX(-25deg);
 }
-@-webkit-keyframes shine {
-	100% {
-		left: 125%;
-	}
-}
-@keyframes shine {
-	100% {
-		left: 125%;
-	}
-}
 #wdcmsbottombanner .banner a {
 	position: relative;
 	display: block;
@@ -13733,24 +13723,12 @@ h4:focus a {
 	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
 	transform: scale(1.15) !important;
 	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3) !important;
-	animation: cartShakeIcon 0.5s ease !important;
+	animation: cartShake 0.5s ease !important;
 }
 
 .cart-button:hover .cart_image i,
 .cart-dropdown .cart-button:hover .cart_image i {
 	color: #ffffff !important;
-}
-
-@keyframes cartShakeIcon {
-	0%, 100% {
-		transform: scale(1.15) rotate(0deg);
-	}
-	25% {
-		transform: scale(1.15) rotate(-8deg);
-	}
-	75% {
-		transform: scale(1.15) rotate(8deg);
-	}
 }
 
 /* Cart Badge - Red Circle with Pop Animation */
@@ -13774,19 +13752,7 @@ h4:focus a {
 	box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4) !important;
 	border: 2px solid #ffffff !important;
 	line-height: 1 !important;
-	animation: badgePopIcon 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-@keyframes badgePopIcon {
-	0% {
-		transform: scale(0);
-	}
-	50% {
-		transform: scale(1.2);
-	}
-	100% {
-		transform: scale(1);
-	}
+	animation: cartBadgePop 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Cart Dropdown - Modern Design */
