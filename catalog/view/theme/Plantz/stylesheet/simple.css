@@ -661,12 +661,16 @@
     clear:both;
 }
 .simple-content .checkout-heading {
-    background-color: #f5f5f5;
-    border-color: #ddd;
-    color: #333;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-    padding: 10px 15px;
+    background: linear-gradient(to bottom, #ffffff 0%, #f9faf9 100%);
+    border: 1px solid #e0e0e0;
+    border-bottom: 3px solid #88b04b;
+    color: #2b2b2b;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 14px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 .checkout-heading span {
     display: inline-block !important;
