@@ -5,6 +5,7 @@ header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()');
+header('Strict-Transport-Security: max-age=300'); // 5 minutes for testing - increase after verification
 header_remove('X-Powered-By');
 
 // Version
