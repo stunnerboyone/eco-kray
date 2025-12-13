@@ -857,3 +857,32 @@
 .simple-content .radio label:has(input[type="radio"]:checked) {
     background-color: rgba(136, 176, 75, 0.05);
 }
+
+/* Improved breadcrumb/heading area for checkout */
+.simple-content .breadcrumb {
+    background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+    padding: 20px 25px;
+    margin: -5px -5px 25px -5px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(136, 176, 75, 0.2);
+}
+
+.simple-content .breadcrumb li,
+.simple-content .breadcrumb li a {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.simple-content .breadcrumb li a:hover {
+    color: #f0f0f0;
+    text-decoration: none;
+}
+
+.simple-content .breadcrumb i {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.simple-content .breadcrumb > li + li:before {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
