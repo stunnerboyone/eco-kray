@@ -1,4 +1,9 @@
 <?php
+// Enable Gzip Compression (reduces page size by ~70%)
+if (!ob_start('ob_gzhandler')) {
+    ob_start();
+}
+
 // Security Headers (for nginx compatibility)
 header('X-XSS-Protection: 1; mode=block');
 header('X-Content-Type-Options: nosniff');
