@@ -1102,26 +1102,64 @@ span.account-title {
 	display: none;
 }
 .myaccount > a {
-	width: 30px;
-	height: 30px;
-	background-image: url("../image/webdigify/user.svg");
-	background-size: 19px;
-	background-repeat: no-repeat;
-	background-position: center;
-	display: inline-block;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: #f5f5f5;
+	color: #2b2b2b;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 	vertical-align: middle;
-	transition: all 600ms ease-in-out 0s;
-	-webkit-transition: all 600ms ease-in-out 0s;
-	-moz-transition: all 600ms ease-in-out 0s;
-	-o-transition: all 600ms ease-in-out 0s;
-	-ms-transition: all 600ms ease-in-out 0s;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
 }
+
+.myaccount > a::before {
+	content: "person";
+	font-family: 'Material Icons';
+	font-size: 22px;
+}
+
 .myaccount > a:hover {
-	transform: rotateY(360deg);
-	-webkit-transform: rotateY(360deg);
-	-moz-transform: rotateY(360deg);
-	-o-transform: rotateY(360deg);
-	-ms-transform: rotateY(360deg);
+	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+	color: #ffffff;
+	transform: scale(1.15);
+	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3);
+}
+
+.myaccount > a::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background: rgba(136, 176, 75, 0.3);
+	transform: scale(0);
+	opacity: 0;
+	transition: all 0.4s ease;
+	z-index: -1;
+}
+
+.myaccount > a:hover::after {
+	transform: scale(1.4);
+	opacity: 0;
+	animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+		opacity: 0.5;
+	}
+	50% {
+		transform: scale(1.3);
+		opacity: 0.2;
+	}
+	100% {
+		transform: scale(1.5);
+		opacity: 0;
+	}
 }
 .language-menu {
 	padding: 10px 15px;
@@ -1456,30 +1494,38 @@ a.banner_text::after {
 	margin: 0 0px 0 0;
 }
 #search .search_button {
-	font-size: 0;
-	padding: 0;
-	text-align: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: #f5f5f5;
+	color: #2b2b2b;
+	border: none;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	cursor: pointer;
 	z-index: 9;
-	background-image: url(../image/webdigify/search.svg);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 17px;
-	height: 32px;
-	width: 30px;
-	transition: none;
-	display: inline-block;
 	vertical-align: middle;
 }
 
+#search .search_button i {
+	font-size: 22px;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#search .search_button:hover,
 #search .search_button.active {
+	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+	transform: rotate(90deg) scale(1.1);
+	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3);
 	z-index: 1;
-	cursor: pointer;
-	background-image: url(../image/webdigify/menu-close-black.svg);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 15px;
 	position: relative;
+}
+
+#search .search_button:hover i,
+#search .search_button.active i {
+	color: #ffffff;
 }
 span.search-title {
 	display: inline-block;
