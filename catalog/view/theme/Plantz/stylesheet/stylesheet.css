@@ -1,3 +1,42 @@
+/* CSS Variables for Design System */
+:root {
+	/* Brand Colors */
+	--color-primary-green: #88b04b;
+	--color-primary-green-dark: #6a8f3a;
+	--color-brown: #c67d4e;
+	--color-red: #e74c3c;
+	--color-white: #ffffff;
+	--color-black: #111111;
+	--color-text-dark: #2b2b2b;
+	--color-text-medium: #666666;
+	--color-text-light: #999999;
+	--color-border: #dddddd;
+	--color-bg-light: #f5f5f5;
+
+	/* Gradients */
+	--gradient-green: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+	--gradient-green-reverse: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%);
+
+	/* Spacing */
+	--icon-size: 44px;
+	--badge-size: 22px;
+
+	/* Border Radius */
+	--radius-circle: 50%;
+	--radius-large: 16px;
+	--radius-medium: 8px;
+	--radius-small: 3px;
+
+	/* Shadows */
+	--shadow-icon: 0 4px 12px rgba(136, 176, 75, 0.3);
+	--shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.18);
+	--shadow-badge: 0 2px 8px rgba(231, 76, 60, 0.4);
+
+	/* Transitions */
+	--transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	--transition-fast: all 0.3s ease;
+}
+
 body {
 	color: #666666;
 	font-family: "Roboto", sans-serif;
@@ -1102,16 +1141,16 @@ span.account-title {
 	display: none;
 }
 .myaccount > a {
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	background: #f5f5f5;
-	color: #2b2b2b;
+	width: var(--icon-size);
+	height: var(--icon-size);
+	border-radius: var(--radius-circle);
+	background: var(--color-bg-light);
+	color: var(--color-text-dark);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	vertical-align: middle;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: var(--transition-smooth);
 	position: relative;
 }
 
@@ -1122,10 +1161,10 @@ span.account-title {
 }
 
 .myaccount > a:hover {
-	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
-	color: #ffffff;
+	background: var(--gradient-green);
+	color: var(--color-white);
 	transform: scale(1.15);
-	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3);
+	box-shadow: var(--shadow-icon);
 }
 
 .myaccount > a::after {
@@ -1133,11 +1172,11 @@ span.account-title {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	background: rgba(136, 176, 75, 0.3);
 	transform: scale(0);
 	opacity: 0;
-	transition: all 0.4s ease;
+	transition: var(--transition-fast);
 	z-index: -1;
 }
 
@@ -1497,13 +1536,13 @@ a.banner_text::after {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 44px;
-	height: 44px;
-	border-radius: 50%;
-	background: #f5f5f5;
-	color: #2b2b2b;
+	width: var(--icon-size);
+	height: var(--icon-size);
+	border-radius: var(--radius-circle);
+	background: var(--color-bg-light);
+	color: var(--color-text-dark);
 	border: none;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: var(--transition-smooth);
 	cursor: pointer;
 	z-index: 9;
 	vertical-align: middle;
@@ -1511,21 +1550,21 @@ a.banner_text::after {
 
 #search .search_button i {
 	font-size: 22px;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	transition: var(--transition-smooth);
 }
 
 #search .search_button:hover,
 #search .search_button.active {
-	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+	background: var(--gradient-green);
 	transform: rotate(90deg) scale(1.1);
-	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3);
+	box-shadow: var(--shadow-icon);
 	z-index: 1;
 	position: relative;
 }
 
 #search .search_button:hover i,
 #search .search_button.active i {
-	color: #ffffff;
+	color: var(--color-white);
 }
 span.search-title {
 	display: inline-block;
@@ -13704,42 +13743,42 @@ h4:focus a {
 /* Cart Button - Circular Design with Shake Animation */
 .cart-button,
 .cart-dropdown .cart-button {
-	background: #f5f5f5 !important;
+	background: var(--color-bg-light) !important;
 	border: none !important;
-	width: 44px !important;
-	height: 44px !important;
-	border-radius: 50% !important;
+	width: var(--icon-size) !important;
+	height: var(--icon-size) !important;
+	border-radius: var(--radius-circle) !important;
 	display: inline-flex !important;
 	align-items: center !important;
 	justify-content: center !important;
 	padding: 0 !important;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	transition: var(--transition-smooth) !important;
 	cursor: pointer !important;
 	position: relative !important;
 }
 
 .cart-button:hover,
 .cart-dropdown .cart-button:hover {
-	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
+	background: var(--gradient-green) !important;
 	transform: scale(1.15) !important;
-	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3) !important;
+	box-shadow: var(--shadow-icon) !important;
 	animation: cartShake 0.5s ease !important;
 }
 
 .cart-button:hover .cart_image i,
 .cart-dropdown .cart-button:hover .cart_image i {
-	color: #ffffff !important;
+	color: var(--color-white) !important;
 }
 
 /* Cart Badge - Red Circle with Pop Animation */
 .cart_total,
 #cart-total,
 .cart-dropdown .cart_total {
-	background: #e74c3c !important;
-	color: #ffffff !important;
-	border-radius: 50% !important;
-	min-width: 22px !important;
-	height: 22px !important;
+	background: var(--color-red) !important;
+	color: var(--color-white) !important;
+	border-radius: var(--radius-circle) !important;
+	min-width: var(--badge-size) !important;
+	height: var(--badge-size) !important;
 	padding: 0 6px !important;
 	font-size: 11px !important;
 	font-weight: 700 !important;
@@ -13749,8 +13788,8 @@ h4:focus a {
 	display: flex !important;
 	align-items: center !important;
 	justify-content: center !important;
-	box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4) !important;
-	border: 2px solid #ffffff !important;
+	box-shadow: var(--shadow-badge) !important;
+	border: 2px solid var(--color-white) !important;
 	line-height: 1 !important;
 	animation: cartBadgePop 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
@@ -13759,26 +13798,26 @@ h4:focus a {
 .cart-dropdown-menu,
 #cart {
 	border: none !important;
-	box-shadow: 0 12px 32px rgba(0,0,0,0.18) !important;
-	border-radius: 16px !important;
+	box-shadow: var(--shadow-dropdown) !important;
+	border-radius: var(--radius-large) !important;
 	padding: 24px !important;
 	min-width: 380px !important;
 	margin-top: 12px !important;
-	background: #ffffff !important;
+	background: var(--color-white) !important;
 }
 
 .cart-item {
-	transition: background 0.3s ease !important;
+	transition: var(--transition-fast) !important;
 }
 
 .cart-item:hover {
 	background: rgba(136, 176, 75, 0.03) !important;
-	border-radius: 8px !important;
+	border-radius: var(--radius-medium) !important;
 }
 
 .cart-thumb img {
-	border-radius: 8px !important;
-	transition: transform 0.3s ease !important;
+	border-radius: var(--radius-medium) !important;
+	transition: var(--transition-fast) !important;
 }
 
 .cart-item:hover .cart-thumb img {
@@ -13792,33 +13831,33 @@ h4:focus a {
 	font-weight: 600 !important;
 	text-transform: uppercase !important;
 	letter-spacing: 0.8px !important;
-	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	transition: var(--transition-smooth) !important;
 	font-size: 14px !important;
 }
 
 .cart-buttons .btn-checkout {
-	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
-	color: #ffffff !important;
+	background: var(--gradient-green) !important;
+	color: var(--color-white) !important;
 	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.25) !important;
 	border: none !important;
 }
 
 .cart-buttons .btn-checkout:hover {
-	background: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%) !important;
+	background: var(--gradient-green-reverse) !important;
 	transform: translateY(-3px) !important;
 	box-shadow: 0 8px 20px rgba(136, 176, 75, 0.35) !important;
 }
 
 .cart-buttons .btn-view-cart {
-	background: #ffffff !important;
-	color: #2b2b2b !important;
+	background: var(--color-white) !important;
+	color: var(--color-text-dark) !important;
 	border: 2px solid #e0e0e0 !important;
 }
 
 .cart-buttons .btn-view-cart:hover {
-	background: #f5f5f5 !important;
-	border-color: #88b04b !important;
-	color: #88b04b !important;
+	background: var(--color-bg-light) !important;
+	border-color: var(--color-primary-green) !important;
+	color: var(--color-primary-green) !important;
 	transform: translateY(-2px) !important;
 }
 
@@ -13845,10 +13884,10 @@ h4:focus a {
 #search .search_toggle {
 	margin-top: 15px !important;
 	padding: 20px !important;
-	background: #ffffff !important;
+	background: var(--color-white) !important;
 	border: none !important;
-	border-radius: 16px !important;
-	box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+	border-radius: var(--radius-large) !important;
+	box-shadow: var(--shadow-dropdown) !important;
 	animation: slideDownFade 0.3s ease-out;
 }
 
@@ -13858,32 +13897,32 @@ h4:focus a {
 	border-radius: 12px !important;
 	padding: 14px 20px !important;
 	font-size: 15px !important;
-	transition: all 0.3s ease !important;
+	transition: var(--transition-fast) !important;
 }
 
 #search input[type="text"]:focus,
 #searchbox input[type="text"]:focus {
-	border-color: #88b04b !important;
+	border-color: var(--color-primary-green) !important;
 	box-shadow: 0 0 0 4px rgba(136, 176, 75, 0.1) !important;
 	outline: none !important;
 }
 
 #search .btn-default,
 #searchbox .btn-default {
-	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
-	color: #ffffff !important;
+	background: var(--gradient-green) !important;
+	color: var(--color-white) !important;
 	border: none !important;
 	border-radius: 12px !important;
 	padding: 14px 28px !important;
 	font-weight: 600 !important;
-	transition: all 0.3s ease !important;
+	transition: var(--transition-fast) !important;
 }
 
 #search .btn-default:hover,
 #searchbox .btn-default:hover {
-	background: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%) !important;
+	background: var(--gradient-green-reverse) !important;
 	transform: translateY(-2px) !important;
-	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3) !important;
+	box-shadow: var(--shadow-icon) !important;
 }
 
 /* Live Search Results */
@@ -13902,7 +13941,7 @@ h4:focus a {
 
 .live-search ul li {
 	padding: 12px 16px !important;
-	border-radius: 8px !important;
+	border-radius: var(--radius-medium) !important;
 	transition: all 0.2s ease !important;
 	cursor: pointer !important;
 }
@@ -13913,13 +13952,13 @@ h4:focus a {
 }
 
 .live-search ul li a {
-	color: #2b2b2b !important;
+	color: var(--color-text-dark) !important;
 	text-decoration: none !important;
 }
 
 .live-search ul li img {
 	border-radius: 6px !important;
-	transition: transform 0.3s ease !important;
+	transition: var(--transition-fast) !important;
 }
 
 .live-search ul li:hover img {
@@ -13931,10 +13970,10 @@ h4:focus a {
 .myaccount-menu {
 	margin-top: 15px !important;
 	padding: 12px !important;
-	background: #ffffff !important;
+	background: var(--color-white) !important;
 	border: none !important;
-	border-radius: 16px !important;
-	box-shadow: 0 12px 32px rgba(0,0,0,0.15) !important;
+	border-radius: var(--radius-large) !important;
+	box-shadow: var(--shadow-dropdown) !important;
 	min-width: 220px !important;
 	animation: slideDownFade 0.3s ease-out !important;
 }
@@ -13949,7 +13988,7 @@ h4:focus a {
 	height: 0;
 	border-left: 8px solid transparent;
 	border-right: 8px solid transparent;
-	border-bottom: 8px solid #ffffff;
+	border-bottom: 8px solid var(--color-white);
 	filter: drop-shadow(0 -2px 4px rgba(0,0,0,0.1));
 }
 
@@ -13962,7 +14001,7 @@ h4:focus a {
 .myaccount-menu li a {
 	padding: 12px 16px !important;
 	border-radius: 10px !important;
-	color: #2b2b2b !important;
+	color: var(--color-text-dark) !important;
 	font-weight: 500 !important;
 	transition: all 0.2s ease !important;
 	display: block !important;
