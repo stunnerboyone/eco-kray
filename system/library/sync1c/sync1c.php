@@ -108,15 +108,16 @@ class Sync1C {
             $password = isset($_GET['pass']) ? $_GET['pass'] : '';
         }
 
-        $this->log->write("Auth attempt: user=$username");
-
         // Get configured credentials
         $config_user = $this->config->get('sync1c_username') ?: 'admin';
         $config_pass = $this->config->get('sync1c_password') ?: '';
 
+        // Log attempt (don't reveal expected username)
+        $this->log->write("Auth attempt from IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+
         // Validate
         if ($username !== $config_user || $password !== $config_pass) {
-            $this->log->write("Auth FAILED: expected '$config_user', got '$username'");
+            $this->log->write("Auth FAILED: Invalid credentials");
             return "failure\nНеверное имя пользователя или пароль";
         }
 
@@ -162,13 +163,9 @@ class Sync1C {
             }
         }
 
-        // Temporary: allow if checkauth was successful in this session
-        // This helps with hosts that have cookie/session issues
-        $this->log->write('Auth check: session data = ' . print_r($this->session->data, true));
-
-        // TEMPORARY FIX: Skip auth for testing
-        // Remove this after fixing session issues!
-        return true;
+        // Authentication failed
+        $this->log->write('Auth FAILED: No valid session or credentials');
+        return false;
     }
 
     /**

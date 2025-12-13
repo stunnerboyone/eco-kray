@@ -1,4 +1,12 @@
 <?php
+// Security Headers (for nginx compatibility)
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header('Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()');
+header_remove('X-Powered-By');
+
 // Version
 define('VERSION', '3.0.3.8');
 

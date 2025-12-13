@@ -6,6 +6,12 @@
  * CommerceML 2.x compatible exchange endpoint
  */
 
+// Security Headers
+header('X-XSS-Protection: 1; mode=block');
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header_remove('X-Powered-By');
+
 // Increase limits for large imports
 ini_set('max_execution_time', 600);
 ini_set('memory_limit', '512M');
