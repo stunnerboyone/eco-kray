@@ -13705,3 +13705,155 @@ h4:focus a {
 }
 
 /* ------------------------------------ ajax search CSS End -----------------------------------*/
+
+/* ========================================================================
+   HEADER ICONS - CIRCULAR DESIGN WITH ANIMATIONS
+   Modern circular icons for search, account, and cart
+   ======================================================================== */
+
+/* Cart Button - Circular Design with Shake Animation */
+.cart-button,
+.cart-dropdown .cart-button {
+	background: #f5f5f5 !important;
+	border: none !important;
+	width: 44px !important;
+	height: 44px !important;
+	border-radius: 50% !important;
+	display: inline-flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	padding: 0 !important;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	cursor: pointer !important;
+	position: relative !important;
+}
+
+.cart-button:hover,
+.cart-dropdown .cart-button:hover {
+	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
+	transform: scale(1.15) !important;
+	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.3) !important;
+	animation: cartShakeIcon 0.5s ease !important;
+}
+
+.cart-button:hover .cart_image i,
+.cart-dropdown .cart-button:hover .cart_image i {
+	color: #ffffff !important;
+}
+
+@keyframes cartShakeIcon {
+	0%, 100% {
+		transform: scale(1.15) rotate(0deg);
+	}
+	25% {
+		transform: scale(1.15) rotate(-8deg);
+	}
+	75% {
+		transform: scale(1.15) rotate(8deg);
+	}
+}
+
+/* Cart Badge - Red Circle with Pop Animation */
+.cart_total,
+#cart-total,
+.cart-dropdown .cart_total {
+	background: #e74c3c !important;
+	color: #ffffff !important;
+	border-radius: 50% !important;
+	min-width: 22px !important;
+	height: 22px !important;
+	padding: 0 6px !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	position: absolute !important;
+	top: -2px !important;
+	right: -2px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4) !important;
+	border: 2px solid #ffffff !important;
+	line-height: 1 !important;
+	animation: badgePopIcon 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+@keyframes badgePopIcon {
+	0% {
+		transform: scale(0);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Cart Dropdown - Modern Design */
+.cart-dropdown-menu,
+#cart {
+	border: none !important;
+	box-shadow: 0 12px 32px rgba(0,0,0,0.18) !important;
+	border-radius: 16px !important;
+	padding: 24px !important;
+	min-width: 380px !important;
+	margin-top: 12px !important;
+	background: #ffffff !important;
+}
+
+.cart-item {
+	transition: background 0.3s ease !important;
+}
+
+.cart-item:hover {
+	background: rgba(136, 176, 75, 0.03) !important;
+	border-radius: 8px !important;
+}
+
+.cart-thumb img {
+	border-radius: 8px !important;
+	transition: transform 0.3s ease !important;
+}
+
+.cart-item:hover .cart-thumb img {
+	transform: scale(1.08) !important;
+}
+
+/* Cart Buttons - Modern Style */
+.cart-buttons .btn {
+	border-radius: 10px !important;
+	padding: 14px 28px !important;
+	font-weight: 600 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.8px !important;
+	transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+	font-size: 14px !important;
+}
+
+.cart-buttons .btn-checkout {
+	background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%) !important;
+	color: #ffffff !important;
+	box-shadow: 0 4px 12px rgba(136, 176, 75, 0.25) !important;
+	border: none !important;
+}
+
+.cart-buttons .btn-checkout:hover {
+	background: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%) !important;
+	transform: translateY(-3px) !important;
+	box-shadow: 0 8px 20px rgba(136, 176, 75, 0.35) !important;
+}
+
+.cart-buttons .btn-view-cart {
+	background: #ffffff !important;
+	color: #2b2b2b !important;
+	border: 2px solid #e0e0e0 !important;
+}
+
+.cart-buttons .btn-view-cart:hover {
+	background: #f5f5f5 !important;
+	border-color: #88b04b !important;
+	color: #88b04b !important;
+	transform: translateY(-2px) !important;
+}
+
+/* ======================================================================== */
