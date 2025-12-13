@@ -803,3 +803,52 @@
 .simplecheckout-summary-totals .simplecheckout-cart-total {
     border: 0;
 }
+
+/* Improved input styling */
+.simple-content input[type=text],
+.simple-content input[type=password],
+.simple-content input[type=email],
+.simple-content input[type=tel],
+.simple-content input[type=phone],
+.simple-content input[type=date],
+.simple-content input[type=time],
+.simple-content select,
+.simple-content textarea {
+    border-radius: 8px;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.simple-content input[type=text]:focus,
+.simple-content input[type=password]:focus,
+.simple-content input[type=email]:focus,
+.simple-content input[type=tel]:focus,
+.simple-content input[type=phone]:focus,
+.simple-content input[type=date]:focus,
+.simple-content input[type=time]:focus,
+.simple-content select:focus,
+.simple-content textarea:focus {
+    outline: none;
+    border-color: #88b04b;
+    box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1);
+}
+
+.simple-content textarea {
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+
+/* Radio buttons styling */
+.simple-content .radio label {
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.simple-content .radio input[type="radio"]:checked + label,
+.simple-content .radio label:has(input[type="radio"]:checked) {
+    background-color: rgba(136, 176, 75, 0.05);
+}
