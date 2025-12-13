@@ -819,6 +819,7 @@
     border: 1px solid #ddd;
     transition: all 0.3s ease;
     font-size: 14px;
+    color: #2b2b2b;
 }
 
 .simple-content input[type=text]:focus,
