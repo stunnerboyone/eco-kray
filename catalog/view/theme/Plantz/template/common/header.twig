@@ -205,20 +205,29 @@ $(document).ready(function() {
     var cartDropdown = $(this).closest('.cart-dropdown');
     var isOpen = cartDropdown.hasClass('open');
 
+    console.log('Cart button clicked, isOpen:', isOpen);
+    console.log('Cart dropdown element:', cartDropdown);
+
     // Close other dropdowns
     $('.myaccount-menu').slideUp('slow');
     $('.myaccount > .dropdown-toggle').removeClass('active');
     $('#search .search_toggle').stop(true, true).hide();
     $('#search .search_button').removeClass('active');
 
-    // Close all cart dropdowns first
-    $('.cart-dropdown').removeClass('open');
+    // Toggle cart dropdown
+    if (isOpen) {
+      // Close cart
+      cartDropdown.removeClass('open');
+      console.log('Closing cart');
+    } else {
+      // Close all other carts first
+      $('.cart-dropdown').removeClass('open');
 
-    // If it was closed, open it
-    if (!isOpen) {
       // Load cart content and open
       $("#cart").load("index.php?route=common/cart/info", function () {
+        console.log('Cart content loaded, adding open class');
         cartDropdown.addClass("open");
+        console.log('Cart dropdown has open class:', cartDropdown.hasClass('open'));
       });
     }
   });

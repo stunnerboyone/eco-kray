@@ -14069,6 +14069,7 @@ h4:focus a {
 
 .cart-dropdown.open .cart-dropdown-menu,
 .cart-dropdown.open #cart {
+	display: block !important;
 	animation: slideDownFade 0.3s ease-out !important;
 }
 
