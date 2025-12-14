@@ -204,12 +204,17 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function (e) {
       e.preventDefault();
 
+      // Close other dropdowns
+      $('.myaccount-menu').slideUp('slow');
+      $('.myaccount > .dropdown-toggle').removeClass('active');
+      $('#search .search_toggle').hide();
+      $('#search .search_button').removeClass('active');
+
       document.querySelectorAll(".cart-dropdown").forEach(function (el) {
         if (el !== cartDropdown) {
           el.classList.remove("open");
         }
       });
-
 
       $("#cart").load("index.php?route=common/cart/info", function () {
         cartDropdown.classList.toggle("open");

@@ -107,12 +107,17 @@ $(document).ready(function(){
     });
 	
 
-    $('#search .search_button').click(function(event){			
-		$(this).toggleClass('active');		
-		event.stopPropagation();		
-		$('#search .search_toggle').toggle('medium');		
+    $('#search .search_button').click(function(event){
+		// Close other dropdowns
+		$('.myaccount-menu').slideUp('slow');
+		$('.myaccount > .dropdown-toggle').removeClass('active');
+		$('.cart-dropdown').removeClass('open');
+
+		$(this).toggleClass('active');
+		event.stopPropagation();
+		$('#search .search_toggle').toggle('medium');
 		$( "#search .search_toggle form input[type=text]" ).focus();
-	
+
 	});
 	$("#search .search_toggle").on("click", function (event) {
 		event.stopPropagation();	
@@ -185,11 +190,16 @@ $(document).ready(function(){
 		//Append land-curr in My Account
 		$('.header_nav .lang-curr-wrapper').appendTo('.nav2 .account .dropdown.myaccount .drop_account');  
 	}	
-	$(".myaccount > .dropdown-toggle").click(function(){          
+	$(".myaccount > .dropdown-toggle").click(function(){
+			// Close other dropdowns
 			$(".cart-menu").slideUp("slow");
+			$('.cart-dropdown').removeClass('open');
+			$('#search .search_toggle').hide();
+			$('#search .search_button').removeClass('active');
+
 			$(".myaccount-menu").slideToggle("slow");
- 			$(this).toggleClass("active");	
-			 $('.dropdown.myaccount .lang-curr-wrapper').toggleClass("active");	
+ 			$(this).toggleClass("active");
+			 $('.dropdown.myaccount .lang-curr-wrapper').toggleClass("active");
 			$("#cart .dropdown-toggle").removeClass('active');
 			$(".menu_toggle").slideUp("slow");
         	return false;
