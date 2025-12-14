@@ -107,27 +107,15 @@ $(document).ready(function(){
     });
 	
 
-    $('#search .search_button').off('click').on('click', function(event){
-		event.preventDefault();
-		event.stopPropagation();
-
+    $('#search .search_button').click(function(event){
 		// Close other dropdowns
 		$('.myaccount-menu').slideUp('slow');
 		$('.myaccount > .dropdown-toggle').removeClass('active');
 
-		var searchToggle = $('#search .search_toggle');
-		var searchButton = $(this);
-
-		// Toggle with smooth animation like account dropdown
-		searchToggle.slideToggle('slow');
-		searchButton.toggleClass('active');
-
-		// Focus input after animation
-		if (!searchToggle.is(':visible')) {
-			setTimeout(function() {
-				$("#search .search_toggle form input[type=text]").focus();
-			}, 100);
-		}
+		$(this).toggleClass('active');
+		event.stopPropagation();
+		$('#search .search_toggle').slideToggle('slow');
+		$( "#search .search_toggle form input[type=text]" ).focus();
 
 	});
 	$("#search .search_toggle").on("click", function (event) {
