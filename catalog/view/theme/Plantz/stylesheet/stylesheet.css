@@ -44,9 +44,154 @@ body {
 	font-weight: 400;
 	line-height: 22px;
 }
-select:focus {
-	outline: none !important;
+/* ========== UNIFIED INPUT STYLES ========== */
+/* Apply consistent styling to all form inputs across the site */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+input[type="url"],
+textarea,
+select,
+.form-control {
+	display: block;
+	width: 100%;
+	height: 44px;
+	padding: 10px 14px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333 !important;
+	background-color: #ffffff !important;
+	background-image: none;
+	border: 1px solid #d0d0d0 !important;
+	border-radius: 8px !important;
+	-webkit-border-radius: 8px !important;
+	-moz-border-radius: 8px !important;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+	transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	-webkit-transition: border-color 0.3s ease, box-shadow 0.3s ease;
+	-moz-transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+textarea,
+textarea.form-control {
+	height: auto !important;
+	min-height: 100px;
+	resize: vertical;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="search"]:focus,
+input[type="url"]:focus,
+textarea:focus,
+select:focus,
+.form-control:focus {
+	outline: none !important;
+	border-color: #88b04b !important;
+	box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+	-webkit-box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+	-moz-box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="number"]::placeholder,
+input[type="search"]::placeholder,
+input[type="url"]::placeholder,
+textarea::placeholder,
+.form-control::placeholder {
+	color: #999 !important;
+	opacity: 1;
+}
+
+input[type="text"]:disabled,
+input[type="email"]:disabled,
+input[type="password"]:disabled,
+input[type="tel"]:disabled,
+input[type="number"]:disabled,
+input[type="date"]:disabled,
+input[type="search"]:disabled,
+input[type="url"]:disabled,
+textarea:disabled,
+select:disabled,
+.form-control:disabled,
+.form-control[readonly] {
+	background-color: #f5f5f5 !important;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+/* Select dropdown specific styles */
+select,
+select.form-control {
+	padding-right: 32px;
+	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%207l5%205%205-5z%22%20fill%3D%22%23666%22%2F%3E%3C%2Fsvg%3E') !important;
+	background-repeat: no-repeat !important;
+	background-position: right 10px center !important;
+	background-size: 16px !important;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+/* Error state */
+.has-error input[type="text"],
+.has-error input[type="email"],
+.has-error input[type="password"],
+.has-error input[type="tel"],
+.has-error input[type="number"],
+.has-error input[type="date"],
+.has-error input[type="search"],
+.has-error input[type="url"],
+.has-error textarea,
+.has-error select,
+.has-error .form-control {
+	border-color: #e74c3c !important;
+}
+
+.has-error input:focus,
+.has-error textarea:focus,
+.has-error select:focus,
+.has-error .form-control:focus {
+	box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Success state */
+.has-success input[type="text"],
+.has-success input[type="email"],
+.has-success input[type="password"],
+.has-success input[type="tel"],
+.has-success input[type="number"],
+.has-success input[type="date"],
+.has-success input[type="search"],
+.has-success input[type="url"],
+.has-success textarea,
+.has-success select,
+.has-success .form-control {
+	border-color: #88b04b !important;
+}
+
+.has-success input:focus,
+.has-success textarea:focus,
+.has-success select:focus,
+.has-success .form-control:focus {
+	box-shadow: 0 0 0 3px rgba(136, 176, 75, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ========== END UNIFIED INPUT STYLES ========== */
 h1,
 h2,
 h3,
