@@ -118,18 +118,15 @@ $(document).ready(function(){
 		var searchToggle = $('#search .search_toggle');
 		var searchButton = $(this);
 
-		// Stop any ongoing animations to prevent blinking
-		searchToggle.stop(true, true);
+		// Toggle with smooth animation like account dropdown
+		searchToggle.slideToggle('slow');
+		searchButton.toggleClass('active');
 
-		// Toggle with explicit check
-		if (searchToggle.is(':visible')) {
-			searchToggle.slideUp('medium');
-			searchButton.removeClass('active');
-		} else {
-			searchToggle.slideDown('medium', function() {
+		// Focus input after animation
+		if (!searchToggle.is(':visible')) {
+			setTimeout(function() {
 				$("#search .search_toggle form input[type=text]").focus();
-			});
-			searchButton.addClass('active');
+			}, 100);
 		}
 
 	});
