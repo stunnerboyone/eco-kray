@@ -80,23 +80,14 @@ $(document).ready(function(){
 	$('#content h2').prependTo('.row .page-title');
 	
 	
-	// OLD CART HANDLER - DISABLED (now using .cart-button in header.twig)
-	// $("#cart .dropdown-toggle").off('click').on('click', function(event){
-	// 		event.stopPropagation();
-	// 		event.preventDefault();
-
-	// 		// Close other dropdowns
-	// 		$(".myaccount-menu").slideUp("slow");
-    //         $(".myaccount .dropdown-toggle").removeClass('active');
-	// 		$('#search .search_toggle').stop(true, true).hide();
-	// 		$('#search .search_button').removeClass('active');
-	// 		$('.cart-dropdown').removeClass('open');
-
-    //         $(this).toggleClass("active");
-	// 		$(".cart-menu").slideToggle("slow");
-	// 		$(".menu_toggle").slideUp("slow");
-    //     	return false;
-    // });
+	$("#cart .dropdown-toggle").click(function(){
+            $(this).toggleClass("active");
+			$(".cart-menu").slideToggle("slow");
+			$(".myaccount-menu").slideUp("slow");
+            $(".myaccount .dropdown-toggle").removeClass('active');
+			$(".menu_toggle").slideUp("slow");
+        	return false;
+    });
 		
 	$("#form-currency .dropdown-toggle").click(function() {
         $('#form-currency').toggleClass("active");
@@ -116,38 +107,18 @@ $(document).ready(function(){
     });
 	
 
-    $('#search .search_button').off('click').on('click', function(event){
-		event.stopPropagation();
-		event.preventDefault();
-
+    $('#search .search_button').click(function(event){
 		// Close other dropdowns
 		$('.myaccount-menu').slideUp('slow');
 		$('.myaccount > .dropdown-toggle').removeClass('active');
-		$('.cart-dropdown').removeClass('open');
 
-		var searchToggle = $('#search .search_toggle');
-
-		// Stop any ongoing animations to prevent blinking
-		searchToggle.stop(true, true);
-
-		// Toggle search with explicit show/hide to prevent blinking
-		if (searchToggle.is(':visible')) {
-			searchToggle.slideUp('medium');
-			$(this).removeClass('active');
-		} else {
-			searchToggle.slideDown('medium', function() {
-				$( "#search .search_toggle form input[type=text]" ).focus();
-			});
-			$(this).addClass('active');
-		}
+		$(this).toggleClass('active');
+		event.stopPropagation();
+		$('#search .search_toggle').toggle('medium');
+		$( "#search .search_toggle form input[type=text]" ).focus();
 
 	});
 	$("#search .search_toggle").on("click", function (event) {
-		event.stopPropagation();
-	});
-
-	// Prevent account dropdown from closing when clicking inside it
-	$(".myaccount-menu").on("click", function (event) {
 		event.stopPropagation();
 	});
 
@@ -218,14 +189,10 @@ $(document).ready(function(){
 		//Append land-curr in My Account
 		$('.header_nav .lang-curr-wrapper').appendTo('.nav2 .account .dropdown.myaccount .drop_account');  
 	}	
-	$(".myaccount > .dropdown-toggle").off('click').on('click', function(event){
-			event.stopPropagation();
-			event.preventDefault();
-
+	$(".myaccount > .dropdown-toggle").click(function(){
 			// Close other dropdowns
 			$(".cart-menu").slideUp("slow");
-			$('.cart-dropdown').removeClass('open');
-			$('#search .search_toggle').stop(true, true).hide();
+			$('#search .search_toggle').hide();
 			$('#search .search_button').removeClass('active');
 
 			$(".myaccount-menu").slideToggle("slow");
@@ -243,7 +210,6 @@ $(document).click(function(){
 	$(".myaccount-menu").slideUp('slow');
 	$(".language-menu").slideUp("slow");
 	$(".currency-menu").slideUp("slow");
-	$('.cart-dropdown').removeClass('open');
 	$('#search .search_toggle').hide();
 	$('#search .search_button').removeClass('active');
 	$('.myaccount > .dropdown-toggle').removeClass('active');
