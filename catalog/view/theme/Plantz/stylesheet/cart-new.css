@@ -38,12 +38,15 @@
   top: 100%;
   right: 0;
   background: white;
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   min-width: 500px;
   max-width: 800px;
   z-index: 999;
-  padding: 16px;
+  padding: 20px;
   display: none;
+  margin-top: 12px;
 }
 
 .cart-dropdown.open .cart-dropdown-menu {
@@ -89,9 +92,12 @@
 
 
 .cart-totals {
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-  padding-top: 10px;
+  border-top: 2px solid #f0f0f0;
+  margin-top: 16px;
+  padding-top: 16px;
+  background: linear-gradient(135deg, rgba(136, 176, 75, 0.08) 0%, rgba(136, 176, 75, 0.05) 100%);
+  border-radius: 10px;
+  padding: 16px;
 }
 
 .cart_total {
@@ -131,29 +137,74 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  font-size: 14px;
+  padding: 0;
+  font-size: 16px;
+}
+
+.cart-total-row span:first-child {
+  font-weight: 500;
+  color: #666;
+}
+
+.cart-total-row strong {
+  font-size: 20px;
+  color: #88b04b;
+  font-weight: 700;
 }
 
 .cart-buttons {
-  margin-top: 12px;
+  margin-top: 16px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .cart-buttons .btn {
   flex: 1;
-  background-color: #c67d4e;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
-  font-size: 14px;
-  padding: 8px 24px;
-  color: #ffffff;
+  transition: all 0.3s ease;
+  font-size: 13px;
+  padding: 12px 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
-.cart-buttons .btn:hover {
-  background-color: #45a049;
+.cart-buttons .btn-view-cart {
+  background: #ffffff;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.cart-buttons .btn-view-cart:hover {
+  background: #f8f9fa;
+  border-color: #88b04b;
+  color: #88b04b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-buttons .btn-checkout {
+  background: linear-gradient(135deg, #88b04b 0%, #6a8f3a 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(136, 176, 75, 0.25);
+}
+
+.cart-buttons .btn-checkout:hover {
+  background: linear-gradient(135deg, #6a8f3a 0%, #88b04b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(136, 176, 75, 0.35);
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 15px;
 }
 
 @media (max-width: 767px) {
