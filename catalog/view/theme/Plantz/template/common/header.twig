@@ -164,14 +164,15 @@ $(document).ready(function(){
         <div class="login_acc">
         {% if logged %}
           <li><a href="{{ account }}" title="{{ text_account }}">{{ text_account }}</a></li>
+          <li><a href="{{ wishlist }}" id="wishlist-total">{{ text_wishlist }}</a></li>
           <li><a href="{{ checkout }}" title="{{ text_checkout }}"><span class="checkout">{{ text_checkout }}</span></a></li>
           <li><a class="account_logout1" href="{{ logout }}">{{ text_logout }}</a></li>
           {% else %}
           	<li><a class="login" href="{{ login }}">{{ text_login }}</a></li>
           <li><a class="reg" href="{{ register }}">{{ text_register }}</a></li>
+          <li><a href="{{ wishlist }}" id="wishlist-total">{{ text_wishlist }}</a></li>
           <li><a href="{{ checkout }}" title="{{ text_checkout }}"><span class="checkout">{{ text_checkout }}</span></a></li>
-	  <div class="whishlist"><a href="{{ wishlist }}" id="wishlist-total">{{ text_wishlist }}</a></div>
-       
+
         {% endif %}
         </div>	
         

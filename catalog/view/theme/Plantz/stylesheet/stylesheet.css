@@ -874,8 +874,7 @@ footer .social-block h5 {
 	color: #666;
 }
 .compare {
-	text-align: left;
-	padding: 4px 17px;
+	display: none !important;
 }
 .checkout:hover {
 	color: #111111;
