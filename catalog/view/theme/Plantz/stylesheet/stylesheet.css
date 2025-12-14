@@ -865,11 +865,10 @@ footer .social-block h5 {
 	-o-transition: all 400ms ease-in-out 0s;
 	-ms-transition: all 400ms ease-in-out 0s;
 }
+/* Old whishlist div style - no longer needed */
 .whishlist {
-	text-align: left;
-	padding: 4px 17px;
+	display: none;
 }
-.whishlist a,
 .compare a {
 	color: #666;
 }
@@ -14049,6 +14048,34 @@ h4:focus a {
 	font-size: 18px;
 	vertical-align: middle;
 	color: #88b04b;
+}
+
+.dropdown.myaccount .dropdown-menu li a[href*="account/account"]::before {
+	content: "account_circle";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+.dropdown.myaccount .dropdown-menu li a[href*="logout"]::before,
+.dropdown.myaccount .dropdown-menu li a.account_logout1::before {
+	content: "logout";
+	font-family: 'Material Icons';
+	margin-right: 10px;
+	font-size: 18px;
+	vertical-align: middle;
+	color: #88b04b;
+}
+
+/* Ensure wishlist link in dropdown has consistent styling */
+.dropdown.myaccount .dropdown-menu li a#wishlist-total {
+	display: block !important;
+	padding: 12px 16px !important;
+	border-radius: 10px !important;
+	color: var(--color-text-dark) !important;
+	font-weight: 500 !important;
 }
 
 /* Cart Dropdown Arrow */
