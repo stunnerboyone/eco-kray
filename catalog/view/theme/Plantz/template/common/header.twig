@@ -158,7 +158,7 @@ $(document).ready(function(){
     
     <div class="col-sm-3 header_cart">{{ cart }}</div>
     <div class="account">     
-      <div class="dropdown myaccount"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown"></a><span class="account-title">{{ text_account }}</span>
+      <div class="dropdown myaccount"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle"></a><span class="account-title">{{ text_account }}</span>
           <ul class="dropdown-menu dropdown-menu-right myaccount-menu">
             <span class="drop_account">
         <div class="login_acc">
@@ -197,12 +197,13 @@ $(document).ready(function(){
 
 <script>
 $(document).ready(function() {
-  // Use jQuery with .off() to prevent duplicate handlers
-  $('.cart-button').off('click').on('click', function(e) {
+  // Cart button handler
+  $(document).off('click', '.cart-button').on('click', '.cart-button', function(e) {
     e.preventDefault();
     e.stopPropagation();
 
     var cartDropdown = $(this).closest('.cart-dropdown');
+    var isOpen = cartDropdown.hasClass('open');
 
     // Close other dropdowns
     $('.myaccount-menu').slideUp('slow');
@@ -210,17 +211,20 @@ $(document).ready(function() {
     $('#search .search_toggle').stop(true, true).hide();
     $('#search .search_button').removeClass('active');
 
-    // Close other cart dropdowns if any
-    $('.cart-dropdown').not(cartDropdown).removeClass('open');
+    // Close all cart dropdowns first
+    $('.cart-dropdown').removeClass('open');
 
-    // Load cart content and toggle
-    $("#cart").load("index.php?route=common/cart/info", function () {
-      cartDropdown.toggleClass("open");
-    });
+    // If it was closed, open it
+    if (!isOpen) {
+      // Load cart content and open
+      $("#cart").load("index.php?route=common/cart/info", function () {
+        cartDropdown.addClass("open");
+      });
+    }
   });
 
   // Prevent cart dropdown from closing when clicking inside it
-  $('.cart-dropdown').on('click', function(e) {
+  $(document).on('click', '.cart-dropdown', function(e) {
     e.stopPropagation();
   });
 });

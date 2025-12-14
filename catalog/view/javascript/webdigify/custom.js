@@ -80,22 +80,23 @@ $(document).ready(function(){
 	$('#content h2').prependTo('.row .page-title');
 	
 	
-	$("#cart .dropdown-toggle").off('click').on('click', function(event){
-			event.stopPropagation();
-			event.preventDefault();
+	// OLD CART HANDLER - DISABLED (now using .cart-button in header.twig)
+	// $("#cart .dropdown-toggle").off('click').on('click', function(event){
+	// 		event.stopPropagation();
+	// 		event.preventDefault();
 
-			// Close other dropdowns
-			$(".myaccount-menu").slideUp("slow");
-            $(".myaccount .dropdown-toggle").removeClass('active');
-			$('#search .search_toggle').stop(true, true).hide();
-			$('#search .search_button').removeClass('active');
-			$('.cart-dropdown').removeClass('open');
+	// 		// Close other dropdowns
+	// 		$(".myaccount-menu").slideUp("slow");
+    //         $(".myaccount .dropdown-toggle").removeClass('active');
+	// 		$('#search .search_toggle').stop(true, true).hide();
+	// 		$('#search .search_button').removeClass('active');
+	// 		$('.cart-dropdown').removeClass('open');
 
-            $(this).toggleClass("active");
-			$(".cart-menu").slideToggle("slow");
-			$(".menu_toggle").slideUp("slow");
-        	return false;
-    });
+    //         $(this).toggleClass("active");
+	// 		$(".cart-menu").slideToggle("slow");
+	// 		$(".menu_toggle").slideUp("slow");
+    //     	return false;
+    // });
 		
 	$("#form-currency .dropdown-toggle").click(function() {
         $('#form-currency').toggleClass("active");
