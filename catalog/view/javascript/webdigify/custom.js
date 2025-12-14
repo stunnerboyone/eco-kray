@@ -80,15 +80,17 @@ $(document).ready(function(){
 	$('#content h2').prependTo('.row .page-title');
 	
 	
-	$("#cart .dropdown-toggle").click(function(event){
+	$("#cart .dropdown-toggle").off('click').on('click', function(event){
+			event.stopPropagation();
+			event.preventDefault();
+
 			// Close other dropdowns
 			$(".myaccount-menu").slideUp("slow");
             $(".myaccount .dropdown-toggle").removeClass('active');
-			$('#search .search_toggle').hide();
+			$('#search .search_toggle').stop(true, true).hide();
 			$('#search .search_button').removeClass('active');
 			$('.cart-dropdown').removeClass('open');
 
-			event.stopPropagation();
             $(this).toggleClass("active");
 			$(".cart-menu").slideToggle("slow");
 			$(".menu_toggle").slideUp("slow");
@@ -113,22 +115,29 @@ $(document).ready(function(){
     });
 	
 
-    $('#search .search_button').click(function(event){
+    $('#search .search_button').off('click').on('click', function(event){
+		event.stopPropagation();
+		event.preventDefault();
+
 		// Close other dropdowns
 		$('.myaccount-menu').slideUp('slow');
 		$('.myaccount > .dropdown-toggle').removeClass('active');
 		$('.cart-dropdown').removeClass('open');
 
-		event.stopPropagation();
+		var searchToggle = $('#search .search_toggle');
+
+		// Stop any ongoing animations to prevent blinking
+		searchToggle.stop(true, true);
 
 		// Toggle search with explicit show/hide to prevent blinking
-		if ($('#search .search_toggle').is(':visible')) {
-			$('#search .search_toggle').hide('medium');
+		if (searchToggle.is(':visible')) {
+			searchToggle.slideUp('medium');
 			$(this).removeClass('active');
 		} else {
-			$('#search .search_toggle').show('medium');
+			searchToggle.slideDown('medium', function() {
+				$( "#search .search_toggle form input[type=text]" ).focus();
+			});
 			$(this).addClass('active');
-			$( "#search .search_toggle form input[type=text]" ).focus();
 		}
 
 	});
@@ -208,14 +217,16 @@ $(document).ready(function(){
 		//Append land-curr in My Account
 		$('.header_nav .lang-curr-wrapper').appendTo('.nav2 .account .dropdown.myaccount .drop_account');  
 	}	
-	$(".myaccount > .dropdown-toggle").click(function(event){
+	$(".myaccount > .dropdown-toggle").off('click').on('click', function(event){
+			event.stopPropagation();
+			event.preventDefault();
+
 			// Close other dropdowns
 			$(".cart-menu").slideUp("slow");
 			$('.cart-dropdown').removeClass('open');
-			$('#search .search_toggle').hide();
+			$('#search .search_toggle').stop(true, true).hide();
 			$('#search .search_button').removeClass('active');
 
-			event.stopPropagation();
 			$(".myaccount-menu").slideToggle("slow");
  			$(this).toggleClass("active");
 			 $('.dropdown.myaccount .lang-curr-wrapper').toggleClass("active");

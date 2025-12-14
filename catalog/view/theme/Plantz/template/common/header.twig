@@ -196,39 +196,33 @@ $(document).ready(function(){
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const cartDropdown = document.querySelector(".cart-dropdown");
-  const button = cartDropdown?.querySelector(".cart-button");
+$(document).ready(function() {
+  // Use jQuery with .off() to prevent duplicate handlers
+  $('.cart-button').off('click').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-  if (button) {
-    button.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    var cartDropdown = $(this).closest('.cart-dropdown');
 
-      // Close other dropdowns
-      $('.myaccount-menu').slideUp('slow');
-      $('.myaccount > .dropdown-toggle').removeClass('active');
-      $('#search .search_toggle').hide();
-      $('#search .search_button').removeClass('active');
+    // Close other dropdowns
+    $('.myaccount-menu').slideUp('slow');
+    $('.myaccount > .dropdown-toggle').removeClass('active');
+    $('#search .search_toggle').stop(true, true).hide();
+    $('#search .search_button').removeClass('active');
 
-      document.querySelectorAll(".cart-dropdown").forEach(function (el) {
-        if (el !== cartDropdown) {
-          el.classList.remove("open");
-        }
-      });
+    // Close other cart dropdowns if any
+    $('.cart-dropdown').not(cartDropdown).removeClass('open');
 
-      $("#cart").load("index.php?route=common/cart/info", function () {
-        cartDropdown.classList.toggle("open");
-      });
+    // Load cart content and toggle
+    $("#cart").load("index.php?route=common/cart/info", function () {
+      cartDropdown.toggleClass("open");
     });
-  }
+  });
 
   // Prevent cart dropdown from closing when clicking inside it
-  if (cartDropdown) {
-    cartDropdown.addEventListener("click", function(e) {
-      e.stopPropagation();
-    });
-  }
+  $('.cart-dropdown').on('click', function(e) {
+    e.stopPropagation();
+  });
 });
 
 // $(document).ready(function () {
