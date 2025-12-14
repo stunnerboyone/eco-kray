@@ -203,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (button) {
     button.addEventListener("click", function (e) {
       e.preventDefault();
+      e.stopPropagation();
 
       // Close other dropdowns
       $('.myaccount-menu').slideUp('slow');
@@ -219,6 +220,13 @@ document.addEventListener("DOMContentLoaded", function () {
       $("#cart").load("index.php?route=common/cart/info", function () {
         cartDropdown.classList.toggle("open");
       });
+    });
+  }
+
+  // Prevent cart dropdown from closing when clicking inside it
+  if (cartDropdown) {
+    cartDropdown.addEventListener("click", function(e) {
+      e.stopPropagation();
     });
   }
 });

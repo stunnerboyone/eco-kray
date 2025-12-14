@@ -80,11 +80,17 @@ $(document).ready(function(){
 	$('#content h2').prependTo('.row .page-title');
 	
 	
-	$("#cart .dropdown-toggle").click(function(){
-            $(this).toggleClass("active");
-			$(".cart-menu").slideToggle("slow");
+	$("#cart .dropdown-toggle").click(function(event){
+			// Close other dropdowns
 			$(".myaccount-menu").slideUp("slow");
             $(".myaccount .dropdown-toggle").removeClass('active');
+			$('#search .search_toggle').hide();
+			$('#search .search_button').removeClass('active');
+			$('.cart-dropdown').removeClass('open');
+
+			event.stopPropagation();
+            $(this).toggleClass("active");
+			$(".cart-menu").slideToggle("slow");
 			$(".menu_toggle").slideUp("slow");
         	return false;
     });
@@ -113,14 +119,26 @@ $(document).ready(function(){
 		$('.myaccount > .dropdown-toggle').removeClass('active');
 		$('.cart-dropdown').removeClass('open');
 
-		$(this).toggleClass('active');
 		event.stopPropagation();
-		$('#search .search_toggle').toggle('medium');
-		$( "#search .search_toggle form input[type=text]" ).focus();
+
+		// Toggle search with explicit show/hide to prevent blinking
+		if ($('#search .search_toggle').is(':visible')) {
+			$('#search .search_toggle').hide('medium');
+			$(this).removeClass('active');
+		} else {
+			$('#search .search_toggle').show('medium');
+			$(this).addClass('active');
+			$( "#search .search_toggle form input[type=text]" ).focus();
+		}
 
 	});
 	$("#search .search_toggle").on("click", function (event) {
-		event.stopPropagation();	
+		event.stopPropagation();
+	});
+
+	// Prevent account dropdown from closing when clicking inside it
+	$(".myaccount-menu").on("click", function (event) {
+		event.stopPropagation();
 	});
 
 	/*For Parallax*/
@@ -190,13 +208,14 @@ $(document).ready(function(){
 		//Append land-curr in My Account
 		$('.header_nav .lang-curr-wrapper').appendTo('.nav2 .account .dropdown.myaccount .drop_account');  
 	}	
-	$(".myaccount > .dropdown-toggle").click(function(){
+	$(".myaccount > .dropdown-toggle").click(function(event){
 			// Close other dropdowns
 			$(".cart-menu").slideUp("slow");
 			$('.cart-dropdown').removeClass('open');
 			$('#search .search_toggle').hide();
 			$('#search .search_button').removeClass('active');
 
+			event.stopPropagation();
 			$(".myaccount-menu").slideToggle("slow");
  			$(this).toggleClass("active");
 			 $('.dropdown.myaccount .lang-curr-wrapper').toggleClass("active");
@@ -212,6 +231,10 @@ $(document).click(function(){
 	$(".myaccount-menu").slideUp('slow');
 	$(".language-menu").slideUp("slow");
 	$(".currency-menu").slideUp("slow");
+	$('.cart-dropdown').removeClass('open');
+	$('#search .search_toggle').hide();
+	$('#search .search_button').removeClass('active');
+	$('.myaccount > .dropdown-toggle').removeClass('active');
 });
 
 jQuery(document).ready(function(){	
