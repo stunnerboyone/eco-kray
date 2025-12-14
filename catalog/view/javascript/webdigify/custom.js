@@ -107,15 +107,30 @@ $(document).ready(function(){
     });
 	
 
-    $('#search .search_button').click(function(event){
+    $('#search .search_button').off('click').on('click', function(event){
+		event.preventDefault();
+		event.stopPropagation();
+
 		// Close other dropdowns
 		$('.myaccount-menu').slideUp('slow');
 		$('.myaccount > .dropdown-toggle').removeClass('active');
 
-		$(this).toggleClass('active');
-		event.stopPropagation();
-		$('#search .search_toggle').toggle('medium');
-		$( "#search .search_toggle form input[type=text]" ).focus();
+		var searchToggle = $('#search .search_toggle');
+		var searchButton = $(this);
+
+		// Stop any ongoing animations to prevent blinking
+		searchToggle.stop(true, true);
+
+		// Toggle with explicit check
+		if (searchToggle.is(':visible')) {
+			searchToggle.slideUp('medium');
+			searchButton.removeClass('active');
+		} else {
+			searchToggle.slideDown('medium', function() {
+				$("#search .search_toggle form input[type=text]").focus();
+			});
+			searchButton.addClass('active');
+		}
 
 	});
 	$("#search .search_toggle").on("click", function (event) {
