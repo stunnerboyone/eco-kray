@@ -1,2 +1,8 @@
-<footer id="footer">{{ text_footer }}<br/>{{ text_version }}</footer></div>
+<footer id="footer">{{ text_footer }}<br/>{{ text_version }}</footer>
+</div>
+
+{% for script in scripts %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+
 </body></html>
