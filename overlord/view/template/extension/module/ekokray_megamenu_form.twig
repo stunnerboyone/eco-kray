@@ -250,25 +250,8 @@
 
 {{ footer }}
 
-<!-- Load megamenu admin script directly -->
+<!-- Load megamenu admin scripts and styles -->
 <script type="text/javascript" src="view/javascript/jquery/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript" src="view/javascript/ekokray/megamenu-admin.js?v={{ "now"|date("U") }}"></script>
 <link type="text/css" href="view/javascript/jquery/jquery-ui/jquery-ui.css" rel="stylesheet" />
 <link type="text/css" href="view/stylesheet/ekokray/megamenu-admin.css" rel="stylesheet" />
-
-<script type="text/javascript">
-console.log('=== INLINE SCRIPT EXECUTED (after footer) ===');
-console.log('EkokrayMegamenu object exists:', typeof EkokrayMegamenu !== 'undefined');
-
-setTimeout(function() {
-    console.log('=== CHECKING AFTER 1 SECOND ===');
-    console.log('Button exists:', $('#btn-add-item').length);
-    console.log('EkokrayMegamenu loaded:', typeof window.EkokrayMegamenu !== 'undefined');
-
-    // Try to manually call the function
-    $('#btn-add-item').on('click', function() {
-        console.log('=== MANUAL HANDLER: Button clicked! ===');
-        alert('Manual handler works!');
-    });
-}, 1000);
-</script>
