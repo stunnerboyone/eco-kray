@@ -184,6 +184,12 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
     protected function getMenuForm() {
         $this->load->model('localisation/language');
 
+        // Add scripts and styles BEFORE header is loaded
+        $this->document->addScript('view/javascript/jquery/jquery-ui/jquery-ui.js');
+        $this->document->addScript('view/javascript/ekokray/megamenu-admin.js?v=' . time());
+        $this->document->addStyle('view/javascript/jquery/jquery-ui/jquery-ui.css');
+        $this->document->addStyle('view/stylesheet/ekokray/megamenu-admin.css');
+
         $data = $this->loadLanguageData();
         $data['breadcrumbs'] = $this->buildBreadcrumbs(true);
 
@@ -223,12 +229,6 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
 
         $data['cancel'] = $this->url->link('extension/module/ekokray_megamenu/menuList', 'user_token=' . $this->session->data['user_token'], true);
         $data['user_token'] = $this->session->data['user_token'];
-
-        // Add scripts and styles
-        $this->document->addScript('view/javascript/jquery/jquery-ui/jquery-ui.js');
-        $this->document->addScript('view/javascript/ekokray/megamenu-admin.js?v=' . time());
-        $this->document->addStyle('view/javascript/jquery/jquery-ui/jquery-ui.css');
-        $this->document->addStyle('view/stylesheet/ekokray/megamenu-admin.css');
 
         // Load view
         $data['header'] = $this->load->controller('common/header');
