@@ -17,6 +17,7 @@
             this.initSortable();
             this.initEventHandlers();
             this.initItemTypeToggle();
+            // Note: initCategoryAutocomplete is called when modal opens
         },
 
         initSortable: function() {
