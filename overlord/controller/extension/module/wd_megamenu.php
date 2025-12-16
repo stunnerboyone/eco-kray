@@ -521,8 +521,8 @@ class ControllerExtensionModuleWDmegamenu extends Controller
             $data['loader_image'] = HTTP_CATALOG . 'image/catalog/demo/banners/ajax_loader.gif';
         }
 
-        $this->document->addScript('view/javascript/wd_megamenu/menu.js');
         $this->document->addScript('view/javascript/jquery/jquery-ui/jquery-ui.js');
+        $this->document->addScript('view/javascript/wd_megamenu/menu.js');
         $this->document->addStyle('view/javascript/jquery/jquery-ui/jquery-ui.css');
         $this->document->addStyle('view/stylesheet/wd_megamenu/menu.css');
 
