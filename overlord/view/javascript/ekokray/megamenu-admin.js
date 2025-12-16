@@ -2,6 +2,15 @@
  * EKO-KRAY Megamenu - Admin JavaScript
  * Compatible with OpenCart 3.0.3.8 (jQuery 2.1.1, Bootstrap 3)
  */
+
+// Check if jQuery is loaded
+if (typeof jQuery === 'undefined') {
+    console.error('EkokrayMegamenu: jQuery is not loaded!');
+    alert('ERROR: jQuery is not loaded. Cannot initialize megamenu admin.');
+} else {
+    console.log('EkokrayMegamenu: jQuery loaded, version:', jQuery.fn.jquery);
+}
+
 (function($) {
     'use strict';
 
@@ -335,7 +344,16 @@
 
     // Initialize on document ready
     $(document).ready(function() {
+        console.log('Document ready fired!');
         EkokrayMegamenu.init();
     });
+
+    // Fallback initialization if document.ready doesn't fire
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        console.log('Document already ready, initializing immediately');
+        setTimeout(function() {
+            EkokrayMegamenu.init();
+        }, 1);
+    }
 
 })(jQuery);
