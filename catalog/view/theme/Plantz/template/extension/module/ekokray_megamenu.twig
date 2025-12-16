@@ -1,0 +1,146 @@
+<div class="ekokray-megamenu" id="ekokray-megamenu-{{ menu_id }}" data-breakpoint="{{ mobile_breakpoint }}">
+
+  <!-- Mobile Menu Toggle Button -->
+  <button class="ekokray-mobile-toggle" id="ekokray-mobile-toggle" aria-label="Toggle Menu">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </button>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay"></div>
+
+  <!-- Menu Container -->
+  <nav class="ekokray-menu-container">
+
+    <!-- Mobile Menu Header (visible only on mobile) -->
+    <div class="ekokray-mobile-header">
+      <button class="ekokray-mobile-close" id="ekokray-mobile-close" aria-label="Close Menu">
+        <i class="fa fa-times"></i>
+      </button>
+      <h3 class="ekokray-mobile-title">Меню</h3>
+    </div>
+
+    <!-- Mobile Search/Account/Cart Section -->
+    <div class="ekokray-mobile-tools">
+      <!-- Search -->
+      <div class="ekokray-mobile-search">
+        <form action="{{ search_url }}" method="get">
+          <div class="input-group">
+            <input type="text" name="search" placeholder="{{ text_search }}..." class="form-control">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Account -->
+      <div class="ekokray-mobile-account">
+        {% if logged %}
+        <a href="{{ account_url }}" class="ekokray-account-link">
+          <i class="fa fa-user"></i> {{ customer_name }}
+        </a>
+        <a href="{{ logout_url }}" class="ekokray-logout-link">
+          <i class="fa fa-sign-out"></i> {{ text_logout }}
+        </a>
+        {% else %}
+        <a href="{{ login_url }}" class="ekokray-login-link">
+          <i class="fa fa-sign-in"></i> {{ text_login }}
+        </a>
+        <a href="{{ register_url }}" class="ekokray-register-link">
+          <i class="fa fa-user-plus"></i> {{ text_register }}
+        </a>
+        {% endif %}
+      </div>
+
+      <!-- Cart -->
+      <div class="ekokray-mobile-cart">
+        <a href="{{ cart_url }}" class="ekokray-cart-link">
+          <i class="fa fa-shopping-cart"></i> {{ text_cart }}
+          {% if cart_total > 0 %}
+          <span class="ekokray-cart-badge">{{ cart_total }}</span>
+          {% endif %}
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Menu Items -->
+    <ul class="ekokray-menu">
+      {% for item in items %}
+      <li class="ekokray-menu-item {% if item.children %}has-children{% endif %} {% if item.show_products %}has-products{% endif %}" data-item-id="{{ item.item_id }}">
+        <a href="{{ item.href }}" target="{{ item.target }}" class="ekokray-menu-link">
+          {{ item.title }}
+          {% if item.children or item.subcategories %}
+          <span class="ekokray-dropdown-toggle">
+            <i class="fa fa-angle-down desktop-icon"></i>
+            <i class="fa fa-angle-right mobile-icon"></i>
+          </span>
+          {% endif %}
+        </a>
+
+        {% if item.children or item.subcategories %}
+        <!-- Dropdown Container -->
+        <div class="ekokray-dropdown">
+          <div class="ekokray-dropdown-inner">
+
+            {% if item.subcategories %}
+            <!-- Category Tree Layout -->
+            <div class="ekokray-category-grid">
+              {% for subcategory in item.subcategories %}
+              <div class="ekokray-category-item">
+                <a href="{{ subcategory.href }}" class="ekokray-category-link" data-category-id="{{ subcategory.category_id }}">
+                  {% if subcategory.image %}
+                  <div class="ekokray-category-image">
+                    <img src="{{ subcategory.image }}" alt="{{ subcategory.name }}" loading="lazy">
+                  </div>
+                  {% endif %}
+                  <h4 class="ekokray-category-name">{{ subcategory.name }}</h4>
+                </a>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if item.children %}
+            <!-- Child Items -->
+            <ul class="ekokray-submenu">
+              {% for child in item.children %}
+              <li class="ekokray-submenu-item">
+                <a href="{{ child.href }}" target="{{ child.target }}" class="ekokray-submenu-link">
+                  {{ child.title }}
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% if item.show_products %}
+            <!-- Products Container (loaded via AJAX) -->
+            <div class="ekokray-products-container" data-category-id="{{ item.category_id }}" data-limit="{{ item.product_limit }}">
+              <div class="ekokray-products-loading">
+                <i class="fa fa-spinner fa-spin"></i> Завантаження...
+              </div>
+              <div class="ekokray-products-grid"></div>
+            </div>
+            {% endif %}
+
+          </div>
+        </div>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+  </nav>
+</div>
+
+<!-- Hidden data for JavaScript -->
+<script>
+window.ekokrayMegamenuData = window.ekokrayMegamenuData || {};
+window.ekokrayMegamenuData['menu_{{ menu_id }}'] = {
+  menuId: {{ menu_id }},
+  mobileBreakpoint: {{ mobile_breakpoint }},
+  getProductsUrl: 'index.php?route=extension/module/ekokray_megamenu/getProducts'
+};
+</script>
