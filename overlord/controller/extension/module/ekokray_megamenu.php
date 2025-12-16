@@ -226,7 +226,7 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
 
         // Add scripts and styles
         $this->document->addScript('view/javascript/jquery/jquery-ui/jquery-ui.js');
-        $this->document->addScript('view/javascript/ekokray/megamenu-admin.js');
+        $this->document->addScript('view/javascript/ekokray/megamenu-admin.js?v=' . time());
         $this->document->addStyle('view/javascript/jquery/jquery-ui/jquery-ui.css');
         $this->document->addStyle('view/stylesheet/ekokray/megamenu-admin.css');
 
