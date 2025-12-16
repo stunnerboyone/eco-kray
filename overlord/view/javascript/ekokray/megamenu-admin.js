@@ -5,11 +5,13 @@
     'use strict';
 
     var EkokrayMegamenu = {
+        autocompleteInitialized: false,
+
         init: function() {
             this.initSortable();
             this.initEventHandlers();
-            this.initCategoryAutocomplete();
             this.initItemTypeToggle();
+            // Note: initCategoryAutocomplete is called when modal opens
         },
 
         initSortable: function() {
@@ -77,6 +79,11 @@
         },
 
         initCategoryAutocomplete: function() {
+            // Only initialize once
+            if (this.autocompleteInitialized) {
+                return;
+            }
+
             var userToken = $('#user-token').val();
 
             $('#item-category-autocomplete').autocomplete({
@@ -100,9 +107,13 @@
                     return false;
                 }
             });
+
+            this.autocompleteInitialized = true;
         },
 
         showItemModal: function(itemData) {
+            var self = this;
+
             // Reset form
             $('#form-item')[0].reset();
             $('#item-id').val('');
@@ -136,7 +147,10 @@
                 }
             }
 
-            $('#item-modal').modal('show');
+            // Show modal and initialize autocomplete after it's fully shown
+            $('#item-modal').modal('show').one('shown.bs.modal', function() {
+                self.initCategoryAutocomplete();
+            });
         },
 
         editItem: function(itemId) {
