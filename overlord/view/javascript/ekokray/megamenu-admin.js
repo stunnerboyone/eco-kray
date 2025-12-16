@@ -1,5 +1,6 @@
 /**
  * EKO-KRAY Megamenu - Admin JavaScript
+ * Compatible with OpenCart 3.0.3.8 (jQuery 2.1.1, Bootstrap 3)
  */
 (function($) {
     'use strict';
@@ -8,10 +9,14 @@
         autocompleteInitialized: false,
 
         init: function() {
+            console.log('EkokrayMegamenu: Initializing...');
+            console.log('jQuery version:', $.fn.jquery);
+            console.log('jQuery UI available:', typeof $.fn.autocomplete !== 'undefined');
+            console.log('Bootstrap version:', typeof $.fn.modal !== 'undefined' ? 'available' : 'not available');
+
             this.initSortable();
             this.initEventHandlers();
             this.initItemTypeToggle();
-            // Note: initCategoryAutocomplete is called when modal opens
         },
 
         initSortable: function() {
@@ -29,44 +34,62 @@
 
         initEventHandlers: function() {
             var self = this;
+            console.log('EkokrayMegamenu: Initializing event handlers...');
 
             // Add item button
-            $('#btn-add-item').on('click', function() {
+            var $btnAddItem = $('#btn-add-item');
+            console.log('Add item button found:', $btnAddItem.length);
+
+            $btnAddItem.on('click', function(e) {
+                console.log('Add item button clicked!');
+                e.preventDefault();
                 self.showItemModal();
+                return false;
             });
 
             // Edit item buttons
-            $(document).on('click', '.btn-edit-item', function() {
+            $(document).on('click', '.btn-edit-item', function(e) {
+                e.preventDefault();
                 var itemId = $(this).data('item-id');
+                console.log('Edit item clicked:', itemId);
                 self.editItem(itemId);
             });
 
             // Delete item buttons
-            $(document).on('click', '.btn-delete-item', function() {
+            $(document).on('click', '.btn-delete-item', function(e) {
+                e.preventDefault();
                 if (confirm('Are you sure you want to delete this item?')) {
                     var itemId = $(this).data('item-id');
+                    console.log('Delete item:', itemId);
                     self.deleteItem(itemId);
                 }
             });
 
-            // Save item button
-            $('#btn-save-item').on('click', function() {
+            // Save item button - use document delegation since modal might not exist yet
+            $(document).on('click', '#btn-save-item', function(e) {
+                e.preventDefault();
+                console.log('Save item clicked');
                 self.saveItem();
             });
 
-            // Show products toggle
-            $('#item-show-products').on('change', function() {
+            // Show products toggle - use document delegation
+            $(document).on('change', '#item-show-products', function() {
+                console.log('Show products changed:', $(this).val());
                 if ($(this).val() == '1') {
                     $('#item-product-limit-group').show();
                 } else {
                     $('#item-product-limit-group').hide();
                 }
             });
+
+            console.log('EkokrayMegamenu: Event handlers initialized');
         },
 
         initItemTypeToggle: function() {
-            $('#item-type').on('change', function() {
+            // Use document delegation since the element is in a modal
+            $(document).on('change', '#item-type', function() {
                 var type = $(this).val();
+                console.log('Item type changed to:', type);
 
                 if (type === 'custom_link') {
                     $('#item-category-group').hide();
@@ -79,29 +102,54 @@
         },
 
         initCategoryAutocomplete: function() {
+            console.log('EkokrayMegamenu: initCategoryAutocomplete called');
+
             // Only initialize once
             if (this.autocompleteInitialized) {
+                console.log('EkokrayMegamenu: Autocomplete already initialized');
                 return;
             }
 
+            // Check if jQuery UI autocomplete is available
+            if (typeof $.fn.autocomplete === 'undefined') {
+                console.error('EkokrayMegamenu: jQuery UI autocomplete is not available!');
+                alert('Error: jQuery UI is not loaded. Please contact administrator.');
+                return;
+            }
+
+            var $input = $('#item-category-autocomplete');
+            if ($input.length === 0) {
+                console.error('EkokrayMegamenu: Category autocomplete input not found!');
+                return;
+            }
+
+            console.log('EkokrayMegamenu: Initializing autocomplete on input');
+
             var userToken = $('#user-token').val();
 
-            $('#item-category-autocomplete').autocomplete({
+            $input.autocomplete({
                 source: function(request, response) {
+                    console.log('Autocomplete: Searching for:', request.term);
                     $.ajax({
                         url: 'index.php?route=extension/module/ekokray_megamenu/autocompleteCategory&user_token=' + userToken + '&filter_name=' + encodeURIComponent(request.term),
                         dataType: 'json',
                         success: function(json) {
+                            console.log('Autocomplete: Results received:', json);
                             response($.map(json, function(item) {
                                 return {
                                     label: item.name,
                                     value: item.category_id
                                 };
                             }));
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Autocomplete: Error:', error);
+                            response([]);
                         }
                     });
                 },
                 select: function(event, ui) {
+                    console.log('Autocomplete: Selected:', ui.item);
                     $('#item-category-autocomplete').val(ui.item.label);
                     $('#item-category-id').val(ui.item.value);
                     return false;
@@ -109,13 +157,26 @@
             });
 
             this.autocompleteInitialized = true;
+            console.log('EkokrayMegamenu: Autocomplete initialized successfully');
         },
 
         showItemModal: function(itemData) {
             var self = this;
+            console.log('EkokrayMegamenu: showItemModal called', itemData ? 'editing' : 'adding');
+
+            var $modal = $('#item-modal');
+            if ($modal.length === 0) {
+                console.error('EkokrayMegamenu: Modal not found!');
+                alert('Error: Modal not found in the page.');
+                return;
+            }
 
             // Reset form
-            $('#form-item')[0].reset();
+            var $form = $('#form-item');
+            if ($form.length && $form[0].reset) {
+                $form[0].reset();
+            }
+
             $('#item-id').val('');
             $('#item-parent-id').val('0');
             $('#item-category-autocomplete').val('');
@@ -128,6 +189,7 @@
 
             // If editing, populate form
             if (itemData) {
+                console.log('EkokrayMegamenu: Populating form with data');
                 $('#item-id').val(itemData.item_id);
                 $('#item-parent-id').val(itemData.parent_id);
                 $('#item-type').val(itemData.item_type).trigger('change');
@@ -147,10 +209,27 @@
                 }
             }
 
+            console.log('EkokrayMegamenu: Showing modal...');
+
             // Show modal and initialize autocomplete after it's fully shown
-            $('#item-modal').modal('show').one('shown.bs.modal', function() {
-                self.initCategoryAutocomplete();
+            $modal.modal('show');
+
+            // Use both event and timeout to ensure initialization
+            $modal.one('shown.bs.modal', function() {
+                console.log('EkokrayMegamenu: Modal shown event fired');
+                // Use small timeout to ensure DOM is fully ready
+                setTimeout(function() {
+                    self.initCategoryAutocomplete();
+                }, 100);
             });
+
+            // Fallback timeout in case event doesn't fire
+            setTimeout(function() {
+                if (!self.autocompleteInitialized) {
+                    console.log('EkokrayMegamenu: Fallback autocomplete initialization');
+                    self.initCategoryAutocomplete();
+                }
+            }, 500);
         },
 
         editItem: function(itemId) {
