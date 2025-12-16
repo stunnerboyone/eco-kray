@@ -1,0 +1,235 @@
+/**
+ * EKO-KRAY Megamenu - Admin Styles
+ */
+
+/* Menu Items Container */
+#menu-items-container {
+    min-height: 100px;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#menu-items-container:empty::after {
+    content: 'No menu items. Click "Add Item" to get started.';
+    display: block;
+    text-align: center;
+    color: #999;
+    padding: 40px 0;
+}
+
+/* Menu Item Row */
+.menu-item {
+    margin-bottom: 10px;
+}
+
+.menu-item-content {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.menu-item-content:hover {
+    border-color: #5bc0de;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu-item-handle {
+    cursor: move;
+    color: #999;
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.menu-item-handle:hover {
+    color: #333;
+}
+
+.menu-item-title {
+    flex: 1;
+}
+
+.menu-item-title strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.menu-item-title small {
+    font-size: 12px;
+    color: #999;
+    text-transform: capitalize;
+}
+
+.menu-item-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.menu-item-actions .btn {
+    padding: 3px 8px;
+    font-size: 12px;
+}
+
+/* Nested Items */
+.menu-item-children {
+    margin-top: 10px;
+}
+
+.menu-item[data-level="1"] {
+    margin-left: 30px;
+}
+
+.menu-item[data-level="2"] {
+    margin-left: 60px;
+}
+
+.menu-item[data-level="1"] .menu-item-content {
+    background: #f5f5f5;
+}
+
+.menu-item[data-level="2"] .menu-item-content {
+    background: #fafafa;
+}
+
+/* Sortable Placeholder */
+.menu-item-placeholder {
+    background: #e3f2fd;
+    border: 2px dashed #2196f3;
+    border-radius: 4px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+/* Modal Improvements */
+#item-modal .modal-dialog {
+    max-width: 800px;
+}
+
+#item-modal .nav-tabs {
+    margin-bottom: 0;
+}
+
+#item-modal .tab-content {
+    border: 1px solid #ddd;
+    border-top: none;
+    padding: 20px;
+    background: #fff;
+}
+
+#item-modal .form-group {
+    margin-bottom: 20px;
+}
+
+#item-modal .help-block {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #737373;
+}
+
+/* Category Autocomplete */
+#item-category-autocomplete {
+    position: relative;
+}
+
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 10000 !important;
+}
+
+.ui-menu-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ui-menu-item:hover,
+.ui-state-focus {
+    background: #f5f5f5;
+}
+
+/* Add Item Button */
+#btn-add-item {
+    margin-bottom: 20px;
+}
+
+/* Panel Header Improvements */
+.panel-heading .pull-right {
+    margin-top: -5px;
+}
+
+/* Tab Content Padding */
+.tab-content {
+    padding-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .menu-item-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .menu-item-actions {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .menu-item[data-level="1"],
+    .menu-item[data-level="2"] {
+        margin-left: 0;
+        padding-left: 20px;
+        border-left: 3px solid #ddd;
+    }
+
+    .menu-item[data-level="1"] {
+        border-left-color: #5bc0de;
+    }
+
+    .menu-item[data-level="2"] {
+        border-left-color: #f0ad4e;
+    }
+}
+
+/* Loading States */
+.menu-item.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.menu-item.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Success Highlight */
+.menu-item.success {
+    animation: highlight 1s ease;
+}
+
+@keyframes highlight {
+    0% { background: #dff0d8; }
+    100% { background: transparent; }
+}
