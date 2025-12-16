@@ -1,0 +1,251 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-menu" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-menu" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">General</a></li>
+            <li><a href="#tab-menu-items" data-toggle="tab">Menu Items</a></li>
+            <li><a href="#tab-advanced" data-toggle="tab">Advanced</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- General Tab -->
+            <div class="tab-pane active" id="tab-general">
+              <div class="form-group required">
+                <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="status" id="input-status" class="form-control">
+                    {% if status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Menu Items Tab -->
+            <div class="tab-pane" id="tab-menu-items">
+              {% if menu_id %}
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-success" id="btn-add-item"><i class="fa fa-plus"></i> {{ button_add_item }}</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <div id="menu-items-container" class="menu-items-sortable">
+                    {% if menu_items %}
+                      {% for item in menu_items %}
+                        {{ include('extension/module/ekokray_megamenu_item_row.twig', {'item': item, 'level': 0}) }}
+                      {% endfor %}
+                    {% else %}
+                      <p class="text-center text-muted">{{ text_no_items }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <div class="alert alert-info">
+                <i class="fa fa-info-circle"></i> Please save the menu first before adding items.
+              </div>
+              {% endif %}
+            </div>
+
+            <!-- Advanced Tab -->
+            <div class="tab-pane" id="tab-advanced">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-mobile-breakpoint">{{ entry_mobile_breakpoint }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="mobile_breakpoint" value="{{ mobile_breakpoint }}" placeholder="992" id="input-mobile-breakpoint" class="form-control" />
+                  <span class="help-block">{{ help_mobile_breakpoint }}</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-cache-enabled">{{ entry_cache_enabled }}</label>
+                <div class="col-sm-10">
+                  <select name="cache_enabled" id="input-cache-enabled" class="form-control">
+                    {% if cache_enabled %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-cache-duration">{{ entry_cache_duration }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="cache_duration" value="{{ cache_duration }}" placeholder="3600" id="input-cache-duration" class="form-control" />
+                  <span class="help-block">{{ help_cache_duration }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden data for JavaScript -->
+<input type="hidden" id="menu-id" value="{{ menu_id|default('') }}" />
+<input type="hidden" id="user-token" value="{{ user_token }}" />
+<input type="hidden" id="add-item-url" value="{{ add_item_url|default('') }}" />
+<input type="hidden" id="edit-item-url" value="{{ edit_item_url|default('') }}" />
+<input type="hidden" id="delete-item-url" value="{{ delete_item_url|default('') }}" />
+<input type="hidden" id="update-order-url" value="{{ update_order_url|default('') }}" />
+
+<!-- Modal for Add/Edit Item -->
+<div id="item-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Menu Item</h4>
+      </div>
+      <div class="modal-body">
+        <form id="form-item" class="form-horizontal">
+          <input type="hidden" name="item_id" id="item-id" value="" />
+          <input type="hidden" name="menu_id" id="item-menu-id" value="{{ menu_id|default('') }}" />
+          <input type="hidden" name="parent_id" id="item-parent-id" value="0" />
+          <input type="hidden" name="sort_order" id="item-sort-order" value="0" />
+
+          <ul class="nav nav-tabs">
+            {% for language in languages %}
+            <li{% if loop.first %} class="active"{% endif %}>
+              <a href="#item-lang-{{ language.language_id }}" data-toggle="tab">
+                <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+
+          <div class="tab-content" style="padding-top: 15px;">
+            {% for language in languages %}
+            <div class="tab-pane{% if loop.first %} active{% endif %}" id="item-lang-{{ language.language_id }}">
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="item-title-{{ language.language_id }}">{{ entry_item_title }}</label>
+                <div class="col-sm-9">
+                  <input type="text" name="menu_item_description[{{ language.language_id }}][title]" id="item-title-{{ language.language_id }}" class="form-control" />
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="item-type">{{ entry_item_type }}</label>
+            <div class="col-sm-9">
+              <select name="item_type" id="item-type" class="form-control">
+                <option value="category">{{ text_item_type_category }}</option>
+                <option value="custom_link">{{ text_item_type_custom_link }}</option>
+                <option value="category_tree">{{ text_item_type_category_tree }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" id="item-category-group">
+            <label class="col-sm-3 control-label" for="item-category">{{ entry_category }}</label>
+            <div class="col-sm-9">
+              <input type="text" id="item-category-autocomplete" class="form-control" placeholder="Start typing category name..." />
+              <input type="hidden" name="category_id" id="item-category-id" value="" />
+            </div>
+          </div>
+
+          <div class="form-group" id="item-link-group" style="display: none;">
+            <label class="col-sm-3 control-label" for="item-link">{{ entry_link }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="link" id="item-link" class="form-control" placeholder="http://" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="item-target">{{ entry_target }}</label>
+            <div class="col-sm-9">
+              <select name="target" id="item-target" class="form-control">
+                <option value="_self">{{ text_target_self }}</option>
+                <option value="_blank">{{ text_target_blank }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="item-show-products">{{ entry_show_products }}</label>
+            <div class="col-sm-9">
+              <select name="show_products" id="item-show-products" class="form-control">
+                <option value="0">{{ text_disabled }}</option>
+                <option value="1">{{ text_enabled }}</option>
+              </select>
+              <span class="help-block">{{ help_show_products }}</span>
+            </div>
+          </div>
+
+          <div class="form-group" id="item-product-limit-group">
+            <label class="col-sm-3 control-label" for="item-product-limit">{{ entry_product_limit }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="product_limit" id="item-product-limit" class="form-control" value="8" />
+              <span class="help-block">{{ help_product_limit }}</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="item-status">{{ entry_status }}</label>
+            <div class="col-sm-9">
+              <select name="status" id="item-status" class="form-control">
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_cancel }}</button>
+        <button type="button" class="btn btn-primary" id="btn-save-item"><i class="fa fa-save"></i> {{ button_save }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ footer }}
