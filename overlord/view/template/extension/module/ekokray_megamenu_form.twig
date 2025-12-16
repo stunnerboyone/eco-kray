@@ -248,4 +248,22 @@
   </div>
 </div>
 
+<script type="text/javascript">
+console.log('=== INLINE SCRIPT EXECUTED ===');
+console.log('jQuery available:', typeof jQuery !== 'undefined');
+console.log('$ available:', typeof $ !== 'undefined');
+console.log('Button exists:', $('#btn-add-item').length);
+
+$(document).ready(function() {
+    console.log('=== DOCUMENT READY FIRED ===');
+    console.log('Button after ready:', $('#btn-add-item').length);
+
+    // Test direct click handler
+    $('#btn-add-item').on('click', function() {
+        console.log('=== DIRECT HANDLER: Button clicked! ===');
+        alert('Button works with direct handler!');
+    });
+});
+</script>
+
 {{ footer }}
