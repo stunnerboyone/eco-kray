@@ -65,9 +65,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         $data['text_cart'] = $this->language->get('text_cart');
         $data['text_checkout'] = $this->language->get('text_checkout');
 
-        // Add styles and scripts
-        $this->document->addStyle('catalog/view/theme/Plantz/stylesheet/ekokray/megamenu.css');
-        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js');
+        // Add styles and scripts with cache busting
+        $this->document->addStyle('catalog/view/theme/Plantz/stylesheet/ekokray/megamenu.css?v=' . time());
+        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js?v=' . time());
 
         return $this->load->view('extension/module/ekokray_megamenu', $data);
     }
