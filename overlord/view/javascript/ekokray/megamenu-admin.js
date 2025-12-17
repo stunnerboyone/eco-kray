@@ -269,27 +269,38 @@ if (typeof jQuery === 'undefined') {
             var userToken = $('#user-token').val();
             var url = itemId ? $('#edit-item-url').val() : $('#add-item-url').val();
 
+            console.log('Saving item...', itemId ? 'Editing ID: ' + itemId : 'Adding new');
+            console.log('Form data:', formData);
+            console.log('URL:', url);
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
                 success: function(response) {
+                    console.log('Save response:', response);
                     if (response.success) {
                         $('#item-modal').modal('hide');
                         location.reload();
                     } else {
+                        var errorMsg = 'Error saving item';
                         if (response.errors) {
-                            var errorMsg = '';
+                            errorMsg = '';
                             $.each(response.errors, function(key, value) {
                                 errorMsg += value + '\n';
                             });
-                            alert(errorMsg);
+                        } else if (response.error) {
+                            errorMsg = response.error;
                         }
+                        console.error('Save errors:', errorMsg);
+                        alert(errorMsg);
                     }
                 },
-                error: function() {
-                    alert('Error saving item');
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error);
+                    console.error('Response:', xhr.responseText);
+                    alert('Error saving item: ' + error);
                 }
             });
         },
