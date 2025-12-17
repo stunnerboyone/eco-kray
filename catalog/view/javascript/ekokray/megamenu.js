@@ -357,6 +357,7 @@
             var mainCartTotal = $('#cart-total').text().trim();
             console.log('Syncing cart count:', mainCartTotal);
             $('#ekokray-cart-count').text(mainCartTotal);
+            $('#ekokray-cart-count-desktop').text(mainCartTotal);
         }
 
         // Initial sync
