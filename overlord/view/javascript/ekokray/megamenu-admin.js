@@ -113,12 +113,6 @@ if (typeof jQuery === 'undefined') {
         initCategoryAutocomplete: function() {
             console.log('EkokrayMegamenu: initCategoryAutocomplete called');
 
-            // Only initialize once
-            if (this.autocompleteInitialized) {
-                console.log('EkokrayMegamenu: Autocomplete already initialized');
-                return;
-            }
-
             // Check if jQuery UI autocomplete is available
             if (typeof $.fn.autocomplete === 'undefined') {
                 console.error('EkokrayMegamenu: jQuery UI autocomplete is not available!');
@@ -132,11 +126,18 @@ if (typeof jQuery === 'undefined') {
                 return;
             }
 
+            // Destroy existing autocomplete if any
+            if ($input.hasClass('ui-autocomplete-input')) {
+                console.log('EkokrayMegamenu: Destroying existing autocomplete');
+                $input.autocomplete('destroy');
+            }
+
             console.log('EkokrayMegamenu: Initializing autocomplete on input');
 
             var userToken = $('#user-token').val();
 
             $input.autocomplete({
+                minLength: 0,  // Show results immediately
                 source: function(request, response) {
                     console.log('Autocomplete: Searching for:', request.term);
                     $.ajax({
@@ -162,6 +163,13 @@ if (typeof jQuery === 'undefined') {
                     $('#item-category-autocomplete').val(ui.item.label);
                     $('#item-category-id').val(ui.item.value);
                     return false;
+                }
+            });
+
+            // Focus on input to trigger autocomplete
+            $input.focus(function() {
+                if ($(this).val().length === 0) {
+                    $(this).autocomplete('search', '');
                 }
             });
 

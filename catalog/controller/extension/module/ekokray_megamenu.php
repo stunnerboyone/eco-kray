@@ -65,9 +65,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         $data['text_cart'] = $this->language->get('text_cart');
         $data['text_checkout'] = $this->language->get('text_checkout');
 
-        // Add styles and scripts
-        $this->document->addStyle('catalog/view/theme/Plantz/stylesheet/ekokray/megamenu.css');
-        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js');
+        // Add styles and scripts with cache busting
+        $this->document->addStyle('catalog/view/theme/Plantz/stylesheet/ekokray/megamenu.css?v=' . time());
+        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js?v=' . time());
 
         return $this->load->view('extension/module/ekokray_megamenu', $data);
     }
@@ -131,6 +131,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
      * AJAX endpoint to get category products
      */
     public function getProducts() {
+        // Start output buffering to catch any PHP notices/warnings
+        ob_start();
+
         $this->load->model('extension/module/ekokray_megamenu');
 
         $json = array();
@@ -147,6 +150,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
             $json['success'] = false;
             $json['error'] = 'Missing category ID';
         }
+
+        // Clean output buffer before sending JSON
+        ob_end_clean();
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
