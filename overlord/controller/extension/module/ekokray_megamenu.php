@@ -278,7 +278,7 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
     }
 
     /**
-     * Edit menu item (AJAX)
+     * Edit menu item (AJAX) - handles both GET (load data) and POST (save data)
      */
     public function editItem() {
         $this->load->language('extension/module/ekokray_megamenu');
@@ -286,14 +286,34 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
 
         $json = array();
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateItemForm()) {
-            $this->model_extension_module_ekokray_megamenu->editMenuItem($this->request->post['item_id'], $this->request->post);
+        if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+            // POST request - save item
+            if ($this->validateItemForm()) {
+                $this->model_extension_module_ekokray_megamenu->editMenuItem($this->request->post['item_id'], $this->request->post);
 
-            $json['success'] = true;
-            $json['message'] = $this->language->get('text_success');
+                $json['success'] = true;
+                $json['message'] = $this->language->get('text_success');
+            } else {
+                $json['success'] = false;
+                $json['errors'] = $this->error;
+            }
         } else {
-            $json['success'] = false;
-            $json['errors'] = $this->error;
+            // GET request - load item data for editing
+            if (isset($this->request->get['item_id'])) {
+                $item_id = $this->request->get['item_id'];
+                $item = $this->model_extension_module_ekokray_megamenu->getMenuItem($item_id);
+
+                if ($item) {
+                    $json['success'] = true;
+                    $json['item'] = $item;
+                } else {
+                    $json['success'] = false;
+                    $json['error'] = 'Item not found';
+                }
+            } else {
+                $json['success'] = false;
+                $json['error'] = 'Missing item_id parameter';
+            }
         }
 
         $this->response->addHeader('Content-Type: application/json');
