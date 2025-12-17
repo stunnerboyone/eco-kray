@@ -137,15 +137,21 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         $this->load->model('extension/module/ekokray_megamenu');
 
         $json = array();
+        $json['debug'] = array();
 
         if (isset($this->request->get['category_id'])) {
             $category_id = (int)$this->request->get['category_id'];
             $limit = isset($this->request->get['limit']) ? (int)$this->request->get['limit'] : 8;
 
+            $json['debug']['category_id'] = $category_id;
+            $json['debug']['limit'] = $limit;
+            $json['debug']['store_id'] = (int)$this->config->get('config_store_id');
+
             $products = $this->model_extension_module_ekokray_megamenu->getCategoryProducts($category_id, $limit);
 
             $json['success'] = true;
             $json['products'] = $products;
+            $json['debug']['products_count'] = count($products);
         } else {
             $json['success'] = false;
             $json['error'] = 'Missing category ID';

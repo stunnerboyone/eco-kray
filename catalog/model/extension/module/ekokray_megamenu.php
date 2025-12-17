@@ -192,7 +192,14 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
 
-        $query = $this->db->query("
+        // Debug logging
+        error_log('=== GET CATEGORY PRODUCTS DEBUG ===');
+        error_log('Category ID: ' . $category_id);
+        error_log('Limit: ' . $limit);
+        error_log('Store ID: ' . $this->config->get('config_store_id'));
+        error_log('Language ID: ' . $language_id);
+
+        $sql = "
             SELECT p.product_id
             FROM `" . DB_PREFIX . "product` p
             LEFT JOIN `" . DB_PREFIX . "product_to_category` p2c
@@ -205,13 +212,21 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
             AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'
             GROUP BY p.product_id
             ORDER BY p.sort_order ASC, p.date_added DESC
-            LIMIT " . (int)$limit
-        );
+            LIMIT " . (int)$limit;
+
+        error_log('SQL Query: ' . $sql);
+
+        $query = $this->db->query($sql);
+
+        error_log('Query returned ' . $query->num_rows . ' rows');
 
         $products = array();
 
         foreach ($query->rows as $result) {
+            error_log('Processing product ID: ' . $result['product_id']);
             $product_info = $this->model_catalog_product->getProduct($result['product_id']);
+
+            error_log('Product info returned: ' . ($product_info ? 'YES' : 'NO'));
 
             if ($product_info) {
                 if ($product_info['image']) {
@@ -241,8 +256,12 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
                     'special'     => $special,
                     'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
                 );
+                error_log('Product added: ' . $product_info['name']);
             }
         }
+
+        error_log('Total products being returned: ' . count($products));
+        error_log('=== END GET CATEGORY PRODUCTS DEBUG ===');
 
         return $products;
     }
