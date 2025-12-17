@@ -87,8 +87,16 @@
                 console.log('Category ID from data attr:', categoryId);
                 console.log('Already loaded:', loaded);
                 console.log('Container found:', $productsContainer.length);
-                console.log('Container element:', $productsContainer);
-                console.log('getProductsUrl:', self.options.getProductsUrl);
+
+                // CRITICAL: Hide all other product containers first
+                $('.ekokray-category-products').not($productsContainer).each(function() {
+                    $(this).removeClass('has-products-loaded').css({
+                        'opacity': '0',
+                        'visibility': 'hidden',
+                        'transform': 'translateX(-10px)',
+                        'pointer-events': 'none'
+                    });
+                });
 
                 if (!categoryId) {
                     console.error('>>> No category ID found!');
@@ -104,18 +112,39 @@
                     console.log('>>> Calling loadProducts NOW');
                     self.loadProducts(categoryId, 8, $productsContainer);
                     $item.data('products-loaded', true);
-                } else {
-                    console.log('Skipping load - already loaded:', loaded, 'or no categoryId:', categoryId);
+                } else if (loaded) {
+                    // Just show already loaded products
+                    console.log('>>> Showing already loaded products');
+                    $productsContainer.addClass('has-products-loaded').css({
+                        'opacity': '1',
+                        'visibility': 'visible',
+                        'transform': 'translateX(0)',
+                        'pointer-events': 'auto'
+                    });
                 }
             });
 
             $(document).on('mouseleave', '.ekokray-category-item', function() {
                 var $item = $(this);
+                var $productsContainer = $item.find('.ekokray-category-products');
                 var hoverTimeout = $item.data('hover-timeout');
+
                 if (hoverTimeout) {
                     console.log('Clearing hover timeout');
                     clearTimeout(hoverTimeout);
                 }
+
+                // Hide products when mouse leaves category
+                setTimeout(function() {
+                    if (!$item.is(':hover')) {
+                        $productsContainer.removeClass('has-products-loaded').css({
+                            'opacity': '0',
+                            'visibility': 'hidden',
+                            'transform': 'translateX(-10px)',
+                            'pointer-events': 'none'
+                        });
+                    }
+                }, 300);
             });
 
             // Touch gestures for mobile menu
