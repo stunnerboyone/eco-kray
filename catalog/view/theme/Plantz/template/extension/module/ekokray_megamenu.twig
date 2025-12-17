@@ -41,18 +41,21 @@
           <div class="ekokray-dropdown-inner">
 
             {% if item.subcategories %}
-            <!-- Category Tree Layout -->
-            <div class="ekokray-category-grid">
+            <!-- Category Tree Layout - Simple text list -->
+            <div class="ekokray-category-list">
               {% for subcategory in item.subcategories %}
-              <div class="ekokray-category-item">
-                <a href="{{ subcategory.href }}" class="ekokray-category-link" data-category-id="{{ subcategory.category_id }}">
-                  {% if subcategory.image %}
-                  <div class="ekokray-category-image">
-                    <img src="{{ subcategory.image }}" alt="{{ subcategory.name }}" loading="lazy">
-                  </div>
-                  {% endif %}
-                  <h4 class="ekokray-category-name">{{ subcategory.name }}</h4>
+              <div class="ekokray-category-item" data-category-id="{{ subcategory.category_id }}">
+                <a href="{{ subcategory.href }}" class="ekokray-category-link">
+                  <span class="ekokray-category-name">{{ subcategory.name }}</span>
+                  <i class="fa fa-angle-right"></i>
                 </a>
+                <!-- Products will be loaded here on hover -->
+                <div class="ekokray-category-products" data-category-id="{{ subcategory.category_id }}">
+                  <div class="ekokray-products-loading">
+                    <i class="fa fa-spinner fa-spin"></i> Завантаження...
+                  </div>
+                  <div class="ekokray-products-grid"></div>
+                </div>
               </div>
               {% endfor %}
             </div>
