@@ -248,10 +248,25 @@
                     if (response.success && response.products && response.products.length > 0) {
                         console.log('>>> Rendering', response.products.length, 'products');
                         self.renderProducts(response.products, $grid);
+                        // Show the products container
+                        $container.addClass('has-products-loaded');
+                        $container.css({
+                            'opacity': '1',
+                            'visibility': 'visible',
+                            'transform': 'translateX(0)',
+                            'pointer-events': 'auto'
+                        });
                     } else {
                         console.error('>>> No products found or empty array!');
                         console.error('Response data:', JSON.stringify(response));
                         $grid.html('<p class="text-muted text-center" style="padding: 20px;">Товари не знайдено в цій категорії</p>');
+                        $container.addClass('has-products-loaded');
+                        $container.css({
+                            'opacity': '1',
+                            'visibility': 'visible',
+                            'transform': 'translateX(0)',
+                            'pointer-events': 'auto'
+                        });
                     }
                 },
                 error: function(xhr, status, error) {
@@ -270,9 +285,17 @@
         },
 
         renderProducts: function(products, $grid) {
+            console.log('=== RENDER PRODUCTS ===');
+            console.log('Products to render:', products.length);
+            console.log('Grid element:', $grid);
+            console.log('Grid length:', $grid.length);
+            console.log('Grid is visible:', $grid.is(':visible'));
+            console.log('Grid parent:', $grid.parent());
+
             var html = '';
 
             products.forEach(function(product) {
+                console.log('Rendering product:', product.name);
                 var priceHtml = '';
 
                 if (product.special) {
@@ -297,7 +320,11 @@
                 html += '</div>';
             });
 
+            console.log('Generated HTML length:', html.length);
+            console.log('Generated HTML:', html.substring(0, 200));
             $grid.html(html);
+            console.log('Grid after setting HTML:', $grid);
+            console.log('Grid HTML after set:', $grid.html().substring(0, 200));
         },
 
         setupSwipeGestures: function() {
