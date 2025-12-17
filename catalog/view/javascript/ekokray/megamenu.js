@@ -8,11 +8,15 @@
     var EkokrayMegamenu = function(element, options) {
         this.element = $(element);
         this.options = options;
+        console.log('=== EKOKRAY MEGAMENU INIT ===');
+        console.log('Element:', element);
+        console.log('Options:', options);
         this.init();
     };
 
     EkokrayMegamenu.prototype = {
         init: function() {
+            console.log('Initializing megamenu with options:', this.options);
             this.setupElements();
             this.setupEvents();
             this.setupResizeHandler();
@@ -175,50 +179,64 @@
         },
 
         loadProducts: function(categoryId, limit, $container) {
-            console.log('loadProducts called:', categoryId, limit);
+            console.log('=== LOAD PRODUCTS ===');
+            console.log('Category ID:', categoryId);
+            console.log('Limit:', limit);
+            console.log('Container:', $container);
 
             var self = this;
             var $loading = $container.find('.ekokray-products-loading');
             var $grid = $container.find('.ekokray-products-grid');
 
-            console.log('Container:', $container.length, 'Loading:', $loading.length, 'Grid:', $grid.length);
+            console.log('Loading element:', $loading.length);
+            console.log('Grid element:', $grid.length);
 
             // Check if already loaded
             if ($grid.children().length > 0) {
-                console.log('Products already loaded');
+                console.log('>>> Products already loaded, skipping');
                 return;
             }
 
             // Show loading
             $loading.show();
-            console.log('Loading started, URL:', this.options.getProductsUrl);
+
+            var ajaxUrl = this.options.getProductsUrl;
+            console.log('>>> AJAX URL:', ajaxUrl);
+            console.log('>>> Full request URL:', ajaxUrl + '&category_id=' + categoryId + '&limit=' + limit);
 
             // AJAX request
             $.ajax({
-                url: this.options.getProductsUrl,
+                url: ajaxUrl,
                 type: 'GET',
                 data: {
                     category_id: categoryId,
                     limit: limit
                 },
                 dataType: 'json',
+                beforeSend: function() {
+                    console.log('>>> AJAX request starting...');
+                },
                 success: function(response) {
-                    console.log('AJAX success:', response);
+                    console.log('>>> AJAX SUCCESS!');
+                    console.log('Response:', response);
                     if (response.success && response.products) {
-                        console.log('Rendering', response.products.length, 'products');
+                        console.log('>>> Rendering', response.products.length, 'products');
                         self.renderProducts(response.products, $grid);
                     } else {
-                        console.log('No products found');
+                        console.log('>>> No products in response');
                         $grid.html('<p class="text-muted text-center">Товари не знайдено</p>');
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('AJAX error:', status, error);
-                    console.error('Response:', xhr.responseText);
-                    $grid.html('<p class="text-danger text-center">Помилка завантаження товарів</p>');
+                    console.error('>>> AJAX ERROR!');
+                    console.error('Status:', status);
+                    console.error('Error:', error);
+                    console.error('Status Code:', xhr.status);
+                    console.error('Response Text:', xhr.responseText);
+                    $grid.html('<p class="text-danger text-center">Помилка завантаження: ' + status + '</p>');
                 },
                 complete: function() {
-                    console.log('AJAX complete');
+                    console.log('>>> AJAX complete');
                     $loading.hide();
                 }
             });
@@ -327,7 +345,10 @@
 
     // Auto-init
     $(document).ready(function() {
+        console.log('=== AUTO-INIT MEGAMENU ===');
+        console.log('ekokrayMegamenuData:', window.ekokrayMegamenuData);
         $('[class*="ekokray-megamenu"]').each(function() {
+            console.log('Found megamenu element:', this);
             $(this).ekokrayMegamenu();
         });
     });

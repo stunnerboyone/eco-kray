@@ -51,6 +51,11 @@
   display: none !important;
 }
 
+/* Mobile Tools (search, account, cart) - FORCE HIDDEN on desktop */
+.ekokray-mobile-tools {
+  display: none !important;
+}
+
 .ekokray-menu {
   list-style: none;
   margin: 0;
@@ -452,6 +457,130 @@
     color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+
+  /* Mobile Tools - Show on mobile */
+  .ekokray-mobile-tools {
+    display: block !important;
+    padding: 16px;
+    background: #f8f9fa;
+    border-bottom: 2px solid var(--megamenu-border);
+  }
+
+  .ekokray-mobile-search {
+    margin-bottom: 12px;
+  }
+
+  .ekokray-search-form {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ekokray-search-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--megamenu-border);
+    border-radius: var(--megamenu-radius);
+    font-size: 14px;
+    outline: none;
+    transition: border-color var(--megamenu-transition);
+  }
+
+  .ekokray-search-input:focus {
+    border-color: var(--megamenu-primary);
+  }
+
+  .ekokray-search-btn {
+    padding: 10px 16px;
+    background: var(--megamenu-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--megamenu-radius);
+    cursor: pointer;
+    transition: background var(--megamenu-transition);
+  }
+
+  .ekokray-search-btn:hover {
+    background: var(--megamenu-primary-dark);
+  }
+
+  .ekokray-mobile-account-cart {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .ekokray-mobile-account,
+  .ekokray-mobile-cart {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid var(--megamenu-border);
+    border-radius: var(--megamenu-radius);
+    text-decoration: none;
+    color: var(--megamenu-text);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all var(--megamenu-transition);
+  }
+
+  .ekokray-mobile-account:hover,
+  .ekokray-mobile-cart:hover {
+    background: var(--megamenu-primary);
+    color: #fff;
+    border-color: var(--megamenu-primary);
+  }
+
+  .ekokray-mobile-account i,
+  .ekokray-mobile-cart i {
+    font-size: 16px;
+  }
+
+  .ekokray-cart-count {
+    background: var(--megamenu-accent);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .ekokray-mobile-account-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ekokray-mobile-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid var(--megamenu-border);
+    border-radius: var(--megamenu-radius);
+    text-decoration: none;
+    color: var(--megamenu-text);
+    font-size: 14px;
+    transition: all var(--megamenu-transition);
+  }
+
+  .ekokray-mobile-menu-link:hover {
+    background: var(--megamenu-bg-hover);
+    color: var(--megamenu-primary);
+    border-color: var(--megamenu-primary);
+  }
+
+  .ekokray-mobile-menu-link i {
+    width: 20px;
+    font-size: 16px;
+    text-align: center;
   }
 
   /* Vertical menu on mobile */
