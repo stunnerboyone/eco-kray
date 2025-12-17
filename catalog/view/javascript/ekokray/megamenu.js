@@ -64,28 +64,35 @@
                 }
             });
 
-            // Desktop hover for product loading
-            this.$menuItems.filter('.has-products').each(function() {
+            // Desktop hover for product loading on category items
+            $(document).on('mouseenter', '.ekokray-category-item', function() {
+                if (self.isMobile) return;
+
                 var $item = $(this);
-                var $productsContainer = $item.find('.ekokray-products-container');
+                var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
-                var limit = $productsContainer.data('limit');
-                var loaded = false;
-                var hoverTimeout;
+                var loaded = $item.data('products-loaded');
 
-                $item.on('mouseenter', function() {
-                    if (!self.isMobile && !loaded) {
-                        // Debounce: wait 300ms before loading
-                        hoverTimeout = setTimeout(function() {
-                            self.loadProducts(categoryId, limit, $productsContainer);
-                            loaded = true;
-                        }, 300);
-                    }
-                });
+                if (!loaded && categoryId) {
+                    // Show loading state
+                    $productsContainer.find('.ekokray-products-loading').show();
 
-                $item.on('mouseleave', function() {
+                    // Load products with debounce
+                    var hoverTimeout = setTimeout(function() {
+                        self.loadProducts(categoryId, 8, $productsContainer);
+                        $item.data('products-loaded', true);
+                    }, 200);
+
+                    $item.data('hover-timeout', hoverTimeout);
+                }
+            });
+
+            $(document).on('mouseleave', '.ekokray-category-item', function() {
+                var $item = $(this);
+                var hoverTimeout = $item.data('hover-timeout');
+                if (hoverTimeout) {
                     clearTimeout(hoverTimeout);
-                });
+                }
             });
 
             // Touch gestures for mobile menu
