@@ -384,6 +384,23 @@
 
 /* Mobile Styles */
 @media (max-width: 991px) {
+  /* Hide header tools on mobile */
+  .header_cart,
+  .header_search,
+  .account,
+  #search {
+    display: none !important;
+  }
+
+  /* Keep header sticky on mobile */
+  header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 999 !important;
+    background: #fff !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  }
+
   /* Keep megamenu wrapper visible to show burger button */
   .ekokray-megamenu-wrapper {
     display: block !important;
@@ -472,19 +489,21 @@
   .ekokray-menu-container {
     position: fixed;
     top: 0;
-    left: -100%;
-    width: var(--megamenu-mobile-width);
+    left: 0;
+    width: 85%;
+    max-width: 320px;
     height: 100vh;
     overflow-y: auto;
     background: var(--megamenu-bg);
     box-shadow: 4px 0 16px rgba(0, 0, 0, 0.2);
     z-index: 1002;
-    transition: left var(--megamenu-transition);
+    transform: translateX(-100%);
+    transition: transform var(--megamenu-transition);
     border-radius: 0 var(--megamenu-radius) var(--megamenu-radius) 0;
   }
 
   .ekokray-menu-container.active {
-    left: 0;
+    transform: translateX(0);
   }
 
   /* Mobile header */
