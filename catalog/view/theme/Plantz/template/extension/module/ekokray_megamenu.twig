@@ -13,6 +13,33 @@
   <!-- Mobile Menu Overlay (hidden by default) -->
   <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay"></div>
 
+  <!-- Desktop Tools (visible on desktop, hidden on mobile) -->
+  <div class="ekokray-desktop-tools">
+    <div class="ekokray-mobile-tools">
+      <!-- Mobile Search -->
+      <div class="ekokray-mobile-search">
+        <form action="{{ search_url }}" method="get" class="ekokray-search-form">
+          <input type="text" name="search" placeholder="{{ text_search }}" class="ekokray-search-input" />
+          <button type="submit" class="ekokray-search-btn">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Mobile Account & Cart -->
+      <div class="ekokray-mobile-account-cart">
+        <a href="{{ account_url }}" class="ekokray-mobile-account">
+          <i class="fa fa-user"></i>
+          <span>{% if logged %}{{ customer_name }}{% else %}{{ text_login }}{% endif %}</span>
+        </a>
+        <a href="{{ cart_url }}" class="ekokray-mobile-cart">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="ekokray-cart-count" id="ekokray-cart-count-desktop">{{ cart_total }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Menu Container -->
   <nav class="ekokray-menu-container">
 

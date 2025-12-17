@@ -19,11 +19,19 @@
   --megamenu-radius: 8px;
 }
 
+/* Sticky Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Megamenu Wrapper - integrated in header */
 .ekokray-megamenu-wrapper {
   background: var(--megamenu-bg);
   border-top: 1px solid var(--megamenu-border);
-  border-bottom: 1px solid var(--megamenu-border);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
@@ -59,9 +67,61 @@
   display: none !important;
 }
 
-/* Mobile Tools (search, account, cart) - FORCE HIDDEN on desktop */
+/* Desktop Tools - visible on desktop */
+.ekokray-desktop-tools {
+  display: none;
+}
+
+@media (min-width: 992px) {
+  /* Hide old header elements, use megamenu tools instead */
+  .header_cart,
+  .header_search,
+  .account {
+    display: none !important;
+  }
+
+  .ekokray-desktop-tools {
+    display: block !important;
+  }
+
+  .ekokray-desktop-tools .ekokray-mobile-tools {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+  }
+
+  .ekokray-desktop-tools .ekokray-mobile-search {
+    flex: 1;
+    max-width: 400px;
+    margin-bottom: 0;
+  }
+
+  .ekokray-desktop-tools .ekokray-mobile-account-cart {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+
+  .ekokray-desktop-tools .ekokray-mobile-account,
+  .ekokray-desktop-tools .ekokray-mobile-cart {
+    flex: 0 0 auto;
+    padding: 8px 16px;
+  }
+
+  /* Hide account menu on desktop */
+  .ekokray-desktop-tools .ekokray-mobile-account-menu {
+    display: none;
+  }
+}
+
+/* Mobile Tools (inside drawer) - hidden on desktop */
 .ekokray-mobile-tools {
-  display: none !important;
+  display: none;
 }
 
 .ekokray-menu {
