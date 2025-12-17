@@ -351,6 +351,39 @@
             console.log('Found megamenu element:', this);
             $(this).ekokrayMegamenu();
         });
+
+        // Sync cart count with main cart total
+        function syncCartCount() {
+            var mainCartTotal = $('#cart-total').text().trim();
+            console.log('Syncing cart count:', mainCartTotal);
+            $('#ekokray-cart-count').text(mainCartTotal);
+        }
+
+        // Initial sync
+        syncCartCount();
+
+        // Watch for cart updates
+        var cartObserver = new MutationObserver(function(mutations) {
+            console.log('Cart updated, syncing count');
+            syncCartCount();
+        });
+
+        var cartElement = document.getElementById('cart-total');
+        if (cartElement) {
+            cartObserver.observe(cartElement, {
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+        }
+
+        // Also sync when cart is refreshed via AJAX
+        $(document).ajaxComplete(function(event, xhr, settings) {
+            if (settings.url && settings.url.indexOf('common/cart') !== -1) {
+                console.log('Cart AJAX complete, syncing count');
+                setTimeout(syncCartCount, 100);
+            }
+        });
     });
 
 })(jQuery);

@@ -19,6 +19,14 @@
   --megamenu-radius: 8px;
 }
 
+/* Megamenu Wrapper - integrated in header */
+.ekokray-megamenu-wrapper {
+  background: var(--megamenu-bg);
+  border-top: 1px solid var(--megamenu-border);
+  border-bottom: 1px solid var(--megamenu-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
 /* Base Container */
 .ekokray-megamenu {
   position: relative;
@@ -349,6 +357,18 @@
 
 /* Mobile Styles */
 @media (max-width: 991px) {
+  /* Hide desktop header elements on mobile */
+  .header_cart,
+  .header_search,
+  .account {
+    display: none !important;
+  }
+
+  /* Hide desktop megamenu wrapper on mobile - only show burger menu */
+  .ekokray-megamenu-wrapper {
+    display: none !important;
+  }
+
   /* Show mobile toggle - positioned on the right */
   .ekokray-mobile-toggle {
     display: flex !important;
