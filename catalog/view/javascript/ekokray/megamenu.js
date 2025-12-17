@@ -82,9 +82,11 @@
                 var $item = $(this);
                 var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
+                var limit = $productsContainer.data('limit') || 8;
                 var loaded = $item.data('products-loaded');
 
                 console.log('Category ID from data attr:', categoryId);
+                console.log('Product limit from data attr:', limit);
                 console.log('Already loaded:', loaded);
                 console.log('Container found:', $productsContainer.length);
 
@@ -109,8 +111,8 @@
                     $productsContainer.find('.ekokray-products-loading').show();
 
                     // Load products immediately (no debounce for debugging)
-                    console.log('>>> Calling loadProducts NOW');
-                    self.loadProducts(categoryId, 8, $productsContainer);
+                    console.log('>>> Calling loadProducts NOW with limit:', limit);
+                    self.loadProducts(categoryId, limit, $productsContainer);
                     $item.data('products-loaded', true);
                 } else if (loaded) {
                     // Just show already loaded products
