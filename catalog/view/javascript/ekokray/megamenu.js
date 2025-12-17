@@ -66,6 +66,7 @@
 
             // Desktop hover for product loading on category items
             $(document).on('mouseenter', '.ekokray-category-item', function() {
+                console.log('Category item mouseenter, isMobile:', self.isMobile);
                 if (self.isMobile) return;
 
                 var $item = $(this);
@@ -73,17 +74,23 @@
                 var categoryId = $productsContainer.data('category-id');
                 var loaded = $item.data('products-loaded');
 
+                console.log('Category hover:', categoryId, 'Already loaded:', loaded, 'Container found:', $productsContainer.length);
+
                 if (!loaded && categoryId) {
+                    console.log('Loading products for category:', categoryId);
                     // Show loading state
                     $productsContainer.find('.ekokray-products-loading').show();
 
                     // Load products with debounce
                     var hoverTimeout = setTimeout(function() {
+                        console.log('Debounce timeout fired');
                         self.loadProducts(categoryId, 8, $productsContainer);
                         $item.data('products-loaded', true);
                     }, 200);
 
                     $item.data('hover-timeout', hoverTimeout);
+                } else {
+                    console.log('Skipping load - already loaded or no categoryId');
                 }
             });
 
@@ -91,6 +98,7 @@
                 var $item = $(this);
                 var hoverTimeout = $item.data('hover-timeout');
                 if (hoverTimeout) {
+                    console.log('Clearing hover timeout');
                     clearTimeout(hoverTimeout);
                 }
             });
@@ -167,17 +175,23 @@
         },
 
         loadProducts: function(categoryId, limit, $container) {
+            console.log('loadProducts called:', categoryId, limit);
+
             var self = this;
             var $loading = $container.find('.ekokray-products-loading');
             var $grid = $container.find('.ekokray-products-grid');
 
+            console.log('Container:', $container.length, 'Loading:', $loading.length, 'Grid:', $grid.length);
+
             // Check if already loaded
             if ($grid.children().length > 0) {
+                console.log('Products already loaded');
                 return;
             }
 
             // Show loading
             $loading.show();
+            console.log('Loading started, URL:', this.options.getProductsUrl);
 
             // AJAX request
             $.ajax({
@@ -189,16 +203,22 @@
                 },
                 dataType: 'json',
                 success: function(response) {
+                    console.log('AJAX success:', response);
                     if (response.success && response.products) {
+                        console.log('Rendering', response.products.length, 'products');
                         self.renderProducts(response.products, $grid);
                     } else {
+                        console.log('No products found');
                         $grid.html('<p class="text-muted text-center">Товари не знайдено</p>');
                     }
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error);
+                    console.error('Response:', xhr.responseText);
                     $grid.html('<p class="text-danger text-center">Помилка завантаження товарів</p>');
                 },
                 complete: function() {
+                    console.log('AJAX complete');
                     $loading.hide();
                 }
             });
