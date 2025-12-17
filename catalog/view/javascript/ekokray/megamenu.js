@@ -70,31 +70,42 @@
 
             // Desktop hover for product loading on category items
             $(document).on('mouseenter', '.ekokray-category-item', function() {
-                console.log('Category item mouseenter, isMobile:', self.isMobile);
-                if (self.isMobile) return;
+                console.log('=== CATEGORY HOVER DEBUG ===');
+                console.log('isMobile:', self.isMobile);
+                console.log('Window width:', $(window).width());
+
+                if (self.isMobile) {
+                    console.log('Skipping - mobile mode');
+                    return;
+                }
 
                 var $item = $(this);
                 var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
                 var loaded = $item.data('products-loaded');
 
-                console.log('Category hover:', categoryId, 'Already loaded:', loaded, 'Container found:', $productsContainer.length);
+                console.log('Category ID from data attr:', categoryId);
+                console.log('Already loaded:', loaded);
+                console.log('Container found:', $productsContainer.length);
+                console.log('Container element:', $productsContainer);
+                console.log('getProductsUrl:', self.options.getProductsUrl);
+
+                if (!categoryId) {
+                    console.error('>>> No category ID found!');
+                    return;
+                }
 
                 if (!loaded && categoryId) {
-                    console.log('Loading products for category:', categoryId);
+                    console.log('>>> Loading products for category:', categoryId);
                     // Show loading state
                     $productsContainer.find('.ekokray-products-loading').show();
 
-                    // Load products with debounce
-                    var hoverTimeout = setTimeout(function() {
-                        console.log('Debounce timeout fired');
-                        self.loadProducts(categoryId, 8, $productsContainer);
-                        $item.data('products-loaded', true);
-                    }, 200);
-
-                    $item.data('hover-timeout', hoverTimeout);
+                    // Load products immediately (no debounce for debugging)
+                    console.log('>>> Calling loadProducts NOW');
+                    self.loadProducts(categoryId, 8, $productsContainer);
+                    $item.data('products-loaded', true);
                 } else {
-                    console.log('Skipping load - already loaded or no categoryId');
+                    console.log('Skipping load - already loaded:', loaded, 'or no categoryId:', categoryId);
                 }
             });
 
