@@ -374,10 +374,29 @@
     $(document).ready(function() {
         console.log('=== AUTO-INIT MEGAMENU ===');
         console.log('ekokrayMegamenuData:', window.ekokrayMegamenuData);
+        console.log('Category items on page:', $('.ekokray-category-item').length);
+        console.log('Menu items on page:', $('.ekokray-menu-item').length);
+        console.log('Dropdowns on page:', $('.ekokray-dropdown').length);
+
         $('[class*="ekokray-megamenu"]').each(function() {
             console.log('Found megamenu element:', this);
             $(this).ekokrayMegamenu();
         });
+
+        // Debug: Check if category items exist after init
+        setTimeout(function() {
+            console.log('=== CHECKING CATEGORY ITEMS AFTER INIT ===');
+            $('.ekokray-category-item').each(function(index) {
+                var $item = $(this);
+                var $productsContainer = $item.find('.ekokray-category-products');
+                var categoryId = $productsContainer.data('category-id');
+                console.log('Category item #' + index + ':', {
+                    element: this,
+                    categoryId: categoryId,
+                    hasProductsContainer: $productsContainer.length > 0
+                });
+            });
+        }, 1000);
 
         // Sync cart count with main cart total
         function syncCartCount() {

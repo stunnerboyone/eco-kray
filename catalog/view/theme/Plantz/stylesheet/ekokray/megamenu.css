@@ -35,31 +35,35 @@ header {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Base Container */
+/* Base Container - flex layout for desktop */
 .ekokray-megamenu {
   position: relative;
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-/* Mobile Toggle Button - FORCE HIDDEN on desktop, positioned on right when visible */
-.ekokray-mobile-toggle {
-  display: none !important;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1002;
-}
-
-/* Mobile Overlay - FORCE HIDDEN on desktop */
-.ekokray-mobile-overlay {
-  display: none !important;
-}
-
-/* Desktop: Horizontal Menu */
+/* Menu container - center on desktop */
 .ekokray-menu-container {
   background: var(--megamenu-bg);
   border-radius: var(--megamenu-radius);
+  flex: 1;
+  order: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile Toggle Button - hidden on desktop */
+.ekokray-mobile-toggle {
+  display: none;
+}
+
+/* Mobile Overlay - hidden on desktop */
+.ekokray-mobile-overlay {
+  display: none;
 }
 
 /* Mobile Header - FORCE HIDDEN on desktop */
@@ -67,11 +71,11 @@ header {
   display: none !important;
 }
 
-/* Desktop Tools - visible on desktop */
+/* Desktop Tools - right side on desktop */
 .ekokray-desktop-tools {
   display: none;
-  background: #f8f9fa;
-  border-bottom: 1px solid var(--megamenu-border);
+  order: 2;
+  margin-left: auto;
 }
 
 @media (min-width: 992px) {
@@ -90,22 +94,22 @@ header {
     display: flex !important;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-    padding: 16px 0;
+    gap: 16px;
+    padding: 0;
     background: transparent;
     border: none;
   }
 
   .ekokray-desktop-tools .ekokray-mobile-search {
-    flex: 1;
-    max-width: 600px;
+    flex: 0 1 auto;
+    max-width: 400px;
     margin-bottom: 0;
-    order: 1;
   }
 
   .ekokray-desktop-tools .ekokray-mobile-account-cart {
-    order: 2;
+    flex: 0 0 auto;
+    display: flex;
+    gap: 12px;
   }
 
   .ekokray-desktop-tools .ekokray-search-form {
@@ -499,9 +503,18 @@ header {
     display: none !important;
   }
 
+  /* Keep header sticky on mobile */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  }
+
   /* Keep headertop visible but adjust it */
   .headertop {
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
     width: 100% !important;
     padding: 10px 15px !important;
   }
@@ -518,7 +531,7 @@ header {
   .header-logo {
     text-align: left !important;
     width: auto !important;
-    padding: 0 15px !important;
+    padding: 0 !important;
     flex: 1;
   }
 
@@ -531,17 +544,29 @@ header {
     width: auto;
   }
 
-  /* Hide desktop megamenu wrapper on mobile - only show burger menu */
+  /* Keep megamenu wrapper visible to show burger button */
   .ekokray-megamenu-wrapper {
+    display: block !important;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  /* Hide desktop menu container and tools on mobile */
+  .ekokray-menu-container {
     display: none !important;
   }
 
-  /* Hide desktop tools */
   .ekokray-desktop-tools {
     display: none !important;
   }
 
-  /* Show mobile toggle - positioned on the right */
+  .ekokray-megamenu {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Show mobile toggle - positioned in header */
   .ekokray-mobile-toggle {
     display: flex !important;
     flex-direction: column;
@@ -557,9 +582,7 @@ header {
     z-index: 1002;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all var(--megamenu-transition);
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    position: relative;
   }
 
   .ekokray-mobile-toggle:hover {
