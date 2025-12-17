@@ -1186,7 +1186,7 @@ class ControllerCatalogProduct extends Controller {
 			}
 		}
 
-		if ((utf8_strlen($this->request->post['model']) < 1) || (utf8_strlen($this->request->post['model']) > 64)) {
+		if (isset($this->request->post['model']) && utf8_strlen($this->request->post['model']) > 64) {
 			$this->error['model'] = $this->language->get('error_model');
 		}
 

@@ -91,7 +91,7 @@
                   <i class="fa fa-angle-right"></i>
                 </a>
                 <!-- Products will be loaded here on hover -->
-                <div class="ekokray-category-products" data-category-id="{{ subcategory.category_id }}">
+                <div class="ekokray-category-products" data-category-id="{{ subcategory.category_id }}" data-limit="{{ item.product_limit|default(8) }}">
                   <div class="ekokray-products-loading">
                     <i class="fa fa-spinner fa-spin"></i> Завантаження...
                   </div>
