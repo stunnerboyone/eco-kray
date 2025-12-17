@@ -18,10 +18,47 @@
 
     <!-- Mobile Menu Header (visible only on mobile, hidden on desktop) -->
     <div class="ekokray-mobile-header">
+      <h3 class="ekokray-mobile-title">Меню</h3>
       <button class="ekokray-mobile-close" id="ekokray-mobile-close" aria-label="Close Menu">
         <i class="fa fa-times"></i>
       </button>
-      <h3 class="ekokray-mobile-title">Меню</h3>
+    </div>
+
+    <!-- Mobile-only tools (search, account, cart) -->
+    <div class="ekokray-mobile-tools">
+      <!-- Mobile Search -->
+      <div class="ekokray-mobile-search">
+        <form action="{{ search_url }}" method="get" class="ekokray-search-form">
+          <input type="text" name="search" placeholder="{{ text_search }}" class="ekokray-search-input" />
+          <button type="submit" class="ekokray-search-btn">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Mobile Account & Cart -->
+      <div class="ekokray-mobile-account-cart">
+        <a href="{{ account_url }}" class="ekokray-mobile-account">
+          <i class="fa fa-user"></i>
+          <span>{% if logged %}{{ customer_name }}{% else %}{{ text_login }}{% endif %}</span>
+        </a>
+        <a href="{{ cart_url }}" class="ekokray-mobile-cart">
+          <i class="fa fa-shopping-cart"></i>
+          <span class="ekokray-cart-count" id="ekokray-cart-count">{{ cart_total }}</span>
+        </a>
+      </div>
+
+      <!-- Mobile Account Menu -->
+      <div class="ekokray-mobile-account-menu">
+        {% if logged %}
+          <a href="{{ account_url }}" class="ekokray-mobile-menu-link"><i class="fa fa-user"></i> {{ text_account }}</a>
+          <a href="{{ logout_url }}" class="ekokray-mobile-menu-link"><i class="fa fa-sign-out"></i> {{ text_logout }}</a>
+        {% else %}
+          <a href="{{ login_url }}" class="ekokray-mobile-menu-link"><i class="fa fa-sign-in"></i> {{ text_login }}</a>
+          <a href="{{ register_url }}" class="ekokray-mobile-menu-link"><i class="fa fa-user-plus"></i> {{ text_register }}</a>
+        {% endif %}
+        <a href="{{ checkout_url }}" class="ekokray-mobile-menu-link"><i class="fa fa-shopping-cart"></i> {{ text_checkout }}</a>
+      </div>
     </div>
 
     <!-- Main Menu Items -->
