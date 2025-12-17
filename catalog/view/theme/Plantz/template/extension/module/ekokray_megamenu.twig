@@ -18,7 +18,8 @@
     <div class="ekokray-mobile-tools">
       <!-- Mobile Search -->
       <div class="ekokray-mobile-search">
-        <form action="{{ search_url }}" method="get" class="ekokray-search-form">
+        <form action="index.php" method="get" class="ekokray-search-form">
+          <input type="hidden" name="route" value="product/search" />
           <input type="text" name="search" placeholder="{{ text_search }}" class="ekokray-search-input" />
           <button type="submit" class="ekokray-search-btn">
             <i class="fa fa-search"></i>
@@ -55,7 +56,8 @@
     <div class="ekokray-mobile-tools">
       <!-- Mobile Search -->
       <div class="ekokray-mobile-search">
-        <form action="{{ search_url }}" method="get" class="ekokray-search-form">
+        <form action="index.php" method="get" class="ekokray-search-form">
+          <input type="hidden" name="route" value="product/search" />
           <input type="text" name="search" placeholder="{{ text_search }}" class="ekokray-search-input" />
           <button type="submit" class="ekokray-search-btn">
             <i class="fa fa-search"></i>

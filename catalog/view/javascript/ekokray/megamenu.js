@@ -239,7 +239,9 @@
                         console.log('=== SERVER DEBUG INFO ===');
                         console.log('Debug data:', response.debug);
                         console.log('Category ID:', response.debug.category_id);
+                        console.log('Category Name:', response.debug.category_name);
                         console.log('Store ID:', response.debug.store_id);
+                        console.log('Language ID:', response.debug.language_id);
                         console.log('Products count:', response.debug.products_count);
                     }
 

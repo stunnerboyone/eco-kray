@@ -146,6 +146,11 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
             $json['debug']['category_id'] = $category_id;
             $json['debug']['limit'] = $limit;
             $json['debug']['store_id'] = (int)$this->config->get('config_store_id');
+            $json['debug']['language_id'] = (int)$this->config->get('config_language_id');
+
+            // Check category exists
+            $category_query = $this->db->query("SELECT name FROM " . DB_PREFIX . "category_description WHERE category_id = '" . (int)$category_id . "' AND language_id = '" . (int)$this->config->get('config_language_id') . "'");
+            $json['debug']['category_name'] = $category_query->num_rows ? $category_query->row['name'] : 'Category not found';
 
             $products = $this->model_extension_module_ekokray_megamenu->getCategoryProducts($category_id, $limit);
 
