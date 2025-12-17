@@ -26,57 +26,14 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Mobile Toggle Button - Hidden on desktop */
+/* Mobile Toggle Button - FORCE HIDDEN on desktop */
 .ekokray-mobile-toggle {
-  display: none;
-  position: relative;
-  width: 44px;
-  height: 44px;
-  background: var(--megamenu-primary);
-  border: none;
-  border-radius: var(--megamenu-radius);
-  cursor: pointer;
-  transition: all var(--megamenu-transition);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: none !important;
 }
 
-.ekokray-mobile-toggle:hover {
-  background: var(--megamenu-primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.ekokray-mobile-toggle:active {
-  transform: translateY(0);
-}
-
-.ekokray-mobile-toggle .bar {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: #fff;
-  margin: 5px auto;
-  transition: all var(--megamenu-transition);
-  border-radius: 2px;
-}
-
-/* Mobile Overlay */
+/* Mobile Overlay - FORCE HIDDEN on desktop */
 .ekokray-mobile-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
-  z-index: 999;
-  opacity: 0;
-  transition: opacity var(--megamenu-transition);
-}
-
-.ekokray-mobile-overlay.active {
-  opacity: 1;
+  display: none !important;
 }
 
 /* Desktop: Horizontal Menu */
@@ -85,8 +42,9 @@
   border-radius: var(--megamenu-radius);
 }
 
+/* Mobile Header - FORCE HIDDEN on desktop */
 .ekokray-mobile-header {
-  display: none;
+  display: none !important;
 }
 
 .ekokray-menu {
@@ -384,7 +342,7 @@
 @media (max-width: 991px) {
   /* Show mobile toggle */
   .ekokray-mobile-toggle {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -398,6 +356,7 @@
     z-index: 1001;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all var(--megamenu-transition);
+    position: relative;
   }
 
   .ekokray-mobile-toggle:hover {
@@ -428,7 +387,7 @@
 
   /* Show overlay when active */
   .ekokray-mobile-overlay {
-    display: block;
+    display: block !important;
   }
 
   /* Mobile drawer menu */
@@ -452,6 +411,7 @@
 
   /* Mobile header */
   .ekokray-mobile-header {
+    display: flex !important;
     display: flex;
     align-items: center;
     justify-content: space-between;

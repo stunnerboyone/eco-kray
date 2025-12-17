@@ -1,20 +1,20 @@
 <div class="ekokray-megamenu" id="ekokray-megamenu-{{ menu_id }}" data-breakpoint="{{ mobile_breakpoint }}">
 
-  <!-- Mobile Menu Toggle Button -->
-  <button class="ekokray-mobile-toggle" id="ekokray-mobile-toggle" aria-label="Toggle Menu">
+  <!-- Mobile Menu Toggle Button (hidden on desktop) -->
+  <button class="ekokray-mobile-toggle" id="ekokray-mobile-toggle" aria-label="Toggle Menu" style="display: none;">
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>
   </button>
 
-  <!-- Mobile Menu Overlay -->
-  <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay"></div>
+  <!-- Mobile Menu Overlay (hidden by default) -->
+  <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay" style="display: none;"></div>
 
   <!-- Menu Container -->
   <nav class="ekokray-menu-container">
 
-    <!-- Mobile Menu Header (visible only on mobile) -->
-    <div class="ekokray-mobile-header">
+    <!-- Mobile Menu Header (visible only on mobile, hidden on desktop) -->
+    <div class="ekokray-mobile-header" style="display: none;">
       <button class="ekokray-mobile-close" id="ekokray-mobile-close" aria-label="Close Menu">
         <i class="fa fa-times"></i>
       </button>
