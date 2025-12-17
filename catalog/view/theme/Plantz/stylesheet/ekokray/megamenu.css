@@ -1,27 +1,63 @@
 /**
- * EKO-KRAY Megamenu - Clean & Responsive
+ * EKO-KRAY Megamenu - Beautiful & Responsive
  */
 
 /* Variables */
 :root {
   --megamenu-primary: #2d8f3c;
-  --megamenu-hover: #1a5c28;
+  --megamenu-primary-dark: #1a5c28;
+  --megamenu-accent: #f7941d;
   --megamenu-text: #333;
+  --megamenu-text-light: #666;
   --megamenu-bg: #fff;
+  --megamenu-bg-hover: #f8f9fa;
   --megamenu-border: #e0e0e0;
-  --megamenu-transition: 0.3s ease;
-  --megamenu-mobile-width: 320px;
+  --megamenu-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --megamenu-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --megamenu-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --megamenu-mobile-width: 280px;
+  --megamenu-radius: 8px;
 }
 
 /* Base Container */
 .ekokray-megamenu {
   position: relative;
   width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* Mobile Toggle Button - Hidden on desktop */
 .ekokray-mobile-toggle {
   display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: var(--megamenu-primary);
+  border: none;
+  border-radius: var(--megamenu-radius);
+  cursor: pointer;
+  transition: all var(--megamenu-transition);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ekokray-mobile-toggle:hover {
+  background: var(--megamenu-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ekokray-mobile-toggle:active {
+  transform: translateY(0);
+}
+
+.ekokray-mobile-toggle .bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  margin: 5px auto;
+  transition: all var(--megamenu-transition);
+  border-radius: 2px;
 }
 
 /* Mobile Overlay */
@@ -32,7 +68,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
   z-index: 999;
   opacity: 0;
   transition: opacity var(--megamenu-transition);
@@ -45,6 +82,7 @@
 /* Desktop: Horizontal Menu */
 .ekokray-menu-container {
   background: var(--megamenu-bg);
+  border-radius: var(--megamenu-radius);
 }
 
 .ekokray-mobile-header {
@@ -57,7 +95,7 @@
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 4px;
 }
 
 .ekokray-menu-item {
@@ -67,22 +105,47 @@
 .ekokray-menu-link {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
+  padding: 12px 20px;
   color: var(--megamenu-text);
   text-decoration: none;
   font-weight: 500;
+  font-size: 15px;
   transition: all var(--megamenu-transition);
   white-space: nowrap;
+  border-radius: var(--megamenu-radius);
+  position: relative;
+}
+
+.ekokray-menu-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: var(--megamenu-primary);
+  transition: all var(--megamenu-transition);
+  transform: translateX(-50%);
+  border-radius: 2px 2px 0 0;
 }
 
 .ekokray-menu-link:hover {
-  background: var(--megamenu-primary);
-  color: #fff;
+  color: var(--megamenu-primary);
+  background: var(--megamenu-bg-hover);
+}
+
+.ekokray-menu-link:hover::before {
+  width: 80%;
 }
 
 .ekokray-dropdown-toggle {
-  margin-left: 8px;
+  margin-left: 6px;
   font-size: 12px;
+  transition: transform var(--megamenu-transition);
+}
+
+.ekokray-menu-item:hover .ekokray-dropdown-toggle {
+  transform: rotate(180deg);
 }
 
 .ekokray-dropdown-toggle .mobile-icon {
@@ -92,12 +155,13 @@
 /* Dropdown */
 .ekokray-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
-  min-width: 250px;
+  min-width: 280px;
   background: var(--megamenu-bg);
   border: 1px solid var(--megamenu-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: var(--megamenu-radius);
+  box-shadow: var(--megamenu-shadow-lg);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -112,98 +176,160 @@
 }
 
 .ekokray-dropdown-inner {
-  padding: 15px;
+  padding: 12px;
 }
 
 /* Category Grid */
 .ekokray-category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
-  max-width: 800px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+  max-width: 900px;
 }
 
 .ekokray-category-item {
   border: 1px solid var(--megamenu-border);
-  border-radius: 8px;
+  border-radius: var(--megamenu-radius);
   overflow: hidden;
   transition: all var(--megamenu-transition);
+  background: var(--megamenu-bg);
 }
 
 .ekokray-category-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: var(--megamenu-shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--megamenu-primary);
 }
 
 .ekokray-category-link {
   display: block;
   text-decoration: none;
   color: var(--megamenu-text);
+  height: 100%;
 }
 
 .ekokray-category-image {
   width: 100%;
-  height: 150px;
+  height: 160px;
   overflow: hidden;
+  position: relative;
+  background: #f5f5f5;
+}
+
+.ekokray-category-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.05) 100%);
+  transition: opacity var(--megamenu-transition);
+}
+
+.ekokray-category-item:hover .ekokray-category-image::after {
+  opacity: 0;
 }
 
 .ekokray-category-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform var(--megamenu-transition);
+}
+
+.ekokray-category-item:hover .ekokray-category-image img {
+  transform: scale(1.08);
 }
 
 .ekokray-category-name {
-  padding: 12px;
+  padding: 14px;
   margin: 0;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   text-align: center;
+  color: var(--megamenu-text);
+  transition: color var(--megamenu-transition);
+}
+
+.ekokray-category-item:hover .ekokray-category-name {
+  color: var(--megamenu-primary);
 }
 
 /* Submenu */
 .ekokray-submenu {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 8px 0;
 }
 
 .ekokray-submenu-item {
-  border-bottom: 1px solid var(--megamenu-border);
-}
-
-.ekokray-submenu-item:last-child {
-  border-bottom: none;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 2px 0;
 }
 
 .ekokray-submenu-link {
   display: block;
-  padding: 10px 15px;
+  padding: 10px 16px;
   color: var(--megamenu-text);
   text-decoration: none;
-  transition: background var(--megamenu-transition);
+  transition: all var(--megamenu-transition);
+  font-size: 14px;
+  position: relative;
+  padding-left: 28px;
+}
+
+.ekokray-submenu-link::before {
+  content: '›';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--megamenu-primary);
+  font-size: 18px;
+  font-weight: bold;
+  opacity: 0;
+  transition: all var(--megamenu-transition);
 }
 
 .ekokray-submenu-link:hover {
-  background: var(--megamenu-hover-bg, #f5f5f5);
+  background: var(--megamenu-bg-hover);
+  color: var(--megamenu-primary);
+  padding-left: 32px;
+}
+
+.ekokray-submenu-link:hover::before {
+  opacity: 1;
+  left: 14px;
 }
 
 /* Products Container */
 .ekokray-products-container {
-  margin-top: 15px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid var(--megamenu-border);
 }
 
 .ekokray-products-loading {
   text-align: center;
-  padding: 20px;
-  color: #999;
+  padding: 24px;
+  color: var(--megamenu-text-light);
+  font-size: 14px;
+}
+
+.ekokray-products-loading i {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--megamenu-primary);
 }
 
 .ekokray-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 /* Mobile Styles */
@@ -214,28 +340,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
-    background: var(--megamenu-primary);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 8px;
-    z-index: 1001;
-  }
-
-  .ekokray-mobile-toggle .bar {
-    display: block;
-    width: 24px;
-    height: 3px;
-    background: #fff;
-    margin: 3px 0;
-    transition: all var(--megamenu-transition);
-    border-radius: 2px;
   }
 
   .ekokray-mobile-toggle.active .bar:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
+    transform: translateY(7px) rotate(45deg);
   }
 
   .ekokray-mobile-toggle.active .bar:nth-child(2) {
@@ -243,7 +351,7 @@
   }
 
   .ekokray-mobile-toggle.active .bar:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   /* Show overlay when active */
@@ -255,14 +363,15 @@
   .ekokray-menu-container {
     position: fixed;
     top: 0;
-    left: calc(-1 * var(--megamenu-mobile-width));
+    left: calc(-1 * var(--megamenu-mobile-width) - 20px);
     width: var(--megamenu-mobile-width);
     height: 100vh;
     overflow-y: auto;
     background: var(--megamenu-bg);
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: left var(--megamenu-transition);
+    border-radius: 0 var(--megamenu-radius) var(--megamenu-radius) 0;
   }
 
   .ekokray-menu-container.active {
@@ -274,33 +383,61 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--megamenu-border);
+    padding: 20px;
+    border-bottom: 2px solid var(--megamenu-border);
+    background: linear-gradient(135deg, var(--megamenu-primary) 0%, var(--megamenu-primary-dark) 100%);
   }
 
   .ekokray-mobile-close {
-    background: none;
+    background: rgba(255, 255, 255, 0.2);
     border: none;
     font-size: 24px;
     cursor: pointer;
-    color: var(--megamenu-text);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--megamenu-transition);
+  }
+
+  .ekokray-mobile-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
   }
 
   .ekokray-mobile-title {
     margin: 0;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   /* Vertical menu on mobile */
   .ekokray-menu {
     flex-direction: column;
     align-items: stretch;
+    padding: 8px;
   }
 
   .ekokray-menu-link {
-    padding: 15px 20px;
+    padding: 16px;
     border-bottom: 1px solid var(--megamenu-border);
+    border-radius: 0;
+    font-size: 16px;
+  }
+
+  .ekokray-menu-link::before {
+    display: none;
+  }
+
+  .ekokray-menu-link:hover {
+    background: var(--megamenu-bg-hover);
+    padding-left: 24px;
   }
 
   .ekokray-dropdown-toggle .desktop-icon {
@@ -309,6 +446,12 @@
 
   .ekokray-dropdown-toggle .mobile-icon {
     display: inline;
+    transform: rotate(0);
+    transition: transform var(--megamenu-transition);
+  }
+
+  .ekokray-menu-item.active .ekokray-dropdown-toggle .mobile-icon {
+    transform: rotate(90deg);
   }
 
   /* Dropdown becomes nested on mobile */
@@ -319,6 +462,7 @@
     transform: none;
     border: none;
     box-shadow: none;
+    border-radius: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height var(--megamenu-transition);
@@ -329,18 +473,53 @@
   }
 
   .ekokray-dropdown-inner {
-    background: #f9f9f9;
-    padding: 10px 20px;
+    background: linear-gradient(180deg, #f9f9f9 0%, #fff 100%);
+    padding: 12px 16px;
+    border-left: 3px solid var(--megamenu-primary);
+    margin: 0 8px;
   }
 
   /* Category grid single column on mobile */
   .ekokray-category-grid {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .ekokray-category-image {
+    height: 140px;
   }
 
   /* Products grid 2 columns on mobile */
   .ekokray-products-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
   }
+
+  /* Submenu mobile styles */
+  .ekokray-submenu {
+    padding: 4px 0;
+  }
+
+  .ekokray-submenu-link {
+    padding: 12px 12px 12px 24px;
+    font-size: 15px;
+  }
+}
+
+/* Smooth scrollbar */
+.ekokray-menu-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ekokray-menu-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.ekokray-menu-container::-webkit-scrollbar-thumb {
+  background: var(--megamenu-primary);
+  border-radius: 4px;
+}
+
+.ekokray-menu-container::-webkit-scrollbar-thumb:hover {
+  background: var(--megamenu-primary-dark);
 }
