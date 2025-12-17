@@ -1,3 +1,6 @@
+<!-- Load megamenu CSS -->
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/Plantz/stylesheet/ekokray/megamenu.css?v={{ "now"|date("U") }}" />
+
 <div class="ekokray-megamenu" id="ekokray-megamenu-{{ menu_id }}" data-breakpoint="{{ mobile_breakpoint }}">
 
   <!-- Mobile Menu Toggle Button (hidden on desktop) -->
@@ -103,3 +106,6 @@ window.ekokrayMegamenuData['menu_{{ menu_id }}'] = {
   getProductsUrl: 'index.php?route=extension/module/ekokray_megamenu/getProducts'
 };
 </script>
+
+<!-- Load megamenu JavaScript directly -->
+<script type="text/javascript" src="catalog/view/javascript/ekokray/megamenu.js?v={{ "now"|date("U") }}"></script>
