@@ -113,12 +113,6 @@ if (typeof jQuery === 'undefined') {
         initCategoryAutocomplete: function() {
             console.log('EkokrayMegamenu: initCategoryAutocomplete called');
 
-            // Only initialize once
-            if (this.autocompleteInitialized) {
-                console.log('EkokrayMegamenu: Autocomplete already initialized');
-                return;
-            }
-
             // Check if jQuery UI autocomplete is available
             if (typeof $.fn.autocomplete === 'undefined') {
                 console.error('EkokrayMegamenu: jQuery UI autocomplete is not available!');
@@ -132,11 +126,18 @@ if (typeof jQuery === 'undefined') {
                 return;
             }
 
+            // Destroy existing autocomplete if any
+            if ($input.hasClass('ui-autocomplete-input')) {
+                console.log('EkokrayMegamenu: Destroying existing autocomplete');
+                $input.autocomplete('destroy');
+            }
+
             console.log('EkokrayMegamenu: Initializing autocomplete on input');
 
             var userToken = $('#user-token').val();
 
             $input.autocomplete({
+                minLength: 0,  // Show results immediately
                 source: function(request, response) {
                     console.log('Autocomplete: Searching for:', request.term);
                     $.ajax({
@@ -162,6 +163,13 @@ if (typeof jQuery === 'undefined') {
                     $('#item-category-autocomplete').val(ui.item.label);
                     $('#item-category-id').val(ui.item.value);
                     return false;
+                }
+            });
+
+            // Focus on input to trigger autocomplete
+            $input.focus(function() {
+                if ($(this).val().length === 0) {
+                    $(this).autocomplete('search', '');
                 }
             });
 
@@ -269,27 +277,38 @@ if (typeof jQuery === 'undefined') {
             var userToken = $('#user-token').val();
             var url = itemId ? $('#edit-item-url').val() : $('#add-item-url').val();
 
+            console.log('Saving item...', itemId ? 'Editing ID: ' + itemId : 'Adding new');
+            console.log('Form data:', formData);
+            console.log('URL:', url);
+
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: formData,
                 dataType: 'json',
                 success: function(response) {
+                    console.log('Save response:', response);
                     if (response.success) {
                         $('#item-modal').modal('hide');
                         location.reload();
                     } else {
+                        var errorMsg = 'Error saving item';
                         if (response.errors) {
-                            var errorMsg = '';
+                            errorMsg = '';
                             $.each(response.errors, function(key, value) {
                                 errorMsg += value + '\n';
                             });
-                            alert(errorMsg);
+                        } else if (response.error) {
+                            errorMsg = response.error;
                         }
+                        console.error('Save errors:', errorMsg);
+                        alert(errorMsg);
                     }
                 },
-                error: function() {
-                    alert('Error saving item');
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', status, error);
+                    console.error('Response:', xhr.responseText);
+                    alert('Error saving item: ' + error);
                 }
             });
         },

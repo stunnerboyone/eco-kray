@@ -257,21 +257,32 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
      * Add menu item (AJAX)
      */
     public function addItem() {
+        // Start output buffering to catch any PHP notices/warnings
+        ob_start();
+
         $this->load->language('extension/module/ekokray_megamenu');
         $this->load->model('extension/module/ekokray_megamenu');
 
         $json = array();
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateItemForm()) {
-            $item_id = $this->model_extension_module_ekokray_megamenu->addMenuItem($this->request->post);
+        try {
+            if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateItemForm()) {
+                $item_id = $this->model_extension_module_ekokray_megamenu->addMenuItem($this->request->post);
 
-            $json['success'] = true;
-            $json['item_id'] = $item_id;
-            $json['message'] = $this->language->get('text_success');
-        } else {
+                $json['success'] = true;
+                $json['item_id'] = $item_id;
+                $json['message'] = $this->language->get('text_success');
+            } else {
+                $json['success'] = false;
+                $json['errors'] = $this->error;
+            }
+        } catch (Exception $e) {
             $json['success'] = false;
-            $json['errors'] = $this->error;
+            $json['error'] = 'Exception: ' . $e->getMessage();
         }
+
+        // Clean output buffer before sending JSON
+        ob_end_clean();
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));
@@ -281,6 +292,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
      * Edit menu item (AJAX) - handles both GET (load data) and POST (save data)
      */
     public function editItem() {
+        // Start output buffering to catch any PHP notices/warnings
+        ob_start();
+
         $this->load->language('extension/module/ekokray_megamenu');
         $this->load->model('extension/module/ekokray_megamenu');
 
@@ -315,6 +329,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
                 $json['error'] = 'Missing item_id parameter';
             }
         }
+
+        // Clean output buffer before sending JSON
+        ob_end_clean();
 
         $this->response->addHeader('Content-Type: application/json');
         $this->response->setOutput(json_encode($json));

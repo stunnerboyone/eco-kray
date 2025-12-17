@@ -136,6 +136,8 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
      * @return array Category tree
      */
     protected function getCategoryTree($parent_id, $language_id) {
+        $this->load->model('tool/image');
+
         $query = $this->db->query("
             SELECT
                 c.category_id,
@@ -156,10 +158,17 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $categories = array();
 
         foreach ($query->rows as $category) {
+            // Resize category image properly
+            if ($category['image']) {
+                $image = $this->model_tool_image->resize($category['image'], 250, 250);
+            } else {
+                $image = $this->model_tool_image->resize('placeholder.png', 250, 250);
+            }
+
             $categories[] = array(
                 'category_id' => $category['category_id'],
                 'name'        => $category['name'],
-                'image'       => $category['image'],
+                'image'       => $image,
                 'href'        => $this->url->link('product/category', 'path=' . $category['category_id'])
             );
         }
