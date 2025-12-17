@@ -1,73 +1,30 @@
 /**
- * EKO-KRAY Megamenu - Frontend Styles
- * Responsive megamenu with mobile drawer and integrated search/cart/account
+ * EKO-KRAY Megamenu - Clean & Responsive
  */
 
-/* ==========================================================================
-   Variables & Base
-   ========================================================================== */
+/* Variables */
 :root {
   --megamenu-primary: #2d8f3c;
-  --megamenu-secondary: #1a5c28;
-  --megamenu-accent: #f7941d;
-  --megamenu-text: #333333;
-  --megamenu-bg: #ffffff;
-  --megamenu-hover-bg: #f5f5f5;
+  --megamenu-hover: #1a5c28;
+  --megamenu-text: #333;
+  --megamenu-bg: #fff;
   --megamenu-border: #e0e0e0;
-  --megamenu-transition: 300ms ease;
+  --megamenu-transition: 0.3s ease;
+  --megamenu-mobile-width: 320px;
 }
 
+/* Base Container */
 .ekokray-megamenu {
   position: relative;
-  font-family: 'Roboto', 'Arial', sans-serif;
+  width: 100%;
 }
 
-/* ==========================================================================
-   Mobile Toggle Button
-   ========================================================================== */
+/* Mobile Toggle Button - Hidden on desktop */
 .ekokray-mobile-toggle {
   display: none;
-  position: relative;
-  width: 40px;
-  height: 40px;
-  background: var(--megamenu-primary);
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 8px;
-  z-index: 1001;
-  transition: background var(--megamenu-transition);
 }
 
-.ekokray-mobile-toggle:hover {
-  background: var(--megamenu-secondary);
-}
-
-.ekokray-mobile-toggle .bar {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background: #fff;
-  margin: 4px 0;
-  transition: all var(--megamenu-transition);
-  border-radius: 2px;
-}
-
-.ekokray-mobile-toggle.active .bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.ekokray-mobile-toggle.active .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.ekokray-mobile-toggle.active .bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* ==========================================================================
-   Mobile Overlay
-   ========================================================================== */
+/* Mobile Overlay */
 .ekokray-mobile-overlay {
   display: none;
   position: fixed;
@@ -76,7 +33,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 999;
   opacity: 0;
   transition: opacity var(--megamenu-transition);
 }
@@ -85,164 +42,54 @@
   opacity: 1;
 }
 
-/* ==========================================================================
-   Menu Container
-   ========================================================================== */
+/* Desktop: Horizontal Menu */
 .ekokray-menu-container {
   background: var(--megamenu-bg);
 }
 
-/* ==========================================================================
-   Mobile Menu Header
-   ========================================================================== */
 .ekokray-mobile-header {
   display: none;
-  padding: 20px;
-  background: var(--megamenu-primary);
-  color: #fff;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.ekokray-mobile-close {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 5px;
-  line-height: 1;
-}
-
-.ekokray-mobile-title {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 500;
-  flex: 1;
-  text-align: center;
-}
-
-/* ==========================================================================
-   Mobile Tools Section
-   ========================================================================== */
-.ekokray-mobile-tools {
-  display: none;
-  background: #f9f9f9;
-  border-bottom: 1px solid var(--megamenu-border);
-}
-
-.ekokray-mobile-search {
-  padding: 15px;
-}
-
-.ekokray-mobile-search .input-group {
-  width: 100%;
-}
-
-.ekokray-mobile-search .form-control {
-  border-radius: 20px 0 0 20px;
-  border-color: var(--megamenu-border);
-}
-
-.ekokray-mobile-search .btn {
-  border-radius: 0 20px 20px 0;
-  background: var(--megamenu-primary);
-  border-color: var(--megamenu-primary);
-  color: #fff;
-}
-
-.ekokray-mobile-account,
-.ekokray-mobile-cart {
-  padding: 0 15px 15px;
-}
-
-.ekokray-mobile-account a,
-.ekokray-mobile-cart a {
-  display: block;
-  padding: 12px 15px;
-  background: #fff;
-  border: 1px solid var(--megamenu-border);
-  border-radius: 4px;
-  color: var(--megamenu-text);
-  text-decoration: none;
-  margin-bottom: 8px;
-  transition: all var(--megamenu-transition);
-}
-
-.ekokray-mobile-account a:hover,
-.ekokray-mobile-cart a:hover {
-  background: var(--megamenu-hover-bg);
-  border-color: var(--megamenu-primary);
-}
-
-.ekokray-mobile-account a i,
-.ekokray-mobile-cart a i {
-  margin-right: 8px;
-  color: var(--megamenu-primary);
-}
-
-.ekokray-cart-badge {
-  display: inline-block;
-  background: var(--megamenu-accent);
-  color: #fff;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
-  margin-left: 5px;
-}
-
-/* ==========================================================================
-   Main Menu (Desktop)
-   ========================================================================== */
 .ekokray-menu {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 0;
 }
 
 .ekokray-menu-item {
   position: relative;
-  margin: 0;
-  padding: 0;
 }
 
 .ekokray-menu-link {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 15px 20px;
   color: var(--megamenu-text);
   text-decoration: none;
-  font-size: 16px;
   font-weight: 500;
   transition: all var(--megamenu-transition);
   white-space: nowrap;
 }
 
 .ekokray-menu-link:hover {
-  color: var(--megamenu-primary);
-  background: var(--megamenu-hover-bg);
+  background: var(--megamenu-primary);
+  color: #fff;
 }
 
 .ekokray-dropdown-toggle {
-  margin-left: 5px;
+  margin-left: 8px;
   font-size: 12px;
-  transition: transform var(--megamenu-transition);
 }
 
 .ekokray-dropdown-toggle .mobile-icon {
   display: none;
 }
 
-.ekokray-menu-item.active > .ekokray-menu-link .ekokray-dropdown-toggle {
-  transform: rotate(180deg);
-}
-
-/* ==========================================================================
-   Dropdown
-   ========================================================================== */
+/* Dropdown */
 .ekokray-dropdown {
   position: absolute;
   top: 100%;
@@ -250,8 +97,7 @@
   min-width: 250px;
   background: var(--megamenu-bg);
   border: 1px solid var(--megamenu-border);
-  border-top: 3px solid var(--megamenu-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
@@ -259,83 +105,63 @@
   z-index: 1000;
 }
 
-.ekokray-menu-item:hover > .ekokray-dropdown,
-.ekokray-menu-item.active > .ekokray-dropdown {
+.ekokray-menu-item:hover > .ekokray-dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
 .ekokray-dropdown-inner {
-  padding: 20px;
+  padding: 15px;
 }
 
-/* ==========================================================================
-   Category Grid
-   ========================================================================== */
+/* Category Grid */
 .ekokray-category-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 10px 0;
-  max-width: 1000px;
+  gap: 15px;
+  max-width: 800px;
 }
 
 .ekokray-category-item {
-  text-align: center;
-  transition: transform var(--megamenu-transition);
+  border: 1px solid var(--megamenu-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all var(--megamenu-transition);
 }
 
 .ekokray-category-item:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .ekokray-category-link {
   display: block;
-  color: var(--megamenu-text);
   text-decoration: none;
-  padding: 15px;
-  background: var(--megamenu-bg);
-  border: 1px solid var(--megamenu-border);
-  border-radius: 8px;
-  transition: all var(--megamenu-transition);
-}
-
-.ekokray-category-link:hover {
-  border-color: var(--megamenu-primary);
-  box-shadow: 0 2px 8px rgba(45, 143, 60, 0.2);
+  color: var(--megamenu-text);
 }
 
 .ekokray-category-image {
   width: 100%;
   height: 150px;
   overflow: hidden;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  background: #f5f5f5;
 }
 
 .ekokray-category-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--megamenu-transition);
-}
-
-.ekokray-category-link:hover .ekokray-category-image img {
-  transform: scale(1.05);
 }
 
 .ekokray-category-name {
+  padding: 12px;
+  margin: 0;
   font-size: 14px;
   font-weight: 500;
-  margin: 0;
-  color: var(--megamenu-text);
+  text-align: center;
 }
 
-/* ==========================================================================
-   Submenu
-   ========================================================================== */
+/* Submenu */
 .ekokray-submenu {
   list-style: none;
   margin: 0;
@@ -343,7 +169,11 @@
 }
 
 .ekokray-submenu-item {
-  margin: 0;
+  border-bottom: 1px solid var(--megamenu-border);
+}
+
+.ekokray-submenu-item:last-child {
+  border-bottom: none;
 }
 
 .ekokray-submenu-link {
@@ -351,163 +181,128 @@
   padding: 10px 15px;
   color: var(--megamenu-text);
   text-decoration: none;
-  border-radius: 4px;
-  transition: all var(--megamenu-transition);
+  transition: background var(--megamenu-transition);
 }
 
 .ekokray-submenu-link:hover {
-  background: var(--megamenu-hover-bg);
-  color: var(--megamenu-primary);
-  padding-left: 20px;
+  background: var(--megamenu-hover-bg, #f5f5f5);
 }
 
-/* ==========================================================================
-   Products Container (AJAX loaded)
-   ========================================================================== */
+/* Products Container */
 .ekokray-products-container {
-  margin-top: 20px;
-  padding-top: 20px;
-  border-top: 1px solid var(--megamenu-border);
+  margin-top: 15px;
 }
 
 .ekokray-products-loading {
   text-align: center;
-  padding: 40px;
+  padding: 20px;
   color: #999;
-  font-size: 14px;
 }
 
 .ekokray-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 15px;
-  max-width: 1000px;
+  margin-top: 15px;
 }
 
-.ekokray-product-item {
-  background: #fff;
-  border: 1px solid var(--megamenu-border);
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-  transition: all var(--megamenu-transition);
-}
-
-.ekokray-product-item:hover {
-  border-color: var(--megamenu-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.ekokray-product-image {
-  width: 100%;
-  height: 120px;
-  overflow: hidden;
-  border-radius: 4px;
-  margin-bottom: 8px;
-  background: #f5f5f5;
-}
-
-.ekokray-product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.ekokray-product-name {
-  font-size: 13px;
-  margin: 8px 0;
-  height: 36px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.ekokray-product-name a {
-  color: var(--megamenu-text);
-  text-decoration: none;
-}
-
-.ekokray-product-name a:hover {
-  color: var(--megamenu-primary);
-}
-
-.ekokray-product-price {
-  font-size: 16px;
-  font-weight: bold;
-  color: var(--megamenu-primary);
-  margin: 8px 0;
-}
-
-.ekokray-product-price-old {
-  font-size: 13px;
-  color: #999;
-  text-decoration: line-through;
-  margin-right: 5px;
-}
-
-/* ==========================================================================
-   Mobile Responsive (Breakpoint < 992px)
-   ========================================================================== */
+/* Mobile Styles */
 @media (max-width: 991px) {
   /* Show mobile toggle */
   .ekokray-mobile-toggle {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: var(--megamenu-primary);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
   }
 
-  /* Show overlay when menu is active */
+  .ekokray-mobile-toggle .bar {
+    display: block;
+    width: 24px;
+    height: 3px;
+    background: #fff;
+    margin: 3px 0;
+    transition: all var(--megamenu-transition);
+    border-radius: 2px;
+  }
+
+  .ekokray-mobile-toggle.active .bar:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  .ekokray-mobile-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .ekokray-mobile-toggle.active .bar:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  /* Show overlay when active */
   .ekokray-mobile-overlay {
     display: block;
   }
 
-  /* Transform menu into slide-in drawer */
+  /* Mobile drawer menu */
   .ekokray-menu-container {
     position: fixed;
     top: 0;
-    left: -320px;
-    width: 320px;
-    max-width: 85vw;
+    left: calc(-1 * var(--megamenu-mobile-width));
+    width: var(--megamenu-mobile-width);
     height: 100vh;
     overflow-y: auto;
     background: var(--megamenu-bg);
-    z-index: 1001;
-    transition: left var(--megamenu-transition);
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    transition: left var(--megamenu-transition);
   }
 
   .ekokray-menu-container.active {
     left: 0;
   }
 
-  /* Show mobile header */
+  /* Mobile header */
   .ekokray-mobile-header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--megamenu-border);
   }
 
-  /* Show mobile tools */
-  .ekokray-mobile-tools {
-    display: block;
+  .ekokray-mobile-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--megamenu-text);
   }
 
-  /* Vertical menu for mobile */
+  .ekokray-mobile-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  /* Vertical menu on mobile */
   .ekokray-menu {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .ekokray-menu-item {
+  .ekokray-menu-link {
+    padding: 15px 20px;
     border-bottom: 1px solid var(--megamenu-border);
   }
 
-  .ekokray-menu-link {
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* Show mobile icon, hide desktop icon */
   .ekokray-dropdown-toggle .desktop-icon {
     display: none;
   }
@@ -516,10 +311,9 @@
     display: inline;
   }
 
-  /* Dropdown becomes accordion */
+  /* Dropdown becomes nested on mobile */
   .ekokray-dropdown {
     position: static;
-    width: 100%;
     opacity: 1;
     visibility: visible;
     transform: none;
@@ -535,66 +329,18 @@
   }
 
   .ekokray-dropdown-inner {
-    padding: 0 15px 15px;
     background: #f9f9f9;
+    padding: 10px 20px;
   }
 
-  /* Category grid mobile layout */
+  /* Category grid single column on mobile */
   .ekokray-category-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
   }
 
-  /* Products grid mobile layout */
+  /* Products grid 2 columns on mobile */
   .ekokray-products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-
-  .ekokray-product-image {
-    height: 100px;
-  }
-
-  .ekokray-product-name {
-    font-size: 12px;
-    height: 32px;
-  }
-
-  .ekokray-product-price {
-    font-size: 14px;
-  }
-}
-
-/* ==========================================================================
-   Animations
-   ========================================================================== */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Loading spinner */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.fa-spin {
-  animation: spin 1s linear infinite;
 }

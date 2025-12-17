@@ -21,50 +21,6 @@
       <h3 class="ekokray-mobile-title">Меню</h3>
     </div>
 
-    <!-- Mobile Search/Account/Cart Section -->
-    <div class="ekokray-mobile-tools">
-      <!-- Search -->
-      <div class="ekokray-mobile-search">
-        <form action="{{ search_url }}" method="get">
-          <div class="input-group">
-            <input type="text" name="search" placeholder="{{ text_search }}..." class="form-control">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-            </span>
-          </div>
-        </form>
-      </div>
-
-      <!-- Account -->
-      <div class="ekokray-mobile-account">
-        {% if logged %}
-        <a href="{{ account_url }}" class="ekokray-account-link">
-          <i class="fa fa-user"></i> {{ customer_name }}
-        </a>
-        <a href="{{ logout_url }}" class="ekokray-logout-link">
-          <i class="fa fa-sign-out"></i> {{ text_logout }}
-        </a>
-        {% else %}
-        <a href="{{ login_url }}" class="ekokray-login-link">
-          <i class="fa fa-sign-in"></i> {{ text_login }}
-        </a>
-        <a href="{{ register_url }}" class="ekokray-register-link">
-          <i class="fa fa-user-plus"></i> {{ text_register }}
-        </a>
-        {% endif %}
-      </div>
-
-      <!-- Cart -->
-      <div class="ekokray-mobile-cart">
-        <a href="{{ cart_url }}" class="ekokray-cart-link">
-          <i class="fa fa-shopping-cart"></i> {{ text_cart }}
-          {% if cart_total > 0 %}
-          <span class="ekokray-cart-badge">{{ cart_total }}</span>
-          {% endif %}
-        </a>
-      </div>
-    </div>
-
     <!-- Main Menu Items -->
     <ul class="ekokray-menu">
       {% for item in items %}
