@@ -314,7 +314,14 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
             WHERE `item_id` = '" . (int)$item_id . "'
         ");
 
-        return $query->row;
+        $item = $query->row;
+
+        if ($item) {
+            // Add descriptions for all languages
+            $item['descriptions'] = $this->getMenuItemDescriptions($item_id);
+        }
+
+        return $item;
     }
 
     /**
