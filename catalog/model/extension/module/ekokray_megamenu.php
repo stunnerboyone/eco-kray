@@ -199,19 +199,23 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         error_log('Store ID: ' . $this->config->get('config_store_id'));
         error_log('Language ID: ' . $language_id);
 
+        // First, try a simple query to check if products exist in category
+        $simple_sql = "
+            SELECT COUNT(*) as count
+            FROM `" . DB_PREFIX . "product_to_category`
+            WHERE category_id = '" . (int)$category_id . "'";
+
+        $simple_result = $this->db->query($simple_sql);
+        error_log('Simple count query - Products in category: ' . $simple_result->row['count']);
+
+        // Now the full query, but without store restriction first
         $sql = "
-            SELECT p.product_id
+            SELECT p.product_id, p.status, p.date_available
             FROM `" . DB_PREFIX . "product` p
-            LEFT JOIN `" . DB_PREFIX . "product_to_category` p2c
+            INNER JOIN `" . DB_PREFIX . "product_to_category` p2c
                 ON (p.product_id = p2c.product_id)
-            LEFT JOIN `" . DB_PREFIX . "product_to_store` p2s
-                ON (p.product_id = p2s.product_id)
             WHERE p2c.category_id = '" . (int)$category_id . "'
             AND p.status = '1'
-            AND p.date_available <= NOW()
-            AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'
-            GROUP BY p.product_id
-            ORDER BY p.sort_order ASC, p.date_added DESC
             LIMIT " . (int)$limit;
 
         error_log('SQL Query: ' . $sql);
