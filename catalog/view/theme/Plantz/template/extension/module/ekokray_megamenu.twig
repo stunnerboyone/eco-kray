@@ -4,20 +4,20 @@
 <div class="ekokray-megamenu" id="ekokray-megamenu-{{ menu_id }}" data-breakpoint="{{ mobile_breakpoint }}">
 
   <!-- Mobile Menu Toggle Button (hidden on desktop) -->
-  <button class="ekokray-mobile-toggle" id="ekokray-mobile-toggle" aria-label="Toggle Menu" style="display: none;">
+  <button class="ekokray-mobile-toggle" id="ekokray-mobile-toggle" aria-label="Toggle Menu">
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>
   </button>
 
   <!-- Mobile Menu Overlay (hidden by default) -->
-  <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay" style="display: none;"></div>
+  <div class="ekokray-mobile-overlay" id="ekokray-mobile-overlay"></div>
 
   <!-- Menu Container -->
   <nav class="ekokray-menu-container">
 
     <!-- Mobile Menu Header (visible only on mobile, hidden on desktop) -->
-    <div class="ekokray-mobile-header" style="display: none;">
+    <div class="ekokray-mobile-header">
       <button class="ekokray-mobile-close" id="ekokray-mobile-close" aria-label="Close Menu">
         <i class="fa fa-times"></i>
       </button>
@@ -53,8 +53,8 @@
                   <i class="fa fa-angle-right"></i>
                 </a>
                 <!-- Products will be loaded here on hover -->
-                <div class="ekokray-category-products" data-category-id="{{ subcategory.category_id }}" style="opacity: 0; visibility: hidden;">
-                  <div class="ekokray-products-loading" style="display: none;">
+                <div class="ekokray-category-products" data-category-id="{{ subcategory.category_id }}">
+                  <div class="ekokray-products-loading">
                     <i class="fa fa-spinner fa-spin"></i> Завантаження...
                   </div>
                   <div class="ekokray-products-grid"></div>

@@ -26,9 +26,13 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-/* Mobile Toggle Button - FORCE HIDDEN on desktop */
+/* Mobile Toggle Button - FORCE HIDDEN on desktop, positioned on right when visible */
 .ekokray-mobile-toggle {
   display: none !important;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1002;
 }
 
 /* Mobile Overlay - FORCE HIDDEN on desktop */
@@ -340,7 +344,7 @@
 
 /* Mobile Styles */
 @media (max-width: 991px) {
-  /* Show mobile toggle */
+  /* Show mobile toggle - positioned on the right */
   .ekokray-mobile-toggle {
     display: flex !important;
     flex-direction: column;
@@ -353,10 +357,12 @@
     border-radius: var(--megamenu-radius);
     cursor: pointer;
     padding: 8px;
-    z-index: 1001;
+    z-index: 1002;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all var(--megamenu-transition);
-    position: relative;
+    position: fixed;
+    top: 20px;
+    right: 20px;
   }
 
   .ekokray-mobile-toggle:hover {
