@@ -90,7 +90,7 @@ header {
     display: flex !important;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 20px;
     padding: 16px 0;
     background: transparent;
@@ -99,8 +99,13 @@ header {
 
   .ekokray-desktop-tools .ekokray-mobile-search {
     flex: 1;
-    max-width: 500px;
+    max-width: 600px;
     margin-bottom: 0;
+    order: 1;
+  }
+
+  .ekokray-desktop-tools .ekokray-mobile-account-cart {
+    order: 2;
   }
 
   .ekokray-desktop-tools .ekokray-search-form {
@@ -490,9 +495,15 @@ header {
   /* Hide desktop header elements on mobile */
   .header_cart,
   .header_search,
-  .account,
-  .headertop {
+  .account {
     display: none !important;
+  }
+
+  /* Keep headertop visible but adjust it */
+  .headertop {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px 15px !important;
   }
 
   /* Adjust header_top padding on mobile */
@@ -505,9 +516,10 @@ header {
   }
 
   .header-logo {
-    text-align: center;
-    width: 100% !important;
-    padding: 0 60px !important; /* Space for burger menu */
+    text-align: left !important;
+    width: auto !important;
+    padding: 0 15px !important;
+    flex: 1;
   }
 
   .header-logo .main-logo {

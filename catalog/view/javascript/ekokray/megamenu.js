@@ -229,13 +229,27 @@
                 },
                 success: function(response) {
                     console.log('>>> AJAX SUCCESS!');
-                    console.log('Response:', response);
-                    if (response.success && response.products) {
+                    console.log('Full Response:', response);
+                    console.log('response.success:', response.success);
+                    console.log('response.products:', response.products);
+                    console.log('products length:', response.products ? response.products.length : 'undefined');
+
+                    // Log debug info from server
+                    if (response.debug) {
+                        console.log('=== SERVER DEBUG INFO ===');
+                        console.log('Debug data:', response.debug);
+                        console.log('Category ID:', response.debug.category_id);
+                        console.log('Store ID:', response.debug.store_id);
+                        console.log('Products count:', response.debug.products_count);
+                    }
+
+                    if (response.success && response.products && response.products.length > 0) {
                         console.log('>>> Rendering', response.products.length, 'products');
                         self.renderProducts(response.products, $grid);
                     } else {
-                        console.log('>>> No products in response');
-                        $grid.html('<p class="text-muted text-center">Товари не знайдено</p>');
+                        console.error('>>> No products found or empty array!');
+                        console.error('Response data:', JSON.stringify(response));
+                        $grid.html('<p class="text-muted text-center" style="padding: 20px;">Товари не знайдено в цій категорії</p>');
                     }
                 },
                 error: function(xhr, status, error) {
