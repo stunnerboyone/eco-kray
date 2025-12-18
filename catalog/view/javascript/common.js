@@ -137,7 +137,6 @@ $(document).ready(function () {
 
   // Debug cart clicks
   $(document).on('click', '.cart-dropdown', function(e) {
-    console.log('Cart dropdown clicked:', e.target);
     e.stopPropagation();
   });
 
@@ -226,23 +225,18 @@ function refreshCart() {
     success: function (html) {
       const $html = $(html);
 
-      console.log("[refreshCart] Loaded HTML:", html);
 
       const $newTotal = $html.find("#cart-total");
       const $newCart = $html.find("#cart");
 
       if ($newTotal.length) {
         $("#cart-total").html($newTotal.html());
-        console.log("[refreshCart] Updated cart-total");
       } else {
-        console.warn("[refreshCart] #cart-total NOT FOUND");
       }
 
       if ($newCart.length) {
         $("#cart").html($newCart.html());
-        console.log("[refreshCart] Updated cart content");
       } else {
-        console.warn("[refreshCart] #cart NOT FOUND");
       }
     },
     error: function (xhr) {
