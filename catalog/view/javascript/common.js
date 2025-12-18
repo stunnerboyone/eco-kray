@@ -147,8 +147,16 @@ $(document).ready(function () {
 
     var $button = $(this);
 
+    console.log('[DEBUG] Cart button clicked', {
+      productId: $button.data('product-id'),
+      disabled: $button.prop('disabled'),
+      hasLoading: $button.hasClass('loading'),
+      timestamp: new Date().getTime()
+    });
+
     // Prevent double clicks
     if ($button.prop('disabled') || $button.hasClass('loading')) {
+      console.log('[DEBUG] Button already disabled/loading, returning');
       return false;
     }
 
@@ -166,6 +174,11 @@ $(document).ready(function () {
 
     // Get quantity if exists (usually on product page)
     var quantity = parseInt($('input[name="quantity"]').val()) || 1;
+
+    console.log('[DEBUG] Sending AJAX request', {
+      productId: productId,
+      quantity: quantity
+    });
 
     // Get options if exists (for product page with options)
     var options = {};
@@ -191,6 +204,7 @@ $(document).ready(function () {
       },
       dataType: 'json',
       success: function(json) {
+        console.log('[DEBUG] AJAX response received', json);
         $button.prop('disabled', false).removeClass('loading');
 
         if (json['error']) {
@@ -198,25 +212,20 @@ $(document).ready(function () {
             for (var optionId in json['error']['option']) {
               if (typeof showError === 'function') {
                 showError(json['error']['option'][optionId], { duration: 5000 });
-              } else {
-                alert(json['error']['option'][optionId]);
               }
             }
           }
           if (json['error']['recurring']) {
             if (typeof showError === 'function') {
               showError(json['error']['recurring'], { duration: 5000 });
-            } else {
-              alert(json['error']['recurring']);
             }
           }
         }
 
         if (json['success']) {
+          // Try modern notification first, skip alert completely
           if (typeof showSuccess === 'function') {
             showSuccess(json['success'], { duration: 4000, showProgress: true });
-          } else {
-            alert(json['success']);
           }
 
           // Update cart total
@@ -232,8 +241,6 @@ $(document).ready(function () {
         $button.prop('disabled', false).removeClass('loading');
         if (typeof showError === 'function') {
           showError('Помилка при додаванні товару в кошик', { duration: 5000 });
-        } else {
-          alert('Помилка при додаванні товару в кошик');
         }
         console.error('Cart add error:', error);
       }
@@ -300,6 +307,11 @@ var voucher = {
 
 var cart = {
   add: function (product_id, quantity) {
+    console.log('[DEBUG] cart.add() called', {
+      product_id: product_id,
+      quantity: quantity,
+      stack: new Error().stack
+    });
     $.ajax({
       url: "index.php?route=checkout/cart/add",
       type: "post",
