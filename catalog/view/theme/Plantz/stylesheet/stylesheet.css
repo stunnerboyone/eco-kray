@@ -14473,3 +14473,68 @@ h4:focus a {
         left: 10px;
     }
 }
+
+/* =================================================================
+   ADAPTIVE PRODUCT GRID FOR CATEGORY PAGES
+   Desktop: 4 columns (8 products per page = 2 rows)
+   Tablet: 3 columns (6 products per page = 2 rows)
+   Mobile: 2 columns (4 products per page = 2 rows)
+================================================================= */
+
+/* Desktop: 4 columns */
+@media (min-width: 992px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Tablet: 3 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        padding: 18px 0;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 767px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+
+    /* Smaller text and padding on mobile */
+    #content .box-product .product-card .caption {
+        padding: 8px;
+    }
+
+    #content .box-product .product-card_title {
+        font-size: 13px;
+    }
+
+    #content .box-product .price {
+        font-size: 14px;
+    }
+}
