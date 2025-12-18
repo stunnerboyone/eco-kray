@@ -197,20 +197,47 @@ $(document).ready(function () {
             for (var optionId in json['error']['option']) {
               if (typeof showError === 'function') {
                 showError(json['error']['option'][optionId], { duration: 5000 });
+              } else {
+                // Fallback error notification
+                var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                  json['error']['option'][optionId] +
+                  '</div>');
+                $('body').append($errorNotif);
+                setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
               }
             }
           }
           if (json['error']['recurring']) {
             if (typeof showError === 'function') {
               showError(json['error']['recurring'], { duration: 5000 });
+            } else {
+              var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                json['error']['recurring'] +
+                '</div>');
+              $('body').append($errorNotif);
+              setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
             }
           }
         }
 
         if (json['success']) {
-          // Try modern notification first, skip alert completely
+          // Try modern notification first
           if (typeof showSuccess === 'function') {
             showSuccess(json['success'], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback: Simple HTML notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json['success'] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() {
+              $notification.fadeOut(function() {
+                $(this).remove();
+              });
+            }, 4000);
           }
 
           // Update cart total
@@ -226,6 +253,13 @@ $(document).ready(function () {
         $button.prop('disabled', false).removeClass('loading');
         if (typeof showError === 'function') {
           showError('Помилка при додаванні товару в кошик', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні товару в кошик' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
         }
         console.error('Cart add error:', error);
       }
