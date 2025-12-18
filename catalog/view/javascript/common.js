@@ -198,25 +198,20 @@ $(document).ready(function () {
             for (var optionId in json['error']['option']) {
               if (typeof showError === 'function') {
                 showError(json['error']['option'][optionId], { duration: 5000 });
-              } else {
-                alert(json['error']['option'][optionId]);
               }
             }
           }
           if (json['error']['recurring']) {
             if (typeof showError === 'function') {
               showError(json['error']['recurring'], { duration: 5000 });
-            } else {
-              alert(json['error']['recurring']);
             }
           }
         }
 
         if (json['success']) {
+          // Try modern notification first, skip alert completely
           if (typeof showSuccess === 'function') {
             showSuccess(json['success'], { duration: 4000, showProgress: true });
-          } else {
-            alert(json['success']);
           }
 
           // Update cart total
@@ -232,8 +227,6 @@ $(document).ready(function () {
         $button.prop('disabled', false).removeClass('loading');
         if (typeof showError === 'function') {
           showError('Помилка при додаванні товару в кошик', { duration: 5000 });
-        } else {
-          alert('Помилка при додаванні товару в кошик');
         }
         console.error('Cart add error:', error);
       }
