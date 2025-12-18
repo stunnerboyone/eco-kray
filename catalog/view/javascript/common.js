@@ -412,17 +412,48 @@ var wishlist = {
         if (json["success"]) {
           if (typeof showSuccess === 'function') {
             showSuccess(json["success"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["success"] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() { $notification.fadeOut(function() { $(this).remove(); }); }, 4000);
           }
         }
 
         if (json["info"]) {
           if (typeof showInfo === 'function') {
             showInfo(json["info"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback info notification
+            var $infoNotif = $('<div class="alert alert-info alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["info"] +
+              '</div>');
+            $('body').append($infoNotif);
+            setTimeout(function() { $infoNotif.fadeOut(function() { $(this).remove(); }); }, 4000);
           }
         }
 
-        $("#wishlist-total").html(json["total"]);
+        if (json["total"]) {
+          $("#wishlist-total").html(json["total"]);
+        }
       },
+      error: function(xhr, status, error) {
+        console.error('Wishlist add error:', error);
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні в обране', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні в обране' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+        }
+      }
     });
   },
   remove: function () {},
@@ -439,10 +470,33 @@ var compare = {
         if (json["success"]) {
           if (typeof showSuccess === 'function') {
             showSuccess(json["success"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["success"] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() { $notification.fadeOut(function() { $(this).remove(); }); }, 4000);
           }
-          $("#compare-total").html(json["total"]);
+          if (json["total"]) {
+            $("#compare-total").html(json["total"]);
+          }
         }
       },
+      error: function(xhr, status, error) {
+        console.error('Compare add error:', error);
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні до порівняння', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні до порівняння' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+        }
+      }
     });
   },
   remove: function () {},
