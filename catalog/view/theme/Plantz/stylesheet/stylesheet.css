@@ -14481,18 +14481,28 @@ h4:focus a {
    Mobile: 2 columns (4 products per page = 2 rows)
 ================================================================= */
 
-/* Desktop: 4 columns */
+/* Desktop: 4 columns - with max width to prevent stretching */
 @media (min-width: 992px) {
     #content .box-product {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
         padding: 20px 0;
+        max-width: 1400px; /* Обмежуємо ширину на великих моніторах */
+        margin: 0 auto; /* Центруємо */
     }
 
     #content .box-product .product-card {
         width: 100%;
-        max-width: none;
+        max-width: 340px; /* Максимальна ширина картки щоб не розтягувалась */
+    }
+}
+
+/* Large Desktop: 5 columns for very wide screens */
+@media (min-width: 1600px) {
+    #content .box-product {
+        grid-template-columns: repeat(5, 1fr);
+        max-width: 1800px;
     }
 }
 
@@ -14511,18 +14521,35 @@ h4:focus a {
     }
 }
 
-/* Mobile: 2 columns */
-@media (max-width: 767px) {
+/* Small Tablet: 2 columns */
+@media (min-width: 576px) and (max-width: 767px) {
     #content .box-product {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        padding: 12px 0;
+        gap: 15px;
+        padding: 15px 0;
     }
 
     #content .box-product .product-card {
         width: 100%;
         max-width: none;
+    }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 575px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+        max-width: 500px; /* Обмежуємо ширину на мобільному */
+        margin: 0 auto;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: 100%;
     }
 
     /* Smaller text and padding on mobile */
@@ -14531,11 +14558,11 @@ h4:focus a {
     }
 
     #content .box-product .product-card_title {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     #content .box-product .price {
-        font-size: 14px;
+        font-size: 16px;
     }
 }
 
@@ -14944,18 +14971,28 @@ h4:focus a {
    HOME PAGE TABS - ХІТИ ПРОДАЖУ (Same grid as category pages)
 ================================================================= */
 
-/* Desktop: 4 columns */
+/* Desktop: 4 columns - with max width */
 @media (min-width: 992px) {
     .hometab .box-product {
         display: grid !important;
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 20px;
         padding: 20px 0;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     .hometab .box-product .product-card {
         width: 100%;
-        max-width: none;
+        max-width: 340px;
+    }
+}
+
+/* Large Desktop: 5 columns for very wide screens */
+@media (min-width: 1600px) {
+    .hometab .box-product {
+        grid-template-columns: repeat(5, 1fr) !important;
+        max-width: 1800px;
     }
 }
 
@@ -14974,18 +15011,35 @@ h4:focus a {
     }
 }
 
-/* Mobile: 2 columns */
-@media (max-width: 767px) {
+/* Small Tablet: 2 columns */
+@media (min-width: 576px) and (max-width: 767px) {
     .hometab .box-product {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px;
-        padding: 12px 0;
+        gap: 15px;
+        padding: 15px 0;
     }
 
     .hometab .box-product .product-card {
         width: 100%;
         max-width: none;
+    }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 575px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        padding: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: 100%;
     }
 }
 
