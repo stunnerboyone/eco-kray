@@ -225,16 +225,11 @@ var cart = {
         }
 
         if (json["success"]) {
-          $("#content")
-            .parent()
-            .before(
-              '<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' +
-                json["success"] +
-                ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>'
-            );
+          // Show beautiful notification
+          showSuccess(json["success"], { duration: 4000, showProgress: true });
 
           // Update cart total
-          $("#cart-total").html(json["total"]);
+          $("#cart-total"].html(json["total"]);
 
           // Load entire mini-cart HTML into #cart
           refreshCart();
@@ -295,95 +290,11 @@ var wishlist = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          $.notify(
-            {
-              message: json["success"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
+          showSuccess(json["success"], { duration: 4000, showProgress: true });
         }
 
         if (json["info"]) {
-          $.notify(
-            {
-              message: json["info"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-info" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-info"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
+          showInfo(json["info"], { duration: 4000, showProgress: true });
         }
 
         $("#wishlist-total").html(json["total"]);
@@ -402,50 +313,7 @@ var compare = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          $.notify(
-            {
-              message: json["success"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
-
+          showSuccess(json["success"], { duration: 4000, showProgress: true });
           $("#compare-total").html(json["total"]);
         }
       },
