@@ -387,10 +387,6 @@
                 var $item = $(this);
                 var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
-                    element: this,
-                    categoryId: categoryId,
-                    hasProductsContainer: $productsContainer.length > 0
-                });
             });
         }, 1000);
 
@@ -423,6 +419,11 @@
             if (settings.url && settings.url.indexOf('common/cart') !== -1) {
                 setTimeout(syncCartCount, 100);
             }
+        });
+
+        // Listen for cart update events
+        $(document).on('cartUpdated', function() {
+            syncCartCount();
         });
     });
 
