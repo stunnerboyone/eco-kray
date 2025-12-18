@@ -140,6 +140,83 @@ $(document).ready(function () {
     console.log('Cart dropdown clicked:', e.target);
     e.stopPropagation();
   });
+
+  // Handle cart_button clicks (Add to Cart)
+  $(document).on('click', '.cart_button', function(e) {
+    e.preventDefault();
+
+    var $button = $(this);
+    var productId = $button.data('product-id');
+
+    if (!productId) {
+      console.error('No product ID found on cart button');
+      return;
+    }
+
+    // Check if button is "out of stock"
+    if ($button.hasClass('out_of_stock')) {
+      return;
+    }
+
+    // Get quantity if exists (usually on product page)
+    var quantity = $('input[name="quantity"]').val() || 1;
+
+    // Get options if exists (for product page with options)
+    var options = {};
+    $('select[name^="option"], input[name^="option"]:checked, textarea[name^="option"]').each(function() {
+      var $this = $(this);
+      var name = $this.attr('name');
+      var match = name.match(/option\[(\d+)\]/);
+      if (match) {
+        options[match[1]] = $this.val();
+      }
+    });
+
+    // Disable button during request
+    $button.prop('disabled', true).addClass('loading');
+
+    $.ajax({
+      url: 'index.php?route=checkout/cart/add',
+      type: 'post',
+      data: {
+        product_id: productId,
+        quantity: quantity,
+        option: options
+      },
+      dataType: 'json',
+      success: function(json) {
+        $button.prop('disabled', false).removeClass('loading');
+
+        if (json['error']) {
+          if (json['error']['option']) {
+            for (var optionId in json['error']['option']) {
+              showError(json['error']['option'][optionId], { duration: 5000 });
+            }
+          }
+          if (json['error']['recurring']) {
+            showError(json['error']['recurring'], { duration: 5000 });
+          }
+        }
+
+        if (json['success']) {
+          showSuccess(json['success'], { duration: 4000, showProgress: true });
+
+          // Update cart total
+          if (json['total']) {
+            $('#cart-total').html(json['total']);
+          }
+
+          // Refresh cart dropdown
+          refreshCart();
+        }
+      },
+      error: function(xhr, status, error) {
+        $button.prop('disabled', false).removeClass('loading');
+        showError('Помилка при додаванні товару в кошик', { duration: 5000 });
+        console.error('Cart add error:', error);
+      }
+    });
+  });
 });
 
 function refreshCart() {
@@ -229,7 +306,7 @@ var cart = {
           showSuccess(json["success"], { duration: 4000, showProgress: true });
 
           // Update cart total
-          $("#cart-total"].html(json["total"]);
+          $("#cart-total").html(json["total"]);
 
           // Load entire mini-cart HTML into #cart
           refreshCart();
