@@ -14939,3 +14939,71 @@ h4:focus a {
         height: 36px;
     }
 }
+
+/* =================================================================
+   HOME PAGE TABS - ХІТИ ПРОДАЖУ (Same grid as category pages)
+================================================================= */
+
+/* Desktop: 4 columns */
+@media (min-width: 992px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 20px;
+        padding: 20px 0;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Tablet: 3 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 18px;
+        padding: 18px 0;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: 2 columns */
+@media (max-width: 767px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+        padding: 12px 0;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* =================================================================
+   FIX WISHLIST BUTTON - Remove old large heart icon
+================================================================= */
+
+/* Hide old wishlist icons (large hearts from old theme) */
+.custom-wishlist i,
+.custom-wishlist .fa,
+.custom-wishlist .fa-heart,
+.wishlist i,
+.wishlist .fa {
+    display: none !important;
+}
+
+/* Ensure only our new ::before heart shows */
+.custom-wishlist::before {
+    display: block !important;
+}
+
