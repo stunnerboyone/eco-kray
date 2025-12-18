@@ -225,18 +225,18 @@ function refreshCart() {
     success: function (html) {
       const $html = $(html);
 
-
       const $newTotal = $html.find("#cart-total");
       const $newCart = $html.find("#cart");
 
       if ($newTotal.length) {
         $("#cart-total").html($newTotal.html());
-      } else {
+
+        // Trigger cart update event for other components to sync
+        $(document).trigger('cartUpdated');
       }
 
       if ($newCart.length) {
         $("#cart").html($newCart.html());
-      } else {
       }
     },
     error: function (xhr) {
