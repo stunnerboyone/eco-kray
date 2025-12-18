@@ -14481,28 +14481,18 @@ h4:focus a {
    Mobile: 2 columns (4 products per page = 2 rows)
 ================================================================= */
 
-/* Desktop: 4 columns - with max width to prevent stretching */
+/* Desktop: Auto-fit grid with fixed card width (no stretching!) */
 @media (min-width: 992px) {
     #content .box-product {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(260px, 280px));
         gap: 20px;
         padding: 20px 0;
-        max-width: 1400px; /* Обмежуємо ширину на великих моніторах */
-        margin: 0 auto; /* Центруємо */
+        justify-content: center; /* Центруємо картки */
     }
 
     #content .box-product .product-card {
         width: 100%;
-        max-width: 340px; /* Максимальна ширина картки щоб не розтягувалась */
-    }
-}
-
-/* Large Desktop: 5 columns for very wide screens */
-@media (min-width: 1600px) {
-    #content .box-product {
-        grid-template-columns: repeat(5, 1fr);
-        max-width: 1800px;
     }
 }
 
@@ -14971,28 +14961,18 @@ h4:focus a {
    HOME PAGE TABS - ХІТИ ПРОДАЖУ (Same grid as category pages)
 ================================================================= */
 
-/* Desktop: 4 columns - with max width */
+/* Desktop: Auto-fit grid with fixed card width */
 @media (min-width: 992px) {
     .hometab .box-product {
         display: grid !important;
-        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 280px)) !important;
         gap: 20px;
         padding: 20px 0;
-        max-width: 1400px;
-        margin: 0 auto;
+        justify-content: center;
     }
 
     .hometab .box-product .product-card {
         width: 100%;
-        max-width: 340px;
-    }
-}
-
-/* Large Desktop: 5 columns for very wide screens */
-@media (min-width: 1600px) {
-    .hometab .box-product {
-        grid-template-columns: repeat(5, 1fr) !important;
-        max-width: 1800px;
     }
 }
 
