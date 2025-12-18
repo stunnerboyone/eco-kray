@@ -143,8 +143,15 @@ $(document).ready(function () {
   // Handle cart_button clicks (Add to Cart)
   $(document).on('click', '.cart_button', function(e) {
     e.preventDefault();
+    e.stopPropagation();
 
     var $button = $(this);
+
+    // Prevent double clicks
+    if ($button.prop('disabled') || $button.hasClass('loading')) {
+      return false;
+    }
+
     var productId = $button.data('product-id');
 
     if (!productId) {
@@ -158,7 +165,7 @@ $(document).ready(function () {
     }
 
     // Get quantity if exists (usually on product page)
-    var quantity = $('input[name="quantity"]').val() || 1;
+    var quantity = parseInt($('input[name="quantity"]').val()) || 1;
 
     // Get options if exists (for product page with options)
     var options = {};
@@ -189,16 +196,28 @@ $(document).ready(function () {
         if (json['error']) {
           if (json['error']['option']) {
             for (var optionId in json['error']['option']) {
-              showError(json['error']['option'][optionId], { duration: 5000 });
+              if (typeof showError === 'function') {
+                showError(json['error']['option'][optionId], { duration: 5000 });
+              } else {
+                alert(json['error']['option'][optionId]);
+              }
             }
           }
           if (json['error']['recurring']) {
-            showError(json['error']['recurring'], { duration: 5000 });
+            if (typeof showError === 'function') {
+              showError(json['error']['recurring'], { duration: 5000 });
+            } else {
+              alert(json['error']['recurring']);
+            }
           }
         }
 
         if (json['success']) {
-          showSuccess(json['success'], { duration: 4000, showProgress: true });
+          if (typeof showSuccess === 'function') {
+            showSuccess(json['success'], { duration: 4000, showProgress: true });
+          } else {
+            alert(json['success']);
+          }
 
           // Update cart total
           if (json['total']) {
@@ -211,7 +230,11 @@ $(document).ready(function () {
       },
       error: function(xhr, status, error) {
         $button.prop('disabled', false).removeClass('loading');
-        showError('Помилка при додаванні товару в кошик', { duration: 5000 });
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні товару в кошик', { duration: 5000 });
+        } else {
+          alert('Помилка при додаванні товару в кошик');
+        }
         console.error('Cart add error:', error);
       }
     });
@@ -361,11 +384,15 @@ var wishlist = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          showSuccess(json["success"], { duration: 4000, showProgress: true });
+          if (typeof showSuccess === 'function') {
+            showSuccess(json["success"], { duration: 4000, showProgress: true });
+          }
         }
 
         if (json["info"]) {
-          showInfo(json["info"], { duration: 4000, showProgress: true });
+          if (typeof showInfo === 'function') {
+            showInfo(json["info"], { duration: 4000, showProgress: true });
+          }
         }
 
         $("#wishlist-total").html(json["total"]);
@@ -384,7 +411,9 @@ var compare = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          showSuccess(json["success"], { duration: 4000, showProgress: true });
+          if (typeof showSuccess === 'function') {
+            showSuccess(json["success"], { duration: 4000, showProgress: true });
+          }
           $("#compare-total").html(json["total"]);
         }
       },
