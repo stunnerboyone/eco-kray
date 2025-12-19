@@ -3586,7 +3586,7 @@ header .header-cart a .fa {
 		padding: 20px 0 0;
 	}
 	#wdcmsbottombanner .bottom-content .box-desc {
-		font-size: 12px;
+		font-size: 16px;
 		margin: 0 0 20px;
 	}
 }
@@ -7499,7 +7499,7 @@ h2.price {
 }
 .box-desc {
 	width: 60%;
-	font: 400 14px/24px "Roboto", sans-serif;
+	font: 400 18px/24px "Roboto", sans-serif;
 	color: #666666;
 	letter-spacing: 0.5px;
 	text-align: center;
@@ -7512,7 +7512,7 @@ h2.price {
 .wd_category_feature .box-heading,
 #wdcmsparallax .box-heading,
 #wdcmstestimonial .box-heading {
-	font-size: 32px;
+	font-size: 42px;
 	font-weight: 500;
 	position: relative;
 
@@ -12002,7 +12002,7 @@ h4:focus a {
 		padding-right: 0;
 	}
 	.box-desc {
-		font: 400 13px/22px "Roboto", sans-serif;
+		font: 400 16px/22px "Roboto", sans-serif;
 	}
 	.countbox.hastime {
 		padding: 3px 3px 3px 25px;
