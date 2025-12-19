@@ -50,12 +50,6 @@
 
       {% if products %}
       <div class="category_filter">
-        <div class="filter-left">
-          <div class="compare-total">
-            <a href="{{ compare }}" id="compare-total">{{ text_compare }}</a>
-          </div>
-        </div>
-
         <div class="filter-right">
           <div class="filter-control">
             <label class="control-label" for="input-sort">{{ text_sort }}</label>
@@ -84,6 +78,7 @@
           </div>
         </div>
       </div>
+
 <div class="box-product">
   {% for product in products %}
     <div class="product-card">

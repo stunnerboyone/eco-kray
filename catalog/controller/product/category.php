@@ -140,23 +140,22 @@ class ControllerProductCategory extends Controller {
 			
 
 			foreach ($results as $result) {
-
-			// 	if ($result['image'] && file_exists(DIR_IMAGE.$result['image'])) {
-			// 		$catthumb = $this->model_tool_image->resize(DIR_IMAGE.$result['image'], 100, 100);
-			//   } else {
-			// 		$catthumb = $this->model_tool_image->resize(DIR_IMAGE.'placeholder.png', 100, 100);
-			//   }
-
 				$filter_data = array(
 					'filter_category_id'  => $result['category_id'],
 					'filter_sub_category' => true
 				);
 
+				// Handle subcategory image with fallback to placeholder
+				if ($result['image']) {
+					$catthumb = $this->model_tool_image->resize($result['image'], 100, 100);
+				} else {
+					$catthumb = $this->model_tool_image->resize('placeholder.png', 100, 100);
+				}
+
 				$data['categories'][] = array(
 					'name' => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-					'img' => $this->model_tool_image->resize($result['image'], 70, 70),
+					'img' => $catthumb,
 					'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '_' . $result['category_id'] . $url)
-					
 				);
 			}
 

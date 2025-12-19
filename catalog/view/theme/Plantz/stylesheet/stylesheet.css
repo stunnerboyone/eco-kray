@@ -8760,7 +8760,7 @@ h2.price {
 }
 .category_filter {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: center;
 	padding: 18px 24px;
 	width: 100%;
@@ -8774,17 +8774,12 @@ h2.price {
 	gap: 18px;
 }
 
-.category_filter .filter-left {
-	display: flex;
-	align-items: center;
-	gap: 20px;
-}
-
 .category_filter .filter-right {
 	display: flex;
 	align-items: center;
 	gap: 15px;
 	flex-wrap: wrap;
+	margin-left: auto;
 }
 
 .category_filter .filter-control {
