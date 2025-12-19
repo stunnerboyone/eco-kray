@@ -6715,30 +6715,33 @@ p.powered a {
 .breadcrumb > li {
 	position: relative;
 	white-space: nowrap;
-	line-height: 20px;
+	line-height: 22px;
 	font-size: 14px;
-	font-weight: 500;
-	color: #666;
+	font-weight: 400;
+	color: #555;
 	display: flex;
 	align-items: center;
 }
 
 .breadcrumb > li a {
-	color: #666;
+	color: #007bff;
 	text-decoration: none;
-	transition: color 0.3s ease;
+	transition: all 0.2s ease;
+	padding: 2px 4px;
+	border-radius: 3px;
 }
 
 .breadcrumb > li a:hover {
-	color: #c67d4e;
+	color: #0056b3;
+	background: rgba(0, 123, 255, 0.05);
 }
 
 .breadcrumb > li + li:before {
-	content: "›";
-	padding: 0 6px;
-	color: #999 !important;
-	font-size: 16px;
-	font-weight: 400;
+	content: "/";
+	padding: 0 8px;
+	color: #bbb;
+	font-size: 14px;
+	font-weight: 300;
 }
 .col-xs-11.col-sm-3.alert span a:hover {
 	color: #111111;
@@ -10696,14 +10699,16 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 	margin-bottom: 25px;
 }
 .breadcrumb {
-	padding: 12px 15px;
-	margin: 0 0 20px 0;
+	padding: 14px 20px;
+	margin: 0 0 25px 0;
 	list-style: none;
-	background: #f5f5f5;
-	border-bottom: 2px solid #e5e5e5;
+	background: #fafafa;
+	border-bottom: 1px solid #e0e0e0;
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 5px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px;
 }
 #content #carousel-0 .box-content {
 	margin: 0;
