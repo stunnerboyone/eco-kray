@@ -34,12 +34,13 @@
           <ul>
             {% for category in categories %}
                 <div class="category-item">
-                {% if category.img %}
-                  <div class="category_img"><a href="{{ category.href }}"><img src="{{ category.img }}" data-rel="{{ category.img }}" alt="{{ category.name }}" title="{{ category.name }}" class="img-thumbnail"  /></a></div>
-                  {% endif %}
-                
-                <a href="{{ category.href }}">{{ category.name }}</a>
-                </div>   
+                  <div class="category_img">
+                    <a href="{{ category.href }}">
+                      <img src="{{ category.img }}" alt="{{ category.name }}" title="{{ category.name }}" />
+                    </a>
+                  </div>
+                  <a href="{{ category.href }}">{{ category.name }}</a>
+                </div>
               {% endfor %}
             </ul>
           </div>
