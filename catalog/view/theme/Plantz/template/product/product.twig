@@ -96,15 +96,18 @@
         </div>
 
           {% if price %}
-          <ul class="list-unstyled">
+          <ul class="list-unstyled price-section">
             {% if not special %}
             <li>
-              <h4 class="special-price"><span class="old-prices">{{ price }}</span></h4>
+              <h4 class="product-price"><span class="current-price">{{ price }}</span></h4>
             </li>
             {% else %}
-            <li><h4 class="special-price"><span class="new-prices">{{ special }}</span></h4>
-            	<span class="old-price" style="text-decoration: line-through;"><span class="old-prices">{{ price }}</span></span>
-            	<span class="discount-per">&nbsp;&nbsp;{{percentsaving}}% off</span>
+            <li>
+              <h4 class="product-price">
+                <span class="new-prices">{{ special }}</span>
+                <span class="old-price"><span class="old-prices">{{ price }}</span></span>
+                <span class="discount-per">{{percentsaving}}% off</span>
+              </h4>
             </li>
             {% endif %}
             {% if points %}
