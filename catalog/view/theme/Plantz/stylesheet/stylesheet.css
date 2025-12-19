@@ -6684,8 +6684,6 @@ p.powered a {
 .content-top-breadcum {
 	float: none;
 	width: 100%;
-	background: #f5f5f5;
-	margin: 0 0 50px;
 }
 .footer-appinner .title {
 	font: 600 24px/42px "Roboto", sans-serif;
@@ -6703,7 +6701,6 @@ p.powered a {
 /* OLD alert styles removed - using new ekokray notification system */
 /* breadcrumb */
 .breadcrumb {
-	margin: 0 0 20px 0;
 	padding: 8px 0;
 }
 .breadcrumb i {
@@ -8835,7 +8832,6 @@ h2.price {
 	width: 100%;
 	padding: 0;
 	background: #fff;
-	margin-bottom: -20px;
 }
 .left .address-detail {
 	border-bottom: 1px solid #e8e9eb;
@@ -8914,7 +8910,7 @@ h2.price {
 .contact-form-design.container {
 	padding: 30px 0 70px 0;
 	background: #fff;
-	margin: 70px auto;
+	margin: 40px auto;
 	position: relative;
 }
 
@@ -10647,11 +10643,7 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 	margin-bottom: 25px;
 }
 .breadcrumb {
-	padding: 0;
-	margin: 0 0 20px 0;
 	list-style: none;
-	background: #fafafa;
-	border-bottom: 1px solid #e5e5e5;
 	display: flex;
 	align-items: center;
 	padding: 12px 0;
@@ -11389,9 +11381,6 @@ h4:focus a {
 	.language-menu li,
 	.currency-menu li {
 		padding: 0;
-	}
-	.content-top-breadcum {
-		margin: 0 0 30px;
 	}
 }
 @media (max-width: 991px) {
@@ -12739,7 +12728,7 @@ h4:focus a {
 	}
 
 	.breadcrumb {
-		padding: 10px 15px;
+		padding: 30px 15px;
 		flex-wrap: wrap;
 		font-size: 13px;
 	}
