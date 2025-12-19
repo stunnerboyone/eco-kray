@@ -44,6 +44,15 @@ body {
 	font-weight: 400;
 	line-height: 22px;
 }
+
+/* Add spacing after header for all main page containers */
+#product-product.container,
+#product-special.container,
+#product-category.container,
+#information-information.container,
+#information-contact.container {
+	padding-top: 20px;
+}
 /* ========== UNIFIED INPUT STYLES ========== */
 /* Apply consistent styling to all form inputs across the site */
 
@@ -6841,6 +6850,9 @@ p.powered a {
 .content-top-breadcum {
 	float: none;
 	width: 100%;
+	background: transparent;
+	margin: 0;
+	padding-top: 20px;
 }
 .footer-appinner .title {
 	font: 600 24px/42px "Roboto", sans-serif;
@@ -6858,7 +6870,12 @@ p.powered a {
 /* OLD alert styles removed - using new ekokray notification system */
 /* breadcrumb */
 .breadcrumb {
-	padding: 8px 0;
+	margin: 25px 0 20px 0;
+	padding: 16px 20px;
+	background: #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+	border: 1px solid #f0f0f0;
 }
 .breadcrumb i {
 	font-size: 15px;
@@ -6866,33 +6883,40 @@ p.powered a {
 .breadcrumb > li {
 	position: relative;
 	white-space: nowrap;
-	line-height: 22px;
+	line-height: 24px;
 	font-size: 14px;
-	font-weight: 400;
-	color: #555;
+	font-weight: 500;
+	color: #666;
 	display: flex;
 	align-items: center;
 }
 
 .breadcrumb > li a {
-	color: #007bff;
+	color: #666;
 	text-decoration: none;
-	transition: all 0.2s ease;
-	padding: 2px 4px;
-	border-radius: 3px;
+	transition: all 0.3s ease;
+	padding: 6px 10px;
+	border-radius: 6px;
+	font-weight: 500;
 }
 
 .breadcrumb > li a:hover {
-	color: #0056b3;
-	background: rgba(0, 123, 255, 0.05);
+	color: #c67d4e;
+	background: rgba(198, 125, 78, 0.08);
+	transform: translateX(2px);
+}
+
+.breadcrumb > li:last-child {
+	color: #333;
+	font-weight: 600;
 }
 
 .breadcrumb > li + li:before {
-	content: "/";
-	padding: 0 8px;
-	color: #bbb;
-	font-size: 14px;
-	font-weight: 300;
+	content: "›";
+	padding: 0 6px;
+	color: #ccc;
+	font-size: 18px;
+	font-weight: 400;
 }
 .col-xs-11.col-sm-3.alert span a:hover {
 	color: #111111;
@@ -10949,12 +10973,26 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 	margin-bottom: 25px;
 }
 .breadcrumb {
+	padding: 16px 0;
+	margin: 20px 0 30px 0;
 	list-style: none;
+	background: transparent;
+	border-bottom: none;
 	display: flex;
 	align-items: center;
 	gap: 5px;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 	font-size: 14px;
+}
+
+.container > .breadcrumb {
+	margin-top: 25px;
+	margin-bottom: 20px;
+	padding: 16px 20px;
+	background: #ffffff;
+	border-radius: 10px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+	border: 1px solid #f0f0f0;
 }
 #content #carousel-0 .box-content {
 	margin: 0;
