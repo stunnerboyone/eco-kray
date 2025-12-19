@@ -147,12 +147,26 @@ class ControllerProductCategory extends Controller {
 
 				// Handle subcategory image with proper validation and fallback
 				$catthumb = '';
+				$imageDebugInfo = array(
+					'category_id' => $result['category_id'],
+					'category_name' => $result['name'],
+					'image_path' => $result['image'],
+					'dir_image' => DIR_IMAGE,
+					'full_path' => DIR_IMAGE . $result['image'],
+					'file_exists' => is_file(DIR_IMAGE . $result['image']),
+					'image_empty' => empty($result['image'])
+				);
+
+				error_log('Category Image Debug: ' . json_encode($imageDebugInfo));
+
 				if (!empty($result['image']) && is_file(DIR_IMAGE . $result['image'])) {
 					// Image exists, resize it
 					$catthumb = $this->model_tool_image->resize($result['image'], 100, 100);
+					error_log('Using category image: ' . $catthumb);
 				} else {
 					// No image or file doesn't exist, use placeholder
 					$catthumb = $this->model_tool_image->resize('placeholder.png', 100, 100);
+					error_log('Using placeholder: ' . $catthumb);
 				}
 
 				$data['categories'][] = array(
