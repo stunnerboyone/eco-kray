@@ -6724,16 +6724,13 @@ p.powered a {
 }
 
 .breadcrumb > li a {
-	color: #555;
+	color: #666;
 	text-decoration: none;
-	transition: all 0.3s ease;
-	padding: 4px 8px;
-	border-radius: 4px;
+	transition: color 0.3s ease;
 }
 
 .breadcrumb > li a:hover {
 	color: #c67d4e;
-	background: #fef5f0;
 }
 
 .breadcrumb > li + li:before {
@@ -8624,23 +8621,18 @@ h2.price {
 	display: flex;
 	align-items: center;
 	margin: 0;
-	padding-left: 10px;
-	border-left: 1px solid #e0e0e0;
 }
 
 .compare-total a {
 	color: #555;
 	font-size: 15px;
 	text-decoration: none;
-	transition: all 0.3s ease;
+	transition: color 0.3s ease;
 	font-weight: 500;
-	padding: 6px 12px;
-	border-radius: 6px;
 }
 
 .compare-total a:hover {
 	color: #c67d4e;
-	background: #fef5f0;
 }
 .row.category_thumb {
 	margin: 0 0px 20px;
@@ -10677,15 +10669,13 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 }
 .breadcrumb {
 	padding: 0;
-	margin: 0 0 25px 0;
+	margin: 0 0 20px 0;
 	list-style: none;
-	background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
-	border: 1px solid #e0e0e0;
-	border-radius: 8px;
+	background: #fafafa;
+	border-bottom: 1px solid #e5e5e5;
 	display: flex;
 	align-items: center;
-	padding: 14px 20px;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	padding: 12px 0;
 	gap: 8px;
 }
 #content #carousel-0 .box-content {
