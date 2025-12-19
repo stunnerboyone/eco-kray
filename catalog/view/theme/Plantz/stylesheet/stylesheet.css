@@ -3705,7 +3705,7 @@ header .header-cart a .fa {
 		padding: 20px 0 0;
 	}
 	#wdcmsbottombanner .bottom-content .box-desc {
-		font-size: 12px;
+		font-size: 16px;
 		margin: 0 0 20px;
 	}
 }
@@ -6841,8 +6841,6 @@ p.powered a {
 .content-top-breadcum {
 	float: none;
 	width: 100%;
-	background: #f5f5f5;
-	margin: 0 0 50px;
 }
 .footer-appinner .title {
 	font: 600 24px/42px "Roboto", sans-serif;
@@ -6857,13 +6855,9 @@ p.powered a {
 .common-home .content-top-breadcum {
 	display: none;
 }
-/* alert */
-.alert {
-	padding: 8px 14px 8px 14px;
-}
+/* OLD alert styles removed - using new ekokray notification system */
 /* breadcrumb */
 .breadcrumb {
-	margin: 0 0 20px 0;
 	padding: 8px 0;
 }
 .breadcrumb i {
@@ -6989,10 +6983,7 @@ button.list-group-item:hover {
 #column-left .checkbox > label:hover {
 	color: #111111;
 }
-.alert-success {
-	width: 100%;
-	float: right;
-}
+/* OLD alert-success removed */
 .list-group-item.group-name {
 	color: #1f2022;
 	font-size: 13px;
@@ -7145,9 +7136,7 @@ button.wishlist {
 .row.cat_prod {
 	margin: 0 -15px;
 }
-.alert-success .fa.fa-check-circle {
-	margin-right: 5px;
-}
+/* OLD alert-success icon removed */
 .product-thumb h4 {
 	font-size: 14px;
 	font-weight: 500;
@@ -7723,7 +7712,7 @@ h2.price {
 }
 .box-desc {
 	width: 60%;
-	font: 400 14px/24px "Roboto", sans-serif;
+	font: 400 18px/24px "Roboto", sans-serif;
 	color: #666666;
 	letter-spacing: 0.5px;
 	text-align: center;
@@ -7736,7 +7725,7 @@ h2.price {
 .wd_category_feature .box-heading,
 #wdcmsparallax .box-heading,
 #wdcmstestimonial .box-heading {
-	font-size: 32px;
+	font-size: 42px;
 	font-weight: 500;
 	position: relative;
 
@@ -8082,11 +8071,7 @@ h2.price {
 	background-color: #111111;
 }
 
-.quickview-model .alert.alert-info {
-	float: left;
-	width: 100%;
-	margin: 10px 0 0 0;
-}
+/* OLD quickview alert removed */
 .quickview-button {
 	display: block;
 	width: 34px;
@@ -9136,7 +9121,6 @@ h2.price {
 	width: 100%;
 	padding: 0;
 	background: #fff;
-	margin-bottom: -20px;
 }
 .left .address-detail {
 	border-bottom: 1px solid #e8e9eb;
@@ -9215,15 +9199,11 @@ h2.price {
 .contact-form-design.container {
 	padding: 30px 0 70px 0;
 	background: #fff;
-	margin: 70px auto;
+	margin: 40px auto;
 	position: relative;
 }
 
-.checkout-cart .alert.alert-danger {
-	float: left;
-	width: 100%;
-	margin-top: 20px;
-}
+/* OLD checkout alert removed */
 .address-detail .btn {
 	clear: both;
 	float: left;
@@ -10969,11 +10949,7 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 	margin-bottom: 25px;
 }
 .breadcrumb {
-	padding: 14px 20px;
-	margin: 0 0 25px 0;
 	list-style: none;
-	background: #fafafa;
-	border-bottom: 1px solid #e0e0e0;
 	display: flex;
 	align-items: center;
 	gap: 5px;
@@ -11150,42 +11126,10 @@ h4:focus a {
 	margin-top: 60px;
 	text-align: center;
 }
-.alert.alert-success.animated {
-	width: 500px;
-	height: 100px;
-	text-align: center;
-	vertical-align: middle;
-	padding: 20px 20px;
-	opacity: 0.95 !important;
-	-webkit-opacity: 0.95 !important;
-	-moz-opacity: 0.95 !important;
-	-khtml-opacity: 0.95 !important;
-	background-color: #ffffff !important;
-	border-color: #ffffff !important;
-	color: #111111 !important;
-	right: 0 !important;
-	left: auto !important;
-}
+/* OLD animated alert styles removed - using new ekokray notification system */
 #banner1 .swiper-pagination {
 	display: none;
 	cursor: pointer;
-}
-.alert.alert-success.animated span {
-	font-size: 15px !important;
-}
-.alert.alert-success.animated span a {
-	color: #111111;
-	text-decoration: underline;
-}
-.alert.alert-success.animated span .fa.fa-check-circle {
-	color: #9bcf85;
-}
-.alert.alert-success.animated button.close {
-	opacity: 1;
-	-khtml-opacity: 1;
-	-webkit-opacity: 1;
-	-moz-opacity: 1;
-	color: #111111;
 }
 .account-login .well .form-group a,
 .affiliate-login .well .form-group a {
@@ -11818,9 +11762,6 @@ h4:focus a {
 	.currency-menu li {
 		padding: 0;
 	}
-	.content-top-breadcum {
-		margin: 0 0 30px;
-	}
 }
 @media (max-width: 991px) {
 	#information-information #content,
@@ -12404,7 +12345,7 @@ h4:focus a {
 		padding-right: 0;
 	}
 	.box-desc {
-		font: 400 13px/22px "Roboto", sans-serif;
+		font: 400 16px/22px "Roboto", sans-serif;
 	}
 	.countbox.hastime {
 		padding: 3px 3px 3px 25px;
@@ -13022,7 +12963,6 @@ h4:focus a {
 		font-size: 13px;
 	}
 	.col-sm-4.header-logo {
-		padding-inline-start: 35px;
 		right: auto;
 	}
 	.product-layout.product-list {
@@ -13167,7 +13107,7 @@ h4:focus a {
 	}
 
 	.breadcrumb {
-		padding: 10px 15px;
+		padding: 30px 15px;
 		flex-wrap: wrap;
 		font-size: 13px;
 	}
@@ -14858,3 +14798,774 @@ h4:focus a {
 }
 
 /* ======================================================================== */
+
+/* ========================================================================
+   Eco-Kray Unified Notification System
+   Beautiful, consistent notifications for all site messages
+   ======================================================================== */
+
+/* Main notification container */
+.ekokray-notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 320px;
+    max-width: 420px;
+    padding: 18px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s ease;
+}
+
+.ekokray-notification:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ekokray-notification-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.ekokray-notification-message {
+    flex: 1;
+    color: #2d3748;
+    font-weight: 500;
+    padding-right: 8px;
+}
+
+.ekokray-notification-close {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.ekokray-notification-close:hover {
+    opacity: 1;
+}
+
+/* Success notification */
+.ekokray-notification.success {
+    background: linear-gradient(135deg, #d4f4dd 0%, #e8f8ed 100%);
+    border-left: 4px solid #38a169;
+    color: #22543d;
+}
+
+.ekokray-notification.success .ekokray-notification-icon {
+    color: #38a169;
+}
+
+/* Error notification */
+.ekokray-notification.error {
+    background: linear-gradient(135deg, #fed7d7 0%, #fff5f5 100%);
+    border-left: 4px solid #e53e3e;
+    color: #742a2a;
+}
+
+.ekokray-notification.error .ekokray-notification-icon {
+    color: #e53e3e;
+}
+
+/* Warning notification */
+.ekokray-notification.warning {
+    background: linear-gradient(135deg, #feebc8 0%, #fffaf0 100%);
+    border-left: 4px solid #ed8936;
+    color: #7c2d12;
+}
+
+.ekokray-notification.warning .ekokray-notification-icon {
+    color: #ed8936;
+}
+
+/* Info notification */
+.ekokray-notification.info {
+    background: linear-gradient(135deg, #bee3f8 0%, #ebf8ff 100%);
+    border-left: 4px solid #3182ce;
+    color: #2c5282;
+}
+
+.ekokray-notification.info .ekokray-notification-icon {
+    color: #3182ce;
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(120%) translateY(-10px);
+        opacity: 0;
+    }
+}
+
+.ekokray-notification.removing {
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+/* Progress bar */
+.ekokray-notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: currentColor;
+    opacity: 0.3;
+    border-radius: 0 0 12px 12px;
+    animation: shrinkProgress 5s linear forwards;
+}
+
+@keyframes shrinkProgress {
+    from { width: 100%; }
+    to { width: 0%; }
+}
+
+/* Stack multiple notifications */
+.ekokray-notification-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.ekokray-notification-container .ekokray-notification {
+    position: relative;
+    top: auto;
+    right: auto;
+    pointer-events: all;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .ekokray-notification {
+        top: 60px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+        padding: 16px 20px;
+        font-size: 14px;
+    }
+    
+    .ekokray-notification-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+    }
+    
+    .ekokray-notification-container {
+        top: 60px;
+        right: 10px;
+        left: 10px;
+    }
+}
+
+/* =================================================================
+   ADAPTIVE PRODUCT GRID FOR CATEGORY PAGES
+   Desktop: 4 columns (8 products per page = 2 rows)
+   Tablet: 3 columns (6 products per page = 2 rows)
+   Mobile: 2 columns (4 products per page = 2 rows)
+================================================================= */
+
+/* Desktop: Auto-fit grid with fixed card width (no stretching!) */
+@media (min-width: 992px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 280px));
+        gap: 20px;
+        padding: 20px 0;
+        justify-content: center; /* Центруємо картки */
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+    }
+}
+
+/* Tablet: 3 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        padding: 18px 0;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Small Tablet: 2 columns */
+@media (min-width: 576px) and (max-width: 767px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 15px 0;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 575px) {
+    #content .box-product {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+        max-width: 500px; /* Обмежуємо ширину на мобільному */
+        margin: 0 auto;
+    }
+
+    #content .box-product .product-card {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Smaller text and padding on mobile */
+    #content .box-product .product-card .caption {
+        padding: 8px;
+    }
+
+    #content .box-product .product-card_title {
+        font-size: 14px;
+    }
+
+    #content .box-product .price {
+        font-size: 16px;
+    }
+}
+
+/* =================================================================
+   IMPROVED PRODUCT CARD STYLES - FULLY RESPONSIVE
+================================================================= */
+
+/* Product Card Container */
+.product-card {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Product Thumb - Main Container */
+.product-thumb {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.product-thumb:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-color: #d2691e;
+}
+
+/* Product Image Container */
+.product-thumb .image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f9f9f9;
+    margin-bottom: 12px;
+}
+
+.product-thumb .image a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.product-thumb .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.product-thumb .image:hover img {
+    transform: scale(1.08);
+}
+
+/* Special Tag (Discount Badge) */
+.product-thumb .special-tag {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(238, 90, 111, 0.4);
+}
+
+/* Out of Stock Badge */
+.product-thumb .stock_status {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    z-index: 2;
+}
+
+/* Out of Stock Image Overlay */
+.product-thumb .image.outstock::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 1;
+}
+
+/* Caption - Product Info */
+.product-thumb .caption {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0;
+}
+
+/* Category Label */
+.product-thumb .product-cat {
+    font-size: 11px;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+/* Product Title */
+.product-card_title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 10px 0;
+    min-height: 42px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card_title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.product-card_title a:hover {
+    color: #d2691e;
+}
+
+/* Price Container */
+.product-thumb .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d8659;
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.product-thumb .price-new {
+    color: #2d8659;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.product-thumb .price-old {
+    color: #999;
+    font-size: 14px;
+    text-decoration: line-through;
+    font-weight: 400;
+}
+
+/* Buttons Wrapper */
+.buttons-product-wrapper {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.buttons-product-wrapper .action {
+    flex: 1;
+}
+
+/* Cart Button */
+.cart_button {
+    width: 100%;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #d2691e 0%, #b85a1a 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(210, 105, 30, 0.3);
+}
+
+.cart_button:hover {
+    background: linear-gradient(135deg, #b85a1a 0%, #a04d16 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(210, 105, 30, 0.4);
+}
+
+.cart_button:active {
+    transform: translateY(0);
+}
+
+.cart_button.out_of_stock {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.cart_button.out_of_stock:hover {
+    background: #ccc;
+    transform: none;
+}
+
+/* Wishlist Button */
+.custom-wishlist {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    padding: 0;
+    background: #fff;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.custom-wishlist::before {
+    content: '♥';
+    font-size: 20px;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.custom-wishlist:hover {
+    border-color: #ff6b6b;
+    background: #fff5f5;
+}
+
+.custom-wishlist:hover::before {
+    color: #ff6b6b;
+}
+
+/* =================================================================
+   RESPONSIVE STYLES FOR PRODUCT CARDS
+================================================================= */
+
+/* Desktop (> 992px) - 4 columns */
+@media (min-width: 992px) {
+    .product-card_title {
+        font-size: 15px;
+        min-height: 42px;
+    }
+
+    .product-thumb .price {
+        font-size: 18px;
+    }
+
+    .cart_button {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Tablet (768px - 991px) - 3 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    .product-card_title {
+        font-size: 14px;
+        min-height: 40px;
+    }
+
+    .product-thumb .price {
+        font-size: 16px;
+    }
+
+    .product-thumb .price-new {
+        font-size: 16px;
+    }
+
+    .product-thumb .price-old {
+        font-size: 13px;
+    }
+
+    .cart_button {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .custom-wishlist {
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+    }
+
+    .custom-wishlist::before {
+        font-size: 18px;
+    }
+}
+
+/* Mobile (< 768px) - 2 columns */
+@media (max-width: 767px) {
+    .product-thumb {
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .product-thumb .image {
+        margin-bottom: 10px;
+        border-radius: 6px;
+    }
+
+    .product-thumb .special-tag {
+        top: 6px;
+        right: 6px;
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    .product-thumb .product-cat {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+
+    .product-card_title {
+        font-size: 13px;
+        min-height: 36px;
+        margin-bottom: 8px;
+    }
+
+    .product-thumb .price {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .product-thumb .price-new {
+        font-size: 15px;
+    }
+
+    .product-thumb .price-old {
+        font-size: 12px;
+    }
+
+    .cart_button {
+        padding: 10px 12px;
+        font-size: 12px;
+        border-radius: 6px;
+    }
+
+    .custom-wishlist {
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 6px;
+    }
+
+    .custom-wishlist::before {
+        font-size: 16px;
+    }
+}
+
+/* Extra Small Mobile (< 480px) */
+@media (max-width: 479px) {
+    .product-thumb {
+        padding: 8px;
+    }
+
+    .product-card_title {
+        font-size: 12px;
+        min-height: 34px;
+    }
+
+    .product-thumb .price {
+        font-size: 14px;
+    }
+
+    .product-thumb .price-new {
+        font-size: 14px;
+    }
+
+    .cart_button {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .custom-wishlist {
+        width: 36px;
+        min-width: 36px;
+        height: 36px;
+    }
+}
+
+/* =================================================================
+   HOME PAGE TABS - ХІТИ ПРОДАЖУ (Same grid as category pages)
+================================================================= */
+
+/* Desktop: Auto-fit grid with fixed card width */
+@media (min-width: 992px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 280px)) !important;
+        gap: 20px;
+        padding: 20px 0;
+        justify-content: center;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+    }
+}
+
+/* Tablet: 3 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 18px;
+        padding: 18px 0;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Small Tablet: 2 columns */
+@media (min-width: 576px) and (max-width: 767px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px;
+        padding: 15px 0;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 575px) {
+    .hometab .box-product {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        padding: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .hometab .box-product .product-card {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* =================================================================
+   FIX WISHLIST BUTTON - Remove old large heart icon
+================================================================= */
+
+/* Hide old wishlist icons (large hearts from old theme) */
+.custom-wishlist i,
+.custom-wishlist .fa,
+.custom-wishlist .fa-heart,
+.wishlist i,
+.wishlist .fa {
+    display: none !important;
+}
+
+/* Ensure only our new ::before heart shows */
+.custom-wishlist::before {
+    display: block !important;
+}
+

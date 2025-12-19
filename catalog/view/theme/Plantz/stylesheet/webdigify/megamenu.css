@@ -19,8 +19,6 @@
 
 @media (max-width: 991px) {
 	.col-sm-4.header-logo {
-		height: 55px;
-		width: 127px;
 		margin-left: 40px;
 	}
 	.container-fluid {
@@ -35,9 +33,6 @@
 }
 
 @media (max-width: 767px) {
-	.col-sm-4.header-logo {
-		padding: 3px 0 0 0;
-	}
 	.container-fluid {
 		padding-inline: 20px;
 	}
