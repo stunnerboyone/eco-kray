@@ -44,6 +44,15 @@ body {
 	font-weight: 400;
 	line-height: 22px;
 }
+
+/* Add spacing after header for all main page containers */
+#product-product.container,
+#product-special.container,
+#product-category.container,
+#information-information.container,
+#information-contact.container {
+	padding-top: 20px;
+}
 /* ========== UNIFIED INPUT STYLES ========== */
 /* Apply consistent styling to all form inputs across the site */
 
