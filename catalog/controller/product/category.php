@@ -37,7 +37,8 @@ class ControllerProductCategory extends Controller {
 		if (isset($this->request->get['limit'])) {
 			$limit = (int)$this->request->get['limit'];
 		} else {
-			$limit = $this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit');
+			// Force limit to 8 for perfect grid layout (4 columns x 2 rows)
+			$limit = 8;
 		}
 
 		$data['breadcrumbs'] = array();
@@ -346,7 +347,8 @@ class ControllerProductCategory extends Controller {
 
 			$data['limits'] = array();
 
-			$limits = array_unique(array($this->config->get('theme_' . $this->config->get('config_theme') . '_product_limit'), 25, 50, 75, 100));
+			// Use limits that work perfectly with 4-column grid: 8, 16, 24, 32
+			$limits = array(8, 16, 24, 32);
 
 			sort($limits);
 

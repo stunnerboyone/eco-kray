@@ -8,15 +8,11 @@
     var EkokrayMegamenu = function(element, options) {
         this.element = $(element);
         this.options = options;
-        console.log('=== EKOKRAY MEGAMENU INIT ===');
-        console.log('Element:', element);
-        console.log('Options:', options);
         this.init();
     };
 
     EkokrayMegamenu.prototype = {
         init: function() {
-            console.log('Initializing megamenu with options:', this.options);
             this.setupElements();
             this.setupEvents();
             this.setupResizeHandler();
@@ -70,12 +66,8 @@
 
             // Desktop hover for product loading on category items
             $(document).on('mouseenter', '.ekokray-category-item', function() {
-                console.log('=== CATEGORY HOVER DEBUG ===');
-                console.log('isMobile:', self.isMobile);
-                console.log('Window width:', $(window).width());
 
                 if (self.isMobile) {
-                    console.log('Skipping - mobile mode');
                     return;
                 }
 
@@ -85,10 +77,6 @@
                 var limit = $productsContainer.data('limit') || 8;
                 var loaded = $item.data('products-loaded');
 
-                console.log('Category ID from data attr:', categoryId);
-                console.log('Product limit from data attr:', limit);
-                console.log('Already loaded:', loaded);
-                console.log('Container found:', $productsContainer.length);
 
                 // CRITICAL: Hide all other product containers first
                 $('.ekokray-category-products').not($productsContainer).each(function() {
@@ -101,22 +89,18 @@
                 });
 
                 if (!categoryId) {
-                    console.error('>>> No category ID found!');
                     return;
                 }
 
                 if (!loaded && categoryId) {
-                    console.log('>>> Loading products for category:', categoryId);
                     // Show loading state
                     $productsContainer.find('.ekokray-products-loading').show();
 
                     // Load products immediately (no debounce for debugging)
-                    console.log('>>> Calling loadProducts NOW with limit:', limit);
                     self.loadProducts(categoryId, limit, $productsContainer);
                     $item.data('products-loaded', true);
                 } else if (loaded) {
                     // Just show already loaded products
-                    console.log('>>> Showing already loaded products');
                     $productsContainer.addClass('has-products-loaded').css({
                         'opacity': '1',
                         'visibility': 'visible',
@@ -132,7 +116,6 @@
                 var hoverTimeout = $item.data('hover-timeout');
 
                 if (hoverTimeout) {
-                    console.log('Clearing hover timeout');
                     clearTimeout(hoverTimeout);
                 }
 
@@ -221,21 +204,14 @@
         },
 
         loadProducts: function(categoryId, limit, $container) {
-            console.log('=== LOAD PRODUCTS ===');
-            console.log('Category ID:', categoryId);
-            console.log('Limit:', limit);
-            console.log('Container:', $container);
 
             var self = this;
             var $loading = $container.find('.ekokray-products-loading');
             var $grid = $container.find('.ekokray-products-grid');
 
-            console.log('Loading element:', $loading.length);
-            console.log('Grid element:', $grid.length);
 
             // Check if already loaded
             if ($grid.children().length > 0) {
-                console.log('>>> Products already loaded, skipping');
                 return;
             }
 
@@ -243,8 +219,6 @@
             $loading.show();
 
             var ajaxUrl = this.options.getProductsUrl;
-            console.log('>>> AJAX URL:', ajaxUrl);
-            console.log('>>> Full request URL:', ajaxUrl + '&category_id=' + categoryId + '&limit=' + limit);
 
             // AJAX request
             $.ajax({
@@ -256,28 +230,14 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
-                    console.log('>>> AJAX request starting...');
                 },
                 success: function(response) {
-                    console.log('>>> AJAX SUCCESS!');
-                    console.log('Full Response:', response);
-                    console.log('response.success:', response.success);
-                    console.log('response.products:', response.products);
-                    console.log('products length:', response.products ? response.products.length : 'undefined');
 
                     // Log debug info from server
                     if (response.debug) {
-                        console.log('=== SERVER DEBUG INFO ===');
-                        console.log('Debug data:', response.debug);
-                        console.log('Category ID:', response.debug.category_id);
-                        console.log('Category Name:', response.debug.category_name);
-                        console.log('Store ID:', response.debug.store_id);
-                        console.log('Language ID:', response.debug.language_id);
-                        console.log('Products count:', response.debug.products_count);
                     }
 
                     if (response.success && response.products && response.products.length > 0) {
-                        console.log('>>> Rendering', response.products.length, 'products');
                         self.renderProducts(response.products, $grid);
                         // Show the products container
                         $container.addClass('has-products-loaded');
@@ -288,7 +248,6 @@
                             'pointer-events': 'auto'
                         });
                     } else {
-                        console.error('>>> No products found or empty array!');
                         console.error('Response data:', JSON.stringify(response));
                         $grid.html('<p class="text-muted text-center" style="padding: 20px;">Товари не знайдено в цій категорії</p>');
                         $container.addClass('has-products-loaded');
@@ -301,7 +260,6 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('>>> AJAX ERROR!');
                     console.error('Status:', status);
                     console.error('Error:', error);
                     console.error('Status Code:', xhr.status);
@@ -309,24 +267,16 @@
                     $grid.html('<p class="text-danger text-center">Помилка завантаження: ' + status + '</p>');
                 },
                 complete: function() {
-                    console.log('>>> AJAX complete');
                     $loading.hide();
                 }
             });
         },
 
         renderProducts: function(products, $grid) {
-            console.log('=== RENDER PRODUCTS ===');
-            console.log('Products to render:', products.length);
-            console.log('Grid element:', $grid);
-            console.log('Grid length:', $grid.length);
-            console.log('Grid is visible:', $grid.is(':visible'));
-            console.log('Grid parent:', $grid.parent());
 
             var html = '';
 
             products.forEach(function(product) {
-                console.log('Rendering product:', product.name);
                 var priceHtml = '';
 
                 if (product.special) {
@@ -351,11 +301,7 @@
                 html += '</div>';
             });
 
-            console.log('Generated HTML length:', html.length);
-            console.log('Generated HTML:', html.substring(0, 200));
             $grid.html(html);
-            console.log('Grid after setting HTML:', $grid);
-            console.log('Grid HTML after set:', $grid.html().substring(0, 200));
         },
 
         setupSwipeGestures: function() {
@@ -430,36 +376,23 @@
 
     // Auto-init
     $(document).ready(function() {
-        console.log('=== AUTO-INIT MEGAMENU ===');
-        console.log('ekokrayMegamenuData:', window.ekokrayMegamenuData);
-        console.log('Category items on page:', $('.ekokray-category-item').length);
-        console.log('Menu items on page:', $('.ekokray-menu-item').length);
-        console.log('Dropdowns on page:', $('.ekokray-dropdown').length);
 
         $('[class*="ekokray-megamenu"]').each(function() {
-            console.log('Found megamenu element:', this);
             $(this).ekokrayMegamenu();
         });
 
         // Debug: Check if category items exist after init
         setTimeout(function() {
-            console.log('=== CHECKING CATEGORY ITEMS AFTER INIT ===');
             $('.ekokray-category-item').each(function(index) {
                 var $item = $(this);
                 var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
-                console.log('Category item #' + index + ':', {
-                    element: this,
-                    categoryId: categoryId,
-                    hasProductsContainer: $productsContainer.length > 0
-                });
             });
         }, 1000);
 
         // Sync cart count with main cart total
         function syncCartCount() {
             var mainCartTotal = $('#cart-total').text().trim();
-            console.log('Syncing cart count:', mainCartTotal);
             $('#ekokray-cart-count').text(mainCartTotal);
             $('#ekokray-cart-count-desktop').text(mainCartTotal);
         }
@@ -469,7 +402,6 @@
 
         // Watch for cart updates
         var cartObserver = new MutationObserver(function(mutations) {
-            console.log('Cart updated, syncing count');
             syncCartCount();
         });
 
@@ -485,9 +417,13 @@
         // Also sync when cart is refreshed via AJAX
         $(document).ajaxComplete(function(event, xhr, settings) {
             if (settings.url && settings.url.indexOf('common/cart') !== -1) {
-                console.log('Cart AJAX complete, syncing count');
                 setTimeout(syncCartCount, 100);
             }
+        });
+
+        // Listen for cart update events
+        $(document).on('cartUpdated', function() {
+            syncCartCount();
         });
     });
 

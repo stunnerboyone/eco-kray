@@ -137,8 +137,133 @@ $(document).ready(function () {
 
   // Debug cart clicks
   $(document).on('click', '.cart-dropdown', function(e) {
-    console.log('Cart dropdown clicked:', e.target);
     e.stopPropagation();
+  });
+
+  // Handle cart_button clicks (Add to Cart)
+  $(document).on('click', '.cart_button', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var $button = $(this);
+
+    // Prevent double clicks
+    if ($button.prop('disabled') || $button.hasClass('loading')) {
+      return false;
+    }
+
+    var productId = $button.data('product-id');
+
+    if (!productId) {
+      return;
+    }
+
+    // Check if button is "out of stock"
+    if ($button.hasClass('out_of_stock')) {
+      return;
+    }
+
+    // Get quantity if exists (usually on product page)
+    var quantity = parseInt($('input[name="quantity"]').val()) || 1;
+
+    // Get options if exists (for product page with options)
+    var options = {};
+    $('select[name^="option"], input[name^="option"]:checked, textarea[name^="option"]').each(function() {
+      var $this = $(this);
+      var name = $this.attr('name');
+      var match = name.match(/option\[(\d+)\]/);
+      if (match) {
+        options[match[1]] = $this.val();
+      }
+    });
+
+    // Disable button during request
+    $button.prop('disabled', true).addClass('loading');
+
+    $.ajax({
+      url: 'index.php?route=checkout/cart/add',
+      type: 'post',
+      data: {
+        product_id: productId,
+        quantity: quantity,
+        option: options
+      },
+      dataType: 'json',
+      success: function(json) {
+        $button.prop('disabled', false).removeClass('loading');
+
+        if (json['error']) {
+          if (json['error']['option']) {
+            for (var optionId in json['error']['option']) {
+              if (typeof showError === 'function') {
+                showError(json['error']['option'][optionId], { duration: 5000 });
+              } else {
+                // Fallback error notification
+                var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+                  '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                  json['error']['option'][optionId] +
+                  '</div>');
+                $('body').append($errorNotif);
+                setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+              }
+            }
+          }
+          if (json['error']['recurring']) {
+            if (typeof showError === 'function') {
+              showError(json['error']['recurring'], { duration: 5000 });
+            } else {
+              var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                json['error']['recurring'] +
+                '</div>');
+              $('body').append($errorNotif);
+              setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+            }
+          }
+        }
+
+        if (json['success']) {
+          // Try modern notification first
+          if (typeof showSuccess === 'function') {
+            showSuccess(json['success'], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback: Simple HTML notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json['success'] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() {
+              $notification.fadeOut(function() {
+                $(this).remove();
+              });
+            }, 4000);
+          }
+
+          // Update cart total
+          if (json['total']) {
+            $('#cart-total').html(json['total']);
+          }
+
+          // Refresh cart dropdown
+          refreshCart();
+        }
+      },
+      error: function(xhr, status, error) {
+        $button.prop('disabled', false).removeClass('loading');
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні товару в кошик', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні товару в кошик' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+        }
+        console.error('Cart add error:', error);
+      }
+    });
   });
 });
 
@@ -149,23 +274,18 @@ function refreshCart() {
     success: function (html) {
       const $html = $(html);
 
-      console.log("[refreshCart] Loaded HTML:", html);
-
       const $newTotal = $html.find("#cart-total");
       const $newCart = $html.find("#cart");
 
       if ($newTotal.length) {
         $("#cart-total").html($newTotal.html());
-        console.log("[refreshCart] Updated cart-total");
-      } else {
-        console.warn("[refreshCart] #cart-total NOT FOUND");
+
+        // Trigger cart update event for other components to sync
+        $(document).trigger('cartUpdated');
       }
 
       if ($newCart.length) {
         $("#cart").html($newCart.html());
-        console.log("[refreshCart] Updated cart content");
-      } else {
-        console.warn("[refreshCart] #cart NOT FOUND");
       }
     },
     error: function (xhr) {
@@ -225,13 +345,8 @@ var cart = {
         }
 
         if (json["success"]) {
-          $("#content")
-            .parent()
-            .before(
-              '<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' +
-                json["success"] +
-                ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>'
-            );
+          // Show beautiful notification
+          showSuccess(json["success"], { duration: 4000, showProgress: true });
 
           // Update cart total
           $("#cart-total").html(json["total"]);
@@ -295,99 +410,50 @@ var wishlist = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          $.notify(
-            {
-              message: json["success"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
+          if (typeof showSuccess === 'function') {
+            showSuccess(json["success"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["success"] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() { $notification.fadeOut(function() { $(this).remove(); }); }, 4000);
+          }
         }
 
         if (json["info"]) {
-          $.notify(
-            {
-              message: json["info"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-info" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-info"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
+          if (typeof showInfo === 'function') {
+            showInfo(json["info"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback info notification
+            var $infoNotif = $('<div class="alert alert-info alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["info"] +
+              '</div>');
+            $('body').append($infoNotif);
+            setTimeout(function() { $infoNotif.fadeOut(function() { $(this).remove(); }); }, 4000);
+          }
         }
 
-        $("#wishlist-total").html(json["total"]);
+        if (json["total"]) {
+          $("#wishlist-total").html(json["total"]);
+        }
       },
+      error: function(xhr, status, error) {
+        console.error('Wishlist add error:', error);
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні в обране', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні в обране' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+        }
+      }
     });
   },
   remove: function () {},
@@ -402,53 +468,35 @@ var compare = {
       dataType: "json",
       success: function (json) {
         if (json["success"]) {
-          $.notify(
-            {
-              message: json["success"],
-              target: "_blank",
-            },
-            {
-              // settings
-              element: "body",
-              position: null,
-              type: "info",
-              allow_dismiss: true,
-              newest_on_top: false,
-              placement: {
-                from: "top",
-                align: "center",
-              },
-              offset: 0,
-              spacing: 10,
-              z_index: 2031,
-              delay: 5000,
-              timer: 1000,
-              url_target: "_blank",
-              mouse_over: null,
-              animate: {
-                enter: "animated fadeInDown",
-                exit: "animated fadeOutUp",
-              },
-              onShow: null,
-              onShown: null,
-              onClose: null,
-              onClosed: null,
-              icon_type: "class",
-              template:
-                '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-success" role="alert">' +
-                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">&nbsp;&times;</button>' +
-                '<span data-notify="message"><i class="fa fa-check-circle"></i>&nbsp; {2}</span>' +
-                '<div class="progress" data-notify="progressbar">' +
-                '<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-                "</div>" +
-                '<a href="{3}" target="{4}" data-notify="url"></a>' +
-                "</div>",
-            },
-          );
-
-          $("#compare-total").html(json["total"]);
+          if (typeof showSuccess === 'function') {
+            showSuccess(json["success"], { duration: 4000, showProgress: true });
+          } else {
+            // Fallback notification
+            var $notification = $('<div class="alert alert-success alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+              '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+              json["success"] +
+              '</div>');
+            $('body').append($notification);
+            setTimeout(function() { $notification.fadeOut(function() { $(this).remove(); }); }, 4000);
+          }
+          if (json["total"]) {
+            $("#compare-total").html(json["total"]);
+          }
         }
       },
+      error: function(xhr, status, error) {
+        console.error('Compare add error:', error);
+        if (typeof showError === 'function') {
+          showError('Помилка при додаванні до порівняння', { duration: 5000 });
+        } else {
+          var $errorNotif = $('<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            'Помилка при додаванні до порівняння' +
+            '</div>');
+          $('body').append($errorNotif);
+          setTimeout(function() { $errorNotif.fadeOut(function() { $(this).remove(); }); }, 5000);
+        }
+      }
     });
   },
   remove: function () {},
