@@ -2821,7 +2821,7 @@ opacity: 1;
 
 @media (max-width: 991px) {
 	.col-sm-4.header-logo {
-		margin-left: 40px;
+		margin-left: 0px;
 	}
 	.container-fluid {
 		padding-inline: 40px;
