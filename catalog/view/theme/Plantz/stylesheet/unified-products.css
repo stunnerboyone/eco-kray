@@ -50,9 +50,10 @@
   position: relative;
   width: 240px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 520px !important;
 }
 
 .product-thumb {
@@ -61,12 +62,13 @@
   border-radius: 10px;
   padding: 14px;
   box-sizing: border-box;
-  overflow: visible;
+  overflow: visible !important;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  min-height: 520px !important;
 }
 
 .product-thumb:hover {
@@ -98,7 +100,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  flex-shrink: 0;
+  flex-shrink: 0 !important;
 }
 
 .product-thumb .image img {
@@ -136,12 +138,13 @@
 
 /* Інформація про товар */
 .caption {
-  display: flex;
-  min-height: 200px;
-  flex-direction: column;
-  justify-content: space-between;
+  display: flex !important;
+  min-height: 220px !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
   text-align: center;
-  padding: 0 10px 10px;
+  padding: 0 10px 12px !important;
+  flex: 1 !important;
 }
 
 .caption h4 {
@@ -151,15 +154,28 @@
 }
 
 .price {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin-bottom: 10px !important;
+  color: #1a1a1a !important;
+  line-height: 1.3 !important;
+}
+
+.price-new {
+  color: #27ae60 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  display: block !important;
+  margin-bottom: 4px !important;
 }
 
 .price-old {
-  color: #999;
-  text-decoration: line-through;
-  margin-left: 5px;
+  color: #999 !important;
+  text-decoration: line-through !important;
+  margin-left: 0 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  display: block !important;
 }
 
 .description {
@@ -182,19 +198,26 @@
 
 /* Кнопки */
 .cart_button {
-  background-color: #c67d4e;
-  width: 100%;
-  color: white;
-  padding: 8px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
+  background: linear-gradient(135deg, #c67d4e 0%, #b36a3e 100%) !important;
+  width: 100% !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 8px rgba(198, 125, 78, 0.3) !important;
+  display: block !important;
 }
 
 .cart_button:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #b36a3e 0%, #a55a2e 100%) !important;
+  box-shadow: 0 4px 12px rgba(198, 125, 78, 0.4) !important;
+  transform: translateY(-2px) !important;
 }
 
 .out_of_stock {
@@ -211,42 +234,49 @@
 }
 
 .buttons-product-wrapper {
-  display: flex;
+  display: flex !important;
   flex-direction: row;
-  margin-top: auto;
+  margin-top: auto !important;
   gap: 12px;
   width: 100%;
   justify-content: center;
   align-items: center;
   padding-top: 10px;
+  flex-shrink: 0 !important;
 }
 
 .buttons-product-wrapper .action {
   flex: 1;
-  display: flex;
+  display: flex !important;
 }
 
 .buttons-product-wrapper .cart_button {
-  flex: 1;
+  flex: 1 !important;
+  min-height: 40px !important;
 }
 
 .custom-wishlist {
-  display: block;
-  width: 40px;
-  height: 40px;
-  border: 8px solid #c67d4e;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-color: #c67d4e;
-  background-size: contain;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+  display: block !important;
+  width: 42px !important;
+  height: 42px !important;
+  border: 2px solid #e8e8e8 !important;
+  background-image: url(../image/wishlist.svg) !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-color: #ffffff !important;
+  background-size: 20px !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
 }
 
 .custom-wishlist:hover {
-  background-color: #45a049;
-  border-color: #45a049;
+  background-color: #fff5f0 !important;
+  border-color: #c67d4e !important;
+  transform: translateY(-2px) scale(1.05) !important;
+  box-shadow: 0 4px 12px rgba(198, 125, 78, 0.2) !important;
 }
 
 /* Адаптивний дизайн */
