@@ -472,3 +472,82 @@ label {
 		font-size: 1rem;
 	}
 }
+
+/* ============================================
+   DROPDOWN MENUS FIX
+   Prevent typography from breaking dropdowns
+   ============================================ */
+
+/* Account dropdown */
+.dropdown-menu,
+#top-links .dropdown-menu,
+.myaccount-menu {
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+
+.dropdown-menu li,
+#top-links .dropdown-menu li,
+.myaccount-menu li {
+	margin-bottom: 0 !important;
+	line-height: 1.5 !important;
+}
+
+.dropdown-menu a,
+#top-links .dropdown-menu a,
+.myaccount-menu a {
+	font-size: 14px !important;
+	color: #333 !important;
+	padding: 10px 20px !important;
+	display: block !important;
+	text-decoration: none !important;
+	transition: background 0.2s ease !important;
+}
+
+.dropdown-menu a:hover,
+#top-links .dropdown-menu a:hover,
+.myaccount-menu a:hover {
+	background: #f5f5f5 !important;
+	color: #c67d4e !important;
+	text-decoration: none !important;
+}
+
+/* Cart dropdown */
+#cart .dropdown-menu {
+	font-size: 14px !important;
+	min-width: 300px !important;
+}
+
+#cart .dropdown-menu ul {
+	padding: 0 !important;
+	margin: 0 !important;
+	list-style: none !important;
+}
+
+#cart .dropdown-menu li {
+	margin-bottom: 0 !important;
+	padding: 10px 15px !important;
+	border-bottom: 1px solid #eee !important;
+}
+
+#cart .dropdown-menu p {
+	margin-bottom: 10px !important;
+	font-size: 14px !important;
+	line-height: 1.5 !important;
+}
+
+#cart .dropdown-menu a {
+	font-size: 14px !important;
+	color: #333 !important;
+}
+
+/* Search dropdown */
+.search .dropdown-menu {
+	font-size: 14px !important;
+}
+
+.search .dropdown-menu a {
+	padding: 8px 15px !important;
+	font-size: 14px !important;
+}
+
