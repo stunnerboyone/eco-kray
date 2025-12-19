@@ -745,32 +745,32 @@ footer .social-block h5 {
 }
 .productpage .product-price,
 .productpage .special-price {
-	font-size: 36px;
+	font-size: 28px;
 	display: block;
 	font-weight: 700;
 	line-height: 1.3;
 	color: #1a1a1a;
-	margin: 20px 0 25px 0;
+	margin: 15px 0 20px 0;
 }
 
 .productpage .product-right ul.price-section {
 	background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
-	padding: 20px 25px;
+	padding: 16px 20px;
 	border-radius: 12px;
 	border: 2px solid #e8e8e8;
-	margin: 0 0 25px 0;
+	margin: 0 0 20px 0;
 }
 
 .productpage .product-right ul li span.current-price {
 	color: #1a1a1a;
-	font-size: 36px;
+	font-size: 28px;
 	font-weight: 700;
 	text-decoration: none;
 }
 
 .productpage .product-right ul li span.new-prices {
 	color: #27ae60;
-	font-size: 36px;
+	font-size: 28px;
 	font-weight: 700;
 	text-decoration: none;
 	display: inline-block;
@@ -778,11 +778,11 @@ footer .social-block h5 {
 
 .productpage .product-right ul li span.old-prices {
 	color: #999;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 400;
 	text-decoration: line-through;
 	display: inline-block;
-	margin-left: 15px;
+	margin-left: 12px;
 }
 
 .productpage .product-right ul li span.discount-per {
@@ -800,7 +800,7 @@ footer .social-block h5 {
 }
 .productpage .description {
 	line-height: 1.6;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
 	padding: 0;
 	border-bottom: none;
 	height: auto;
@@ -809,7 +809,7 @@ footer .social-block h5 {
 .product-description {
 	width: 100%;
 	border-collapse: separate;
-	border-spacing: 0 6px;
+	border-spacing: 0 4px;
 	margin: 0;
 }
 
@@ -823,8 +823,8 @@ footer .social-block h5 {
 }
 
 .product-description td {
-	padding: 14px 18px;
-	font-size: 15px;
+	padding: 10px 14px;
+	font-size: 14px;
 	border-bottom: 1px solid #f0f0f0;
 }
 
@@ -843,7 +843,7 @@ footer .social-block h5 {
 	color: #555;
 	font-weight: 600;
 	text-transform: none;
-	font-size: 14px;
+	font-size: 13px;
 	letter-spacing: 0;
 }
 
@@ -851,6 +851,7 @@ footer .social-block h5 {
 	padding-left: 0;
 	color: #333;
 	font-weight: 500;
+	font-size: 14px;
 }
 
 .productpage .description .product-description .description-right a {
@@ -6045,11 +6046,11 @@ nav.nav-container {
 }
 #tabs_info.product-tab ul.nav.nav-tabs {
 	padding: 0;
-	margin: 20px 0 0;
+	margin: 16px 0 0;
 	text-align: left;
 	border-bottom: 2px solid #e8e8e8;
 	display: flex;
-	gap: 5px;
+	gap: 4px;
 }
 
 .nav-tabs > li {
@@ -6059,10 +6060,10 @@ nav.nav-container {
 .nav-tabs > li > a {
 	color: #666;
 	font-weight: 500;
-	font-size: 16px;
-	padding: 14px 24px;
+	font-size: 14px;
+	padding: 10px 18px;
 	border: none;
-	border-radius: 8px 8px 0 0;
+	border-radius: 6px 6px 0 0;
 	background-color: transparent;
 	transition: all 0.3s ease;
 	position: relative;
@@ -7393,7 +7394,7 @@ h2.price {
 }
 .productpage .nav-tabs > li.active > a {
 	color: #fff !important;
-	font-size: 18px !important;
+	font-size: 15px !important;
 	font-weight: 500 !important;
 }
 
@@ -7404,11 +7405,12 @@ h2.price {
 	border-color: #c67d4e;
 }
 #tabs_info.product-tab li a {
-	padding: 10px 20px;
+	padding: 8px 16px;
 	background: #f5f5f5;
 	border: 1px solid #e5e5e5;
 	font-weight: 400;
 	background: transparent;
+	font-size: 14px;
 }
 .nav-tabs > li.active::after {
 	border-bottom: 3px solid #f6d000;
@@ -10935,25 +10937,25 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 	font-weight: 500;
 }
 #content.productpage .product-title {
-	font-size: 32px;
+	font-size: 24px;
 	font-weight: 700;
-	line-height: 1.25;
-	margin: 0 0 20px 0;
-	padding: 0 0 20px;
+	line-height: 1.3;
+	margin: 0 0 16px 0;
+	padding: 0 0 16px;
 	color: #1a1a1a;
-	border-bottom: 3px solid #c67d4e;
+	border-bottom: 2px solid #c67d4e;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	letter-spacing: -0.5px;
+	letter-spacing: -0.3px;
 	position: relative;
 }
 
 #content.productpage .product-title::after {
 	content: '';
 	position: absolute;
-	bottom: -3px;
+	bottom: -2px;
 	left: 0;
-	width: 80px;
-	height: 3px;
+	width: 60px;
+	height: 2px;
 	background: linear-gradient(90deg, #c67d4e 0%, transparent 100%);
 }
 #content h3.product-option {
@@ -11180,7 +11182,7 @@ h4:focus a {
 	clear: both;
 	overflow: hidden;
 	position: relative;
-	padding: 15px 0px 20px;
+	padding: 12px 0px 16px;
 	margin: 0;
 }
 .op-box.qty-plus-minus {
@@ -11196,30 +11198,31 @@ h4:focus a {
 	content: "+";
 }
 .form-control.pull-left.btn-number {
-	min-width: 22px;
+	min-width: 20px;
 	margin: 0;
 	border: 0;
 	padding: 0;
-	height: 42px;
-	line-height: 30px;
+	height: 36px;
+	line-height: 26px;
 	color: #000000;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	cursor: pointer;
 	display: inline-block;
-	width: 22px;
+	width: 20px;
 	border-radius: 0;
 	background: transparent;
 }
 #product .form-group #input-quantity,
 .quickview-model #input-quantity {
-	width: 35px;
-	height: 42px;
-	padding: 8px;
+	width: 32px;
+	height: 36px;
+	padding: 6px;
 	text-align: center;
 	float: left;
 	border: none;
 	margin: 0px;
+	font-size: 14px;
 }
 .discount-per {
 	color: #228b22;
@@ -11293,9 +11296,9 @@ h4:focus a {
 #product .btn-group.prd_page {
 	display: flex;
 	align-items: stretch;
-	gap: 12px;
+	gap: 10px;
 	max-width: 100%;
-	margin-top: 25px;
+	margin-top: 20px;
 }
 
 #product .btn-group.prd_page .cart_button {
@@ -11303,15 +11306,15 @@ h4:focus a {
 	background: linear-gradient(135deg, #c67d4e 0%, #b36a3e 100%);
 	color: #ffffff;
 	border: none;
-	border-radius: 12px;
-	padding: 18px 35px;
-	font-size: 17px;
+	border-radius: 10px;
+	padding: 14px 28px;
+	font-size: 15px;
 	font-weight: 700;
 	text-transform: uppercase;
-	letter-spacing: 1px;
+	letter-spacing: 0.8px;
 	cursor: pointer;
 	transition: all 0.3s ease;
-	box-shadow: 0 4px 15px rgba(198, 125, 78, 0.3);
+	box-shadow: 0 3px 12px rgba(198, 125, 78, 0.3);
 	position: relative;
 	overflow: hidden;
 }
@@ -11345,15 +11348,15 @@ h4:focus a {
 #product .btn-group.prd_page .btn.btn-default.wishlist {
 	background-color: #ffffff;
 	border: 2px solid #e8e8e8;
-	border-radius: 12px;
-	padding: 18px 24px;
+	border-radius: 10px;
+	padding: 14px 20px;
 	color: #666;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 600;
 	transition: all 0.3s ease;
 	cursor: pointer;
 	white-space: nowrap;
-	min-width: 180px;
+	min-width: 160px;
 	text-align: center;
 }
 
