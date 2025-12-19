@@ -31,10 +31,11 @@
 .box-product {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-  padding: 10px 0;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 0;
   box-sizing: border-box;
+  margin-top: 10px;
 }
 
 .box-product.product-grid {
@@ -53,11 +54,19 @@
 
 .product-thumb {
   background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 14px;
   box-sizing: border-box;
   overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.product-thumb:hover {
+  border-color: #c67d4e;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
 }
 
 /* Назва товару */
