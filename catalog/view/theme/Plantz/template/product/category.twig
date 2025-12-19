@@ -33,16 +33,30 @@
           <div class="category_list">
           <ul>
             {% for category in categories %}
-                <div class="category-item">
-                {% if category.img %}
-                  <div class="category_img"><a href="{{ category.href }}"><img src="{{ category.img }}" data-rel="{{ category.img }}" alt="{{ category.name }}" title="{{ category.name }}" class="img-thumbnail"  /></a></div>
-                  {% endif %}
-                
-                <a href="{{ category.href }}">{{ category.name }}</a>
-                </div>   
+                <div class="category-item" data-debug='{"name":"{{ category.name }}","img":"{{ category.img }}","href":"{{ category.href }}"}'>
+                  <div class="category_img">
+                    <a href="{{ category.href }}">
+                      <img src="{{ category.img }}" alt="{{ category.name }}" title="{{ category.name }}" onerror="console.error('Image failed to load:', this.src); this.style.border='3px solid red';" onload="console.log('Image loaded successfully:', this.src)" />
+                    </a>
+                  </div>
+                  <a href="{{ category.href }}">{{ category.name }}</a>
+                </div>
               {% endfor %}
             </ul>
           </div>
+          <script>
+          console.log('=== Category List Debug ===');
+          document.querySelectorAll('.category-item').forEach((item, index) => {
+            const debug = JSON.parse(item.dataset.debug);
+            console.log(`Category ${index + 1}:`, debug);
+            const img = item.querySelector('img');
+            console.log(`  - Image element:`, img);
+            console.log(`  - Image src:`, img ? img.src : 'NO IMAGE ELEMENT');
+            console.log(`  - Image complete:`, img ? img.complete : 'N/A');
+            console.log(`  - Image naturalWidth:`, img ? img.naturalWidth : 'N/A');
+          });
+          console.log('========================');
+          </script>
       {% endif %}
           </div>
       </div>
