@@ -7115,7 +7115,13 @@ button.wishlist {
 	color: #c67d4e;
 }
 .product-cat {
+	font-size: 12px;
 	text-transform: uppercase;
+	color: #999;
+	font-weight: 600;
+	letter-spacing: 1px;
+	margin-bottom: 8px;
+	display: block;
 }
 .product-thumb h4 a {
 	color: #000000;
