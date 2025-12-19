@@ -145,10 +145,13 @@ class ControllerProductCategory extends Controller {
 					'filter_sub_category' => true
 				);
 
-				// Handle subcategory image with fallback to placeholder
-				if ($result['image']) {
+				// Handle subcategory image with proper validation and fallback
+				$catthumb = '';
+				if (!empty($result['image']) && is_file(DIR_IMAGE . $result['image'])) {
+					// Image exists, resize it
 					$catthumb = $this->model_tool_image->resize($result['image'], 100, 100);
 				} else {
+					// No image or file doesn't exist, use placeholder
 					$catthumb = $this->model_tool_image->resize('placeholder.png', 100, 100);
 				}
 
