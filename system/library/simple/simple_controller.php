@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-
+ 
 class SimpleController extends Controller {
     static $_childContent = '';
     private $_opencartVersion = 0;

@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-namespace Simple;
+ namespace Simple;
 
 class Rewrite {
     private $config;

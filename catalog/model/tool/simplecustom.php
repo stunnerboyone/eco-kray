@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-
+ 
 class ModelToolSimpleCustom extends Model {
     static $_objects = array(
         'order'    => 1,

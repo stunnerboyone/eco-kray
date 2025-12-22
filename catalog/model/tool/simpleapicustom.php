@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-
+ 
 class ModelToolSimpleApiCustom extends Model {
     public function example($filterFieldValue) {
         $values = array();

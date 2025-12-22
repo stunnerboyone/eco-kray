@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-
+ 
 class ModelToolSimpleApi extends Model {
     public function getAddresses($term) {
         $address_data = array();
