@@ -526,19 +526,88 @@ class Sync1C {
             $this->generateSeoUrl('product', $product_id, $name);
         }
 
-        // Link to categories
-        if (isset($product->Группы->Ид)) {
-            $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+        // Auto-categorize based on product name (ignore 1C categories)
+        $this->autoCategorizeProduct($product_id, $name);
 
-            foreach ($product->Группы->Ид as $cat_guid) {
-                $cat_query = $this->db->query("SELECT category_id FROM " . DB_PREFIX . "category_to_1c WHERE guid = '" . $this->db->escape((string)$cat_guid) . "'");
-                if ($cat_query->num_rows) {
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category SET product_id = '" . (int)$product_id . "', category_id = '" . (int)$cat_query->row['category_id'] . "'");
+        return $result;
+    }
+
+    /**
+     * Automatically categorize product based on name keywords
+     */
+    private function autoCategorizeProduct($product_id, $product_name) {
+        $this->log->write("Auto-categorizing: $product_name");
+
+        // Clear existing categories first
+        $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
+
+        // Define category mapping by keywords
+        $categories = [
+            'Натуральні Соки' => ['сік', 'сок', 'березовий'],
+            'Пастила' => ['пастила'],
+            'Сухофрукти' => ['сухофрукт', 'узвар'],
+            'Джеми' => ['джем'],
+            'Соуси' => ['соус'],
+            'Конфітюр' => ['конфітюр', 'конфитюр'],
+            'Набори' => ['набір', 'набор']
+        ];
+
+        $name_lower = mb_strtolower($product_name, 'UTF-8');
+        $assigned_categories = [];
+
+        // Find matching categories
+        foreach ($categories as $category_name => $keywords) {
+            foreach ($keywords as $keyword) {
+                if (mb_strpos($name_lower, $keyword, 0, 'UTF-8') !== false) {
+                    // Find category by name
+                    $cat_query = $this->db->query("
+                        SELECT c.category_id
+                        FROM " . DB_PREFIX . "category c
+                        LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
+                        WHERE cd.name = '" . $this->db->escape($category_name) . "'
+                        AND cd.language_id = 1
+                        LIMIT 1
+                    ");
+
+                    if ($cat_query->num_rows) {
+                        $category_id = $cat_query->row['category_id'];
+                        $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category
+                            SET product_id = '" . (int)$product_id . "',
+                            category_id = '" . (int)$category_id . "'");
+                        $assigned_categories[] = $category_name;
+                        $this->log->write("  → Added to category: $category_name");
+                    } else {
+                        $this->log->write("  ! Category not found: $category_name");
+                    }
+                    break; // Found keyword, move to next category
                 }
             }
         }
 
-        return $result;
+        // Always add to "Наша продукція" category
+        $main_cat_query = $this->db->query("
+            SELECT c.category_id
+            FROM " . DB_PREFIX . "category c
+            LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
+            WHERE cd.name IN ('Наша продукція', 'Наша продукция')
+            AND cd.language_id = 1
+            LIMIT 1
+        ");
+
+        if ($main_cat_query->num_rows) {
+            $main_cat_id = $main_cat_query->row['category_id'];
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category
+                SET product_id = '" . (int)$product_id . "',
+                category_id = '" . (int)$main_cat_id . "'");
+            $assigned_categories[] = 'Наша продукція';
+            $this->log->write("  → Added to category: Наша продукція");
+        }
+
+        if (empty($assigned_categories)) {
+            $this->log->write("  ! No categories matched");
+        } else {
+            $this->log->write("  ✓ Assigned to: " . implode(', ', $assigned_categories));
+        }
     }
 
     /**
