@@ -36,16 +36,32 @@ class Sync1C {
      * Returns session info on success
      */
     public function checkAuth() {
-        $this->log->write('checkAuth called');
+        $this->log->write('=== AUTH CHECK STARTED ===');
+        $this->log->write('Client IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+        $this->log->write('User Agent: ' . ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown'));
+
+        // Log all relevant headers for debugging
+        $this->log->write('--- Request Headers ---');
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $this->log->write('HTTP_AUTHORIZATION: present (hidden for security)');
+        }
+        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $this->log->write('REDIRECT_HTTP_AUTHORIZATION: present');
+        }
+        if (isset($_SERVER['PHP_AUTH_USER'])) {
+            $this->log->write('PHP_AUTH_USER: present');
+        }
 
         // Get credentials
         $username = '';
         $password = '';
+        $auth_method = 'none';
 
         // Try different auth methods (various hosting configurations)
         if (isset($_SERVER['PHP_AUTH_USER'])) {
             $username = $_SERVER['PHP_AUTH_USER'];
             $password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+            $auth_method = 'PHP_AUTH_USER';
         }
 
         // HTTP_AUTHORIZATION (mod_rewrite)
@@ -55,6 +71,7 @@ class Sync1C {
                 $decoded = base64_decode(substr($auth, 6));
                 if (strpos($decoded, ':') !== false) {
                     list($username, $password) = explode(':', $decoded, 2);
+                    $auth_method = 'HTTP_AUTHORIZATION';
                 }
             }
         }
@@ -66,6 +83,7 @@ class Sync1C {
                 $decoded = base64_decode(substr($auth, 6));
                 if (strpos($decoded, ':') !== false) {
                     list($username, $password) = explode(':', $decoded, 2);
+                    $auth_method = 'REDIRECT_HTTP_AUTHORIZATION';
                 }
             }
         }
@@ -79,6 +97,7 @@ class Sync1C {
                         $decoded = base64_decode(substr($value, 6));
                         if (strpos($decoded, ':') !== false) {
                             list($username, $password) = explode(':', $decoded, 2);
+                            $auth_method = 'getallheaders()';
                         }
                     }
                     break;
@@ -95,6 +114,7 @@ class Sync1C {
                         $decoded = base64_decode(substr($value, 6));
                         if (strpos($decoded, ':') !== false) {
                             list($username, $password) = explode(':', $decoded, 2);
+                            $auth_method = 'apache_request_headers()';
                         }
                     }
                     break;
@@ -106,18 +126,31 @@ class Sync1C {
         if (empty($username) && isset($_GET['user'])) {
             $username = $_GET['user'];
             $password = isset($_GET['pass']) ? $_GET['pass'] : '';
+            $auth_method = 'URL parameters';
         }
+
+        // Log received credentials (username only, never log passwords!)
+        $this->log->write("Auth method used: $auth_method");
+        $this->log->write("Received username: " . ($username ?: '(empty)'));
+        $this->log->write("Received password: " . (empty($password) ? '(empty)' : '(present, length: ' . strlen($password) . ')'));
 
         // Get configured credentials
         $config_user = $this->config->get('sync1c_username') ?: 'admin';
         $config_pass = $this->config->get('sync1c_password') ?: '';
 
-        // Log attempt (don't reveal expected username)
-        $this->log->write("Auth attempt from IP: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+        $this->log->write("Expected username: " . ($config_user ?: '(empty)'));
+        $this->log->write("Expected password: " . (empty($config_pass) ? '(empty)' : '(present, length: ' . strlen($config_pass) . ')'));
 
         // Validate
         if ($username !== $config_user || $password !== $config_pass) {
-            $this->log->write("Auth FAILED: Invalid credentials");
+            $this->log->write("ERROR: Auth FAILED - Credentials do not match!");
+            if ($username !== $config_user) {
+                $this->log->write("  - Username mismatch: '$username' != '$config_user'");
+            }
+            if ($password !== $config_pass) {
+                $this->log->write("  - Password mismatch (lengths: " . strlen($password) . " != " . strlen($config_pass) . ")");
+            }
+            $this->log->write('=== AUTH CHECK FAILED ===');
             return "failure\nInvalid username or password";
         }
 
@@ -131,7 +164,10 @@ class Sync1C {
         $this->session->data['sync1c_auth'] = true;
         $this->session->data['sync1c_time'] = time();
 
-        $this->log->write("Auth SUCCESS, session: $session_id");
+        $this->log->write("SUCCESS: Authentication successful!");
+        $this->log->write("Session ID: $session_id");
+        $this->log->write("Cookie name: " . session_name());
+        $this->log->write('=== AUTH CHECK COMPLETED ===');
 
         $cookie_name = session_name();
         return "success\n$cookie_name\n$session_id";
@@ -172,9 +208,12 @@ class Sync1C {
      * Catalog init - prepare for import
      */
     public function catalogInit() {
-        $this->log->write('catalogInit called');
+        $this->log->write('=== CATALOG INIT STARTED ===');
+        $this->log->write('Client IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
 
         if (!$this->isAuthenticated()) {
+            $this->log->write('ERROR: Not authenticated');
+            $this->log->write('=== CATALOG INIT FAILED ===');
             return "failure\nNot authorized";
         }
 
@@ -189,7 +228,9 @@ class Sync1C {
             50 * 1024 * 1024 // 50MB max
         );
 
-        $this->log->write("catalogInit: zip=$zip_support, max_size=$max_size");
+        $this->log->write("Zip support: $zip_support");
+        $this->log->write("Max file size: " . ($max_size / 1024 / 1024) . " MB");
+        $this->log->write('=== CATALOG INIT COMPLETED ===');
 
         return "zip=$zip_support\nfile_limit=$max_size";
     }
@@ -198,41 +239,52 @@ class Sync1C {
      * Handle file upload
      */
     public function catalogFile() {
-        $this->log->write('catalogFile called');
+        $this->log->write('=== FILE UPLOAD STARTED ===');
 
         if (!$this->isAuthenticated()) {
+            $this->log->write('ERROR: Not authenticated');
+            $this->log->write('=== FILE UPLOAD FAILED ===');
             return "failure\nNot authorized";
         }
 
         $filename = isset($_GET['filename']) ? basename($_GET['filename']) : '';
 
         if (empty($filename)) {
+            $this->log->write('ERROR: Filename not specified');
+            $this->log->write('=== FILE UPLOAD FAILED ===');
             return "failure\nFilename not specified";
         }
+
+        $this->log->write("Receiving file: $filename");
 
         // Read raw input
         $data = file_get_contents('php://input');
 
         if (empty($data)) {
+            $this->log->write('ERROR: Empty file received');
+            $this->log->write('=== FILE UPLOAD FAILED ===');
             return "failure\nEmpty file";
         }
 
         $filepath = $this->upload_dir . $filename;
+        $is_append = file_exists($filepath);
 
         // Handle chunked upload
-        if (file_exists($filepath)) {
+        if ($is_append) {
             file_put_contents($filepath, $data, FILE_APPEND);
+            $this->log->write("File chunk appended: $filename (" . strlen($data) . " bytes, total: " . filesize($filepath) . " bytes)");
         } else {
             file_put_contents($filepath, $data);
+            $this->log->write("File created: $filename (" . strlen($data) . " bytes)");
         }
-
-        $this->log->write("File saved: $filename (" . strlen($data) . " bytes)");
 
         // Extract if zip
         if (pathinfo($filename, PATHINFO_EXTENSION) === 'zip') {
+            $this->log->write("Extracting ZIP archive...");
             $this->extractZip($filepath);
         }
 
+        $this->log->write('=== FILE UPLOAD COMPLETED ===');
         return "success";
     }
 
@@ -240,9 +292,10 @@ class Sync1C {
      * Process catalog import
      */
     public function catalogImport() {
-        $this->log->write('catalogImport called');
+        $this->log->write('=== CATALOG IMPORT REQUEST ===');
 
         if (!$this->isAuthenticated()) {
+            $this->log->write('ERROR: Not authenticated');
             return "failure\nNot authorized";
         }
 
@@ -250,10 +303,12 @@ class Sync1C {
         $filepath = $this->upload_dir . $filename;
 
         if (!file_exists($filepath)) {
+            $this->log->write("ERROR: File not found: $filename");
             return "failure\nFile not found: $filename";
         }
 
-        $this->log->write("Importing: $filename");
+        $filesize = filesize($filepath);
+        $this->log->write("Processing file: $filename (" . ($filesize / 1024) . " KB)");
 
         try {
             // Load XML
@@ -633,10 +688,17 @@ class Sync1C {
     private function extractZip($filepath) {
         $zip = new ZipArchive();
         if ($zip->open($filepath) === true) {
+            $num_files = $zip->numFiles;
+            $this->log->write("ZIP archive opened: $num_files files inside");
+
             $zip->extractTo($this->upload_dir);
             $zip->close();
             unlink($filepath);
-            $this->log->write("Extracted: $filepath");
+
+            $this->log->write("SUCCESS: Extracted $num_files files from ZIP archive");
+            $this->log->write("ZIP file deleted: " . basename($filepath));
+        } else {
+            $this->log->write("ERROR: Failed to open ZIP archive: $filepath");
         }
     }
 
