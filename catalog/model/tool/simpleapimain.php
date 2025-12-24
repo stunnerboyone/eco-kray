@@ -1,9 +1,5 @@
 <?php
-/*
-@author Dmitriy Kubarev
-@link   http://www.simpleopencart.com
-*/
-
+ 
 class ModelToolSimpleApiMain extends Model {
     static $data = array();
 

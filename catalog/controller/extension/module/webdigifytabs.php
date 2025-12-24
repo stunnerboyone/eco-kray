@@ -272,7 +272,7 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 	
 
 					// Скільки товарів показувати у вкладці після всіх фільтрів
-$final_limit = 10; // або (int)$setting['limit'] якщо хочеш прив’язати до налаштувань модуля
+$final_limit = 8; // 8 товарів = 2 ряди по 4 колонки на десктопі
 
 if (!empty($data['specialproducts'])) {
     $data['specialproducts'] = array_slice($data['specialproducts'], 0, $final_limit);
