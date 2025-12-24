@@ -51,7 +51,7 @@ body {
 #product-category.container,
 #information-information.container,
 #information-contact.container {
-	padding-top: 20px;
+	padding-top: 35px;
 }
 /* ========== UNIFIED INPUT STYLES ========== */
 /* Apply consistent styling to all form inputs across the site */
@@ -745,7 +745,7 @@ footer .social-block h5 {
 }
 .productpage .product-price,
 .productpage .special-price {
-	font-size: 28px;
+	font-size: 22px;
 	display: block;
 	font-weight: 700;
 	line-height: 1.3;
@@ -763,14 +763,14 @@ footer .social-block h5 {
 
 .productpage .product-right ul li span.current-price {
 	color: #1a1a1a;
-	font-size: 28px;
+	font-size: 22px;
 	font-weight: 700;
 	text-decoration: none;
 }
 
 .productpage .product-right ul li span.new-prices {
 	color: #27ae60;
-	font-size: 28px;
+	font-size: 22px;
 	font-weight: 700;
 	text-decoration: none;
 	display: inline-block;
@@ -6880,6 +6880,12 @@ p.powered a {
 	border-radius: 10px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 	border: 1px solid #f0f0f0;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px;
 }
 .breadcrumb i {
 	font-size: 15px;
@@ -7346,10 +7352,10 @@ button.wishlist {
 }
 .col-sm-4.product-left {
 	padding-left: 0px;
-	width: 43%;
+	width: 38%;
 }
 .col-sm-5.product-right {
-	width: 57%;
+	width: 62%;
 }
 .col-sm-3.product {
 	width: 22%;
@@ -9309,7 +9315,7 @@ h2.price {
 }
 .productpage .productpage_details .product-left {
 	padding: 0;
-	width: 445px;
+	width: 380px;
 }
 .productpage .productpage_details .product-right {
 	margin-left: 30px;
@@ -9432,13 +9438,13 @@ h2.price {
 .col-sm-8.product-left {
 	padding: 0;
 	margin: 0;
-	width: 40%;
+	width: 36%;
 	position: sticky;
 	top: 80px;
 }
 .col-sm-4.product-right {
 	padding: 0 0 0 40px;
-	width: 60%;
+	width: 64%;
 }
 .quickview .review-count,
 .quickview .write-review {
@@ -10993,7 +10999,7 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 }
 .breadcrumb {
 	padding: 16px 0;
-	margin: 20px 0 30px 0;
+	margin: 25px 0 20px 0;
 	list-style: none;
 	background: transparent;
 	border-bottom: none;
@@ -11005,8 +11011,6 @@ body.information-blogger-blogs.layout-2.left-col .panel-inner {
 }
 
 .container > .breadcrumb {
-	margin-top: 25px;
-	margin-bottom: 20px;
 	padding: 16px 20px;
 	background: #ffffff;
 	border-radius: 10px;
