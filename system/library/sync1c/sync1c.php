@@ -797,27 +797,54 @@ class Sync1C {
      * Generate SEO URL for product/category
      */
     private function generateSeoUrl($type, $id, $name) {
+        $this->log->write("--- SEO URL Generation Started ---");
+        $this->log->write("Type: $type, ID: $id, Name: $name");
+
         // Transliterate and clean the name
         $keyword = $this->transliterate($name);
+        $this->log->write("After transliteration: $keyword");
+
         $keyword = strtolower($keyword);
+        $this->log->write("After lowercase: $keyword");
+
         $keyword = preg_replace('/[^a-z0-9\-]/', '-', $keyword);
+        $this->log->write("After special chars removal: $keyword");
+
         $keyword = preg_replace('/-+/', '-', $keyword);
         $keyword = trim($keyword, '-');
+        $this->log->write("After cleanup: $keyword");
 
         // Ensure uniqueness
+        $original_keyword = $keyword;
         $keyword = $this->ensureUniqueKeyword($keyword, $type, $id);
+        if ($keyword !== $original_keyword) {
+            $this->log->write("Keyword modified for uniqueness: $original_keyword -> $keyword");
+        }
 
         // Delete existing SEO URL for this item
-        $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE query = '" . $this->db->escape($type . '_id=' . $id) . "'");
+        $delete_query = "DELETE FROM " . DB_PREFIX . "seo_url WHERE query = '" . $this->db->escape($type . '_id=' . $id) . "'";
+        $this->log->write("Deleting existing SEO URL: $delete_query");
+        $this->db->query($delete_query);
 
         // Insert new SEO URL
-        $this->db->query("INSERT INTO " . DB_PREFIX . "seo_url SET
+        $insert_query = "INSERT INTO " . DB_PREFIX . "seo_url SET
             store_id = '0',
             language_id = '1',
             query = '" . $this->db->escape($type . '_id=' . $id) . "',
-            keyword = '" . $this->db->escape($keyword) . "'");
+            keyword = '" . $this->db->escape($keyword) . "'";
 
-        $this->log->write("SEO URL generated: $keyword for $type #$id");
+        $this->log->write("Inserting SEO URL: $insert_query");
+
+        try {
+            $this->db->query($insert_query);
+            $seo_url_id = $this->db->getLastId();
+            $this->log->write("SUCCESS: SEO URL created with ID: $seo_url_id");
+            $this->log->write("SEO URL: $keyword for $type #$id");
+        } catch (Exception $e) {
+            $this->log->write("ERROR: Failed to insert SEO URL - " . $e->getMessage());
+        }
+
+        $this->log->write("--- SEO URL Generation Completed ---");
 
         return $keyword;
     }
@@ -850,19 +877,32 @@ class Sync1C {
         $original_keyword = $keyword;
         $i = 1;
 
+        $this->log->write("Checking uniqueness for keyword: $keyword");
+
         while (true) {
             // Check if keyword exists for different item
-            $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url
+            $check_query = "SELECT * FROM " . DB_PREFIX . "seo_url
                 WHERE keyword = '" . $this->db->escape($keyword) . "'
-                AND query != '" . $this->db->escape($type . '_id=' . $id) . "'");
+                AND query != '" . $this->db->escape($type . '_id=' . $id) . "'";
+
+            $query = $this->db->query($check_query);
 
             if (!$query->num_rows) {
+                $this->log->write("Keyword is unique: $keyword");
                 break; // Keyword is unique
             }
+
+            $this->log->write("Keyword '$keyword' already exists, trying with number suffix");
 
             // Append number and try again
             $keyword = $original_keyword . '-' . $i;
             $i++;
+
+            // Safety limit to prevent infinite loop
+            if ($i > 100) {
+                $this->log->write("ERROR: Too many attempts to find unique keyword, using: $keyword");
+                break;
+            }
         }
 
         return $keyword;
