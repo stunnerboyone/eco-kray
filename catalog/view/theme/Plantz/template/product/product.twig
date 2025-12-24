@@ -681,45 +681,48 @@ $(document).ready(function() {
 
 $(document).ready(function() {
 if ($(window).width() > 767) {
+    /*
+    // ElevateZoom disabled - no zoom effect on product images
     $("#tmzoom").elevateZoom({
-        
+
         gallery:'additional-carousel',
-        //inner zoom         
-                 
-        zoomType : "inner", 
-        cursor: "crosshair" 
-        
-        /*//tint
-        
-        tint:true, 
-        tintColour:'#F90', 
+        //inner zoom
+
+        zoomType : "inner",
+        cursor: "crosshair"
+
+        //tint
+
+        tint:true,
+        tintColour:'#F90',
         tintOpacity:0.5
-        
+
         //lens zoom
-        
-        zoomType : "lens", 
-        lensShape : "round", 
-        lensSize : 200 
-        
+
+        zoomType : "lens",
+        lensShape : "round",
+        lensSize : 200
+
         //Mousewheel zoom
-        
-        scrollZoom : true*/
-        
-        
+
+        scrollZoom : true
+
+
       });
+    */
     var z_index = 0;
-                  
+
       $(document).on('click', '.thumbnail', function () {
         $('.thumbnails').magnificPopup('open', z_index);
         return false;
       });
-  
+
       $('.additional-carousel a').click(function() {
         var smallImage = $(this).attr('data-image');
         var largeImage = $(this).attr('data-zoom-image');
-        var ez =   $('#tmzoom').data('elevateZoom');  
-        $('.thumbnail').attr('href', largeImage);  
-        ez.swaptheimage(smallImage, largeImage); 
+        // Update main image without zoom effect
+        $('#tmzoom').attr('src', smallImage);
+        $('.thumbnail').attr('href', largeImage);
         z_index = $(this).index('.additional-carousel a');
         return false;
       });
