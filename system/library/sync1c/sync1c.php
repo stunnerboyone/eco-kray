@@ -118,7 +118,7 @@ class Sync1C {
         // Validate
         if ($username !== $config_user || $password !== $config_pass) {
             $this->log->write("Auth FAILED: Invalid credentials");
-            return "failure\nНеверное имя пользователя или пароль";
+            return "failure\nInvalid username or password";
         }
 
         // Session should already be started in sync1c.php
@@ -175,7 +175,7 @@ class Sync1C {
         $this->log->write('catalogInit called');
 
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
         // Clean old files
@@ -201,20 +201,20 @@ class Sync1C {
         $this->log->write('catalogFile called');
 
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
         $filename = isset($_GET['filename']) ? basename($_GET['filename']) : '';
 
         if (empty($filename)) {
-            return "failure\nНе указано имя файла";
+            return "failure\nFilename not specified";
         }
 
         // Read raw input
         $data = file_get_contents('php://input');
 
         if (empty($data)) {
-            return "failure\nПустой файл";
+            return "failure\nEmpty file";
         }
 
         $filepath = $this->upload_dir . $filename;
@@ -243,14 +243,14 @@ class Sync1C {
         $this->log->write('catalogImport called');
 
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
         $filename = isset($_GET['filename']) ? basename($_GET['filename']) : '';
         $filepath = $this->upload_dir . $filename;
 
         if (!file_exists($filepath)) {
-            return "failure\nФайл не найден: $filename";
+            return "failure\nFile not found: $filename";
         }
 
         $this->log->write("Importing: $filename");
@@ -263,7 +263,7 @@ class Sync1C {
             if (!$xml) {
                 $errors = libxml_get_errors();
                 libxml_clear_errors();
-                return "failure\nОшибка XML: " . $errors[0]->message;
+                return "failure\nXML error: " . $errors[0]->message;
             }
 
             // Determine file type and process
@@ -278,7 +278,7 @@ class Sync1C {
                 } elseif (isset($xml->ПакетПредложений)) {
                     $result = $this->importOffers($xml);
                 } else {
-                    $result = "success\nНеизвестный тип файла, пропущен";
+                    $result = "success\nUnknown file type, skipped";
                 }
             }
 
@@ -296,14 +296,19 @@ class Sync1C {
     private function importCatalog($xml) {
         $stats = ['categories' => 0, 'products' => 0, 'updated' => 0];
 
+        $this->log->write("=== CATALOG IMPORT STARTED ===");
+
         // Import categories
         if (isset($xml->Классификатор->Группы)) {
+            $this->log->write("Importing categories...");
             $this->importCategories($xml->Классификатор->Группы->Группа, 0);
             $stats['categories'] = $this->countCategories($xml->Классификатор->Группы->Группа);
+            $this->log->write("Categories imported: {$stats['categories']}");
         }
 
         // Import products
         if (isset($xml->Каталог->Товары->Товар)) {
+            $this->log->write("Importing products...");
             foreach ($xml->Каталог->Товары->Товар as $product) {
                 $result = $this->importProduct($product);
                 if ($result === 'created') {
@@ -314,8 +319,9 @@ class Sync1C {
             }
         }
 
-        $msg = "Категорий: {$stats['categories']}, Товаров добавлено: {$stats['products']}, Обновлено: {$stats['updated']}";
-        $this->log->write("Import complete: $msg");
+        $this->log->write("=== CATALOG IMPORT COMPLETED ===");
+        $msg = "Categories: {$stats['categories']}, Products added: {$stats['products']}, Updated: {$stats['updated']}";
+        $this->log->write("Summary: $msg");
 
         return "success\n$msg";
     }
@@ -385,7 +391,7 @@ class Sync1C {
                 WHERE product_id = '" . (int)$product_id . "'");
 
             $result = 'updated';
-            $this->log->write("[PRODUCT UPDATE] ID:$product_id | SKU:$sku | $name");
+            $this->log->write("UPDATED: Product #$product_id - $name (SKU: $sku)");
         } else {
             // Create product
             $this->db->query("INSERT INTO " . DB_PREFIX . "product SET
@@ -413,7 +419,7 @@ class Sync1C {
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_1c SET product_id = '" . (int)$product_id . "', guid = '" . $this->db->escape($guid) . "'");
 
             $result = 'created';
-            $this->log->write("[PRODUCT NEW] ID:$product_id | SKU:$sku | $name");
+            $this->log->write("CREATED: Product #$product_id - $name (SKU: $sku)");
         }
 
         // Link to categories
@@ -436,10 +442,13 @@ class Sync1C {
      */
     private function importOffers($xml) {
         $stats = ['updated' => 0, 'not_found' => 0];
+        $exported_products = [];
 
         if (!isset($xml->ПакетПредложений->Предложения->Предложение)) {
-            return "success\nНет предложений для импорта";
+            return "success\nNo offers to import";
         }
+
+        $this->log->write("=== PRODUCT EXPORT STARTED ===");
 
         foreach ($xml->ПакетПредложений->Предложения->Предложение as $offer) {
             $guid = (string)$offer->Ид;
@@ -454,6 +463,7 @@ class Sync1C {
 
             if (!$query->num_rows) {
                 $stats['not_found']++;
+                $this->log->write("ERROR: Product not found - GUID: $guid");
                 continue;
             }
 
@@ -477,7 +487,7 @@ class Sync1C {
 
             // Get product name for logging
             $name_query = $this->db->query("SELECT name FROM " . DB_PREFIX . "product_description WHERE product_id = '" . (int)$product_id . "' LIMIT 1");
-            $product_name = $name_query->num_rows ? $name_query->row['name'] : 'Unknown';
+            $product_name = $name_query->num_rows ? $name_query->row['name'] : 'Unknown Product';
 
             // Get current values
             $old_query = $this->db->query("SELECT price, quantity, status FROM " . DB_PREFIX . "product WHERE product_id = '" . (int)$product_id . "'");
@@ -492,16 +502,41 @@ class Sync1C {
                 date_modified = NOW()
                 WHERE product_id = '" . (int)$product_id . "'");
 
-            // Log with details
-            $price_change = ($old_price != $price) ? " price:$old_price->$price" : "";
-            $qty_change = ($old_qty != $quantity) ? " qty:$old_qty->$quantity" : "";
-            $this->log->write("[OFFER] ID:$product_id | $product_name |$price_change$qty_change | status:$status");
+            // Detailed logging in English with format: Product Name Price UAH Quantity units
+            $this->log->write("EXPORTED: $product_name {$price} UAH {$quantity} units");
 
+            // Track changes for summary
+            if ($old_price != $price || $old_qty != $quantity) {
+                $changes = [];
+                if ($old_price != $price) {
+                    $changes[] = "price: {$old_price} → {$price} UAH";
+                }
+                if ($old_qty != $quantity) {
+                    $changes[] = "quantity: {$old_qty} → {$quantity} units";
+                }
+                $this->log->write("  └─ Changes: " . implode(", ", $changes));
+            }
+
+            $exported_products[] = $product_name;
             $stats['updated']++;
         }
 
-        $msg = "Обновлено: {$stats['updated']}, Не найдено: {$stats['not_found']}";
-        $this->log->write("Offers import complete: $msg");
+        $this->log->write("=== PRODUCT EXPORT COMPLETED ===");
+        $this->log->write("Total exported: {$stats['updated']} products");
+
+        if ($stats['not_found'] > 0) {
+            $this->log->write("ERROR: {$stats['not_found']} products not found in database");
+        }
+
+        if (count($exported_products) > 0) {
+            $this->log->write("--- Exported Products List ---");
+            foreach ($exported_products as $idx => $product) {
+                $this->log->write(($idx + 1) . ". $product");
+            }
+        }
+
+        $msg = "Updated: {$stats['updated']}, Not found: {$stats['not_found']}";
+        $this->log->write("Summary: $msg");
 
         return "success\n$msg";
     }
@@ -511,7 +546,7 @@ class Sync1C {
      */
     public function saleInit() {
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
         $max_size = 50 * 1024 * 1024;
@@ -519,47 +554,17 @@ class Sync1C {
     }
 
     /**
-     * Export orders to 1C
+     * Export orders to 1C (DISABLED - orders export not required)
      */
     public function saleQuery() {
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
-        $this->log->write('saleQuery: exporting orders');
+        $this->log->write('saleQuery: Order export is disabled (not required)');
 
-        // Get orders not yet exported
-        $query = $this->db->query("
-            SELECT o.*, os.name as status_name
-            FROM " . DB_PREFIX . "order o
-            LEFT JOIN " . DB_PREFIX . "order_status os ON o.order_status_id = os.order_status_id AND os.language_id = 1
-            WHERE o.order_status_id > 0
-            AND o.order_id NOT IN (SELECT order_id FROM " . DB_PREFIX . "order_to_1c WHERE exported = 1)
-            ORDER BY o.date_added DESC
-            LIMIT 100
-        ");
-
-        if (!$query->num_rows) {
-            return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<КоммерческаяИнформация ВерсияСхемы=\"2.08\" ДатаФормирования=\"" . date('Y-m-d') . "\"></КоммерческаяИнформация>";
-        }
-
-        // Build XML
-        $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        $xml .= "<КоммерческаяИнформация ВерсияСхемы=\"2.08\" ДатаФормирования=\"" . date('Y-m-d') . "\">\n";
-
-        foreach ($query->rows as $order) {
-            $xml .= $this->buildOrderXml($order);
-
-            // Mark as exported
-            $this->db->query("INSERT INTO " . DB_PREFIX . "order_to_1c SET order_id = '" . (int)$order['order_id'] . "', exported = 1, date_exported = NOW()
-                ON DUPLICATE KEY UPDATE exported = 1, date_exported = NOW()");
-        }
-
-        $xml .= "</КоммерческаяИнформация>";
-
-        $this->log->write('saleQuery: exported ' . $query->num_rows . ' orders');
-
-        return $xml;
+        // Return empty XML response - no orders will be exported
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<КоммерческаяИнформация ВерсияСхемы=\"2.08\" ДатаФормирования=\"" . date('Y-m-d') . "\"></КоммерческаяИнформация>";
     }
 
     /**
@@ -615,7 +620,7 @@ class Sync1C {
      */
     public function saleSuccess() {
         if (!$this->isAuthenticated()) {
-            return "failure\nНе авторизован";
+            return "failure\nNot authorized";
         }
 
         $this->log->write('saleSuccess called');
