@@ -433,9 +433,6 @@ class Sync1C {
                 $category_id = $query->row['category_id'];
                 // Update name
                 $this->db->query("UPDATE " . DB_PREFIX . "category_description SET name = '" . $this->db->escape($name) . "' WHERE category_id = '" . (int)$category_id . "'");
-
-                // Update SEO URL
-                $this->generateSeoUrl('category', $category_id, $name);
             } else {
                 // Create category
                 $this->db->query("INSERT INTO " . DB_PREFIX . "category SET parent_id = '" . (int)$parent_id . "', top = '0', status = '1', date_added = NOW(), date_modified = NOW()");
@@ -449,9 +446,6 @@ class Sync1C {
 
                 // Link to 1C
                 $this->db->query("INSERT INTO " . DB_PREFIX . "category_to_1c SET category_id = '" . (int)$category_id . "', guid = '" . $this->db->escape($guid) . "'");
-
-                // Generate SEO URL
-                $this->generateSeoUrl('category', $category_id, $name);
             }
 
             // Process child categories
