@@ -177,6 +177,43 @@ class Sync1C {
      * Check if authenticated
      */
     private function isAuthenticated() {
+        // Try HTTP Authorization header first (for session-less 1C clients)
+        $username = '';
+        $password = '';
+
+        // Try different auth methods
+        if (isset($_SERVER['PHP_AUTH_USER'])) {
+            $username = $_SERVER['PHP_AUTH_USER'];
+            $password = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['HTTP_AUTHORIZATION'];
+            if (strpos($auth, 'Basic ') === 0) {
+                $decoded = base64_decode(substr($auth, 6));
+                if (strpos($decoded, ':') !== false) {
+                    list($username, $password) = explode(':', $decoded, 2);
+                }
+            }
+        } elseif (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $auth = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+            if (strpos($auth, 'Basic ') === 0) {
+                $decoded = base64_decode(substr($auth, 6));
+                if (strpos($decoded, ':') !== false) {
+                    list($username, $password) = explode(':', $decoded, 2);
+                }
+            }
+        }
+
+        // Validate credentials if provided
+        if (!empty($username)) {
+            $config_user = $this->config->get('sync1c_username') ?: 'admin';
+            $config_pass = $this->config->get('sync1c_password') ?: '';
+
+            if ($username === $config_user && $password === $config_pass) {
+                $this->log->write('Auth OK: HTTP Authorization header');
+                return true;
+            }
+        }
+
         // Check session
         if (isset($this->session->data['sync1c_auth']) && $this->session->data['sync1c_auth']) {
             // Check timeout (1 hour)
