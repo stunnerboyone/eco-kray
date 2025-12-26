@@ -1,0 +1,55 @@
+# Smartlead Scripts - .gitignore
+# Додайте ці рядки до вашого головного .gitignore файлу
+
+# Конфігурація з API ключем
+smartlead_config.py
+
+# Експортовані дані
+smartlead_export_*/
+*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Streamlit
+.streamlit/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
