@@ -8,25 +8,11 @@
  * - 768px-991px : Tablet Portrait (2 columns)
  * - 576px-767px : Mobile Landscape (2 columns)
  * - <576px : Mobile Portrait (1 column)
+ *
+ * NOTE: Previous CSS hacks removed - problems fixed at source:
+ * - Dark mode CSS removed from seo-typography.css (was causing black bg)
+ * - Old menu loading removed from header.php controller (was duplicating)
  */
-
-/* ==========================================================================
-   0. CRITICAL FIXES - Background and Layout
-   ========================================================================== */
-
-/* Fix black background issue */
-html,
-body {
-	background-color: #ffffff !important;
-	background: #ffffff !important;
-}
-
-/* Hide duplicate header menu if exists */
-.header_bottom .main-category-list,
-.header_bottom .wd-menu,
-.content_headercms_bottom .wd-menu {
-	display: none !important;
-}
 
 /* ==========================================================================
    1. PRODUCT GRID - Optimized Column Layout

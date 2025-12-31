@@ -241,29 +241,8 @@ label {
 	}
 }
 
-/* Dark mode support (optional) */
-@media (prefers-color-scheme: dark) {
-	body {
-		background: #1a1a1a;
-		color: #e0e0e0;
-	}
-
-	h1, h2, h3, h4, h5, h6 {
-		color: #ffffff;
-	}
-
-	p, li {
-		color: #d0d0d0;
-	}
-
-	a {
-		color: #66b3ff;
-	}
-
-	a:hover {
-		color: #3399ff;
-	}
-}
+/* DARK MODE REMOVED - was causing black background on systems with dark theme preference */
+/* Site uses light theme only for brand consistency */
 
 /* ============================================
    INFORMATION PAGES STYLES
