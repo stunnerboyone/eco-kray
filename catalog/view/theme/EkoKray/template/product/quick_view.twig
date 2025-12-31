@@ -541,10 +541,12 @@ $(document).ready(function() {
 	});
 });
 
-$('#tabs a').tabs();
-$('#custom_tab a').tabs();
-$('#top').remove();
-$('.top_button').remove();
+$(document).ready(function() {
+  $('#tabs a').tabs();
+  $('#custom_tab a').tabs();
+  $('#top').remove();
+  $('.top_button').remove();
+});
 
 
 //--></script>
