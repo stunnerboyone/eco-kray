@@ -667,6 +667,9 @@ class Sync1C {
                 date_modified = NOW()
                 WHERE product_id = '" . (int)$product_id . "'");
 
+            // Auto-categorize product based on name (update categories if needed)
+            $this->autoCategorizeProduct($product_id, $product_name);
+
             // Detailed logging in English with format: Product Name Price UAH Quantity units
             $this->log->write("EXPORTED: $product_name {$price} UAH {$quantity} units");
 
