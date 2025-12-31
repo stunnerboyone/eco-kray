@@ -559,7 +559,7 @@ class Sync1C {
                         FROM " . DB_PREFIX . "category c
                         LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
                         WHERE cd.name = '" . $this->db->escape($category_name) . "'
-                        AND cd.language_id = 1
+                        AND cd.language_id = 4
                         LIMIT 1
                     ");
 
@@ -574,7 +574,7 @@ class Sync1C {
                         $this->log->write("  ✓ Added to category: $category_name (ID: $category_id)");
                     } else {
                         // Try to find ANY category to debug
-                        $debug_query = $this->db->query("SELECT cd.name FROM " . DB_PREFIX . "category_description cd WHERE cd.language_id = 1 LIMIT 5");
+                        $debug_query = $this->db->query("SELECT cd.name FROM " . DB_PREFIX . "category_description cd WHERE cd.language_id = 4 LIMIT 5");
                         $found_cats = [];
                         if ($debug_query->num_rows) {
                             foreach ($debug_query->rows as $row) {
@@ -594,7 +594,7 @@ class Sync1C {
             FROM " . DB_PREFIX . "category c
             LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
             WHERE cd.name IN ('Наша продукція', 'Наша продукция')
-            AND cd.language_id = 1
+            AND cd.language_id = 4
             LIMIT 1
         ");
 
