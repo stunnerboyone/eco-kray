@@ -535,9 +535,9 @@ class Sync1C {
         // Clear existing categories first
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
 
-        // Define category mapping by keywords
+        // Define category mapping by keywords (match exact names from database)
         $categories = [
-            'Натуральні Соки' => ['сік', 'сок', 'березовий'],
+            'Натуральні соки' => ['сік', 'сок', 'березовий'],
             'Пастила' => ['пастила'],
             'Сухофрукти' => ['сухофрукт', 'узвар'],
             'Джеми/Соуси/Конфітюр' => ['джем', 'соус', 'конфітюр', 'конфитюр'],
