@@ -552,8 +552,10 @@ class Sync1C {
             foreach ($keywords as $keyword) {
                 if (mb_strpos($name_lower, $keyword, 0, 'UTF-8') !== false) {
                     // Find category by name
+                    $this->log->write("  → Searching for category: '$category_name' (keyword: $keyword)");
+
                     $cat_query = $this->db->query("
-                        SELECT c.category_id
+                        SELECT c.category_id, cd.name
                         FROM " . DB_PREFIX . "category c
                         LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
                         WHERE cd.name = '" . $this->db->escape($category_name) . "'
@@ -561,15 +563,25 @@ class Sync1C {
                         LIMIT 1
                     ");
 
+                    $this->log->write("  → Query returned: " . $cat_query->num_rows . " rows");
+
                     if ($cat_query->num_rows) {
                         $category_id = $cat_query->row['category_id'];
                         $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category
                             SET product_id = '" . (int)$product_id . "',
                             category_id = '" . (int)$category_id . "'");
                         $assigned_categories[] = $category_name;
-                        $this->log->write("  → Added to category: $category_name");
+                        $this->log->write("  ✓ Added to category: $category_name (ID: $category_id)");
                     } else {
-                        $this->log->write("  ! Category not found: $category_name");
+                        // Try to find ANY category to debug
+                        $debug_query = $this->db->query("SELECT cd.name FROM " . DB_PREFIX . "category_description cd WHERE cd.language_id = 1 LIMIT 5");
+                        $found_cats = [];
+                        if ($debug_query->num_rows) {
+                            foreach ($debug_query->rows as $row) {
+                                $found_cats[] = $row['name'];
+                            }
+                        }
+                        $this->log->write("  ! Category '$category_name' not found. Sample categories in DB: " . implode(', ', $found_cats));
                     }
                     break; // Found keyword, move to next category
                 }
