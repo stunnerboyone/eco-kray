@@ -1,11 +1,6 @@
 <?php
 class ControllerExtensionModuleWDmegamenu extends Controller {
     public function index($setting) {
-		// OLD WEBDIGIFY MENU - Disabled in favor of ekokray_megamenu
-		// This module is no longer used but kept for backward compatibility
-		// Returning empty string prevents duplicate menu rendering
-		return '';
-
         $this->load->language('extension/module/wd_megamenu');
 
         $this->load->model('webdigify/wd_megamenu');
