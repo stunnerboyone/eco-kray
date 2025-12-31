@@ -1,38 +1,23 @@
 <?php
 
-/**
- * Nova Poshta Shipping Module - Admin Controller
- *
- * This controller handles all admin-side functionality for the Nova Poshta shipping module
- * including settings management, waybill creation, order tracking, and data synchronization
- *
- * @version 4.1.0
- */
 class ControllerShippingNovaPoshta extends Controller
 {
 	protected $extension = 'novaposhta';
 	protected $version = '4.1.0';
 	protected $data = array();
+	protected static $license = null;
 	private $error = array();
 	private $settings = null;
 
-	/**
-	 * Constructor - Initialize controller and Nova Poshta helper
-	 *
-	 * @param object $registry OpenCart registry object
-	 */
 	public function __construct($registry)
 	{
 		$this->registry = $registry;
 		require_once DIR_SYSTEM . 'helper/' . $this->extension . '.php';
-		// Initialize Nova Poshta API helper class
+		$registry->set('pr', new Pr($registry));
 		$registry->set($this->extension, new NovaPoshta($registry));
 		$this->settings = $this->extensionSettings(true);
 	}
 
-	/**
-	 * Install module - Create required database tables
-	 */
 	public function install()
 	{
 		if (version_compare(VERSION, '2.3', '>=')) {
@@ -382,7 +367,8 @@ class ControllerShippingNovaPoshta extends Controller
 		$data['cron_departures_tracking'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron . "'";
 		$data['cron_departures_tracking_href'] = $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron;
 		$data['v'] = $this->version;
-		// Official Nova Poshta documentation links
+		$data['license'] = $this->license;
+		$data['instruction_href'] = 'https://oc-max.com/docs/' . $this->extension . '/instruction.html';
 		$data['documentation_api_href'] = 'https://developers.novaposhta.ua/documentation';
 		$data['official_website_href'] = 'https://novaposhta.ua/';
 
@@ -404,16 +390,19 @@ class ControllerShippingNovaPoshta extends Controller
 			$data['header'] = $this->load->controller('common/header');
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
+			$data['support'] = $this->pr->support($this->license, $this->extension);
 			$this->response->setOutput($this->load->view('extension/shipping/' . $this->extension, $data));
 		} else {
 			if (version_compare(VERSION, '2', '>=')) {
 				$data['header'] = $this->load->controller('common/header');
 				$data['column_left'] = $this->load->controller('common/column_left');
 				$data['footer'] = $this->load->controller('common/footer');
+				$data['support'] = $this->pr->support($this->license, $this->extension);
 				$this->response->setOutput($this->load->view('shipping/' . $this->extension . '.tpl', $data));
 			} else {
 				$data['header'] = $this->getChild('common/header');
 				$data['footer'] = $this->getChild('common/footer');
+				$data['support'] = $this->pr->support($this->license, $this->extension);
 				$this->template = 'shipping/' . $this->extension . '.tpl';
 				$patterns = array('/<script type="text\\/javascript" src="view\\/javascript\\/jquery\\/jquery-(.+)\\.min\\.js"><\\/script>/', '/<script type="text\\/javascript" src="view\\/javascript\\/jquery\\/ui\\/jquery-ui-(.+)\\.js"><\\/script>/');
 				$replacements = array("<script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-2.1.1.min.js\"></script>\r\n\t\t\t    <script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-migrate-1.2.1.min.js\"></script>\r\n\t\t\t    <script type=\"text/javascript\" src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>\r\n\t\t\t    <script type=\"text/javascript\" src=\"view/javascript/ocmax/ocmax.js\"></script>\r\n\t\t\t    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" media=\"screen\" />\r\n\t\t\t    <link rel=\"stylesheet\" type=\"text/css\" href=\"view/stylesheet/ocmax/bootstrap.fix.css\" media=\"screen\" />\r\n\t\t\t    <link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css\" media=\"screen\" />", '<script type="text/javascript" src="https://code.jquery.com/ui/1.8.24/jquery-ui.min.js"></script>');
@@ -2449,7 +2438,25 @@ class ControllerShippingNovaPoshta extends Controller
 
 			if ($type == 'basic') {
 				$json = array();
-				// Default basic settings for Nova Poshta module
+                /*
+				$post = array('domain' => '', 'extension' => $this->extension);
+				$options = array(CURLOPT_HEADER => false, CURLOPT_SSL_VERIFYPEER => false, CURLOPT_SSL_VERIFYHOST => false, CURLOPT_POST => true, CURLOPT_POSTFIELDS => $post, CURLOPT_RETURNTRANSFER => true);
+
+				if (isset($this->settings['curl_connecttimeout'])) {
+					$options[CURLOPT_CONNECTTIMEOUT] = $this->settings['curl_connecttimeout'];
+				}
+
+				if (isset($this->settings['curl_timeout']) && isset($this->settings['curl_connecttimeout']) && $this->settings['curl_connecttimeout'] < $this->settings['curl_timeout']) {
+					$options[CURLOPT_TIMEOUT] = $this->settings['curl_timeout'];
+				}
+
+				$ch = curl_init('https://oc-max.com/index.php?route=extension/module/ocmax/getBasicSettings');
+				curl_setopt_array($ch, $options);
+				$response = curl_exec($ch);
+				curl_close($ch);
+				$basic_settings = json_decode($response, true);
+
+                */
                 $basic_settings = array (
                 'novaposhta_status' => 1,
                 'novaposhta_sort_order' => 1,
@@ -2955,12 +2962,15 @@ class ControllerShippingNovaPoshta extends Controller
 			}
 		}
 
-		// Validate user permissions
 		if (!$this->user->hasPermission('modify', $extension_path . 'shipping/novaposhta')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		// Validate API key format (must be 32 characters)
+		if (!$this->license) {
+			$this->load->language($extension_path . 'module/ocmax_license');
+			$this->error['warning'] = $this->language->get('error_activate');
+		}
+
 		if (isset($this->request->post[$extension_code]['key_api']) && utf8_strlen($this->request->post[$extension_code]['key_api']) != 32) {
 			$this->error['warning'] = $this->language->get('error_settings_saving');
 			$this->error['error_key_api'] = $this->language->get('error_key_api');
@@ -3231,9 +3241,394 @@ class ControllerShippingNovaPoshta extends Controller
 
 		return !$this->error;
 	}
+
+	public function getDomain()
+	{
+		if (HTTP_SERVER) {
+			$url = parse_url(HTTP_SERVER);
+			$d_1 = str_replace('www.', '', $url['host']);
+		} else {
+			if (HTTPS_SERVER) {
+				$url = parse_url(HTTPS_SERVER);
+				$d_1 = str_replace('www.', '', $url['host']);
+			} else {
+				$d_1 = '';
+			}
+		}
+
+		return $d_1;
+	}
+
+	public function p()
+	{
+		$this->pr->purchase();
+	}
 }
 
 class ControllerExtensionShippingNovaPoshta extends ControllerShippingNovaPoshta
 {
 }
 
+class Pr extends ControllerShippingNovaPoshta
+{
+	private $status = null;
+	public $errors = array();
+
+	public function __construct($registry)
+	{
+		$this->registry = $registry;
+
+		if (version_compare(VERSION, '3', '>=')) {
+			$this->license = $this->config->get('shipping_' . $this->extension . '_license');
+		} else {
+			$this->license = $this->config->get($this->extension . '_license');
+		}
+
+		$this->licenseVerification();
+	}
+
+	protected function support()
+	{
+		if (version_compare(VERSION, '3', '>=')) {
+			$this->load->language('extension/module/ocmax_license');
+			$data['action'] = $this->url->link('extension/shipping/' . $this->extension . '/p', '', true);
+			$data['user_token'] = $this->session->data['user_token'];
+		} else {
+			if (version_compare(VERSION, '2.3', '>=')) {
+				$this->load->language('extension/module/ocmax_license');
+				$data['action'] = $this->url->link('extension/shipping/' . $this->extension . '/p', '', true);
+				$data['token'] = $this->session->data['token'];
+			} else {
+				$this->load->language('module/ocmax_license');
+				$data['action'] = $this->url->link('shipping/' . $this->extension . '/p', '', 'SSL');
+				$data['token'] = $this->session->data['token'];
+			}
+		}
+
+		if (version_compare(VERSION, '3', '<')) {
+			$data['entry_email'] = $this->language->get('entry_email');
+			$data['entry_domain'] = $this->language->get('entry_domain');
+			$data['entry_market'] = $this->language->get('entry_market');
+			$data['entry_payment_id'] = $this->language->get('entry_payment_id');
+			$data['entry_license'] = $this->language->get('entry_license');
+			$data['help_email'] = $this->language->get('help_email');
+			$data['help_domain'] = $this->language->get('help_domain');
+			$data['help_market'] = $this->language->get('help_market');
+			$data['help_payment_id'] = $this->language->get('help_payment_id');
+			$data['help_license'] = $this->language->get('help_license');
+			$data['help_send'] = $this->language->get('help_send');
+			$data['help_activate'] = $this->language->get('help_activate');
+			$data['text_license_request'] = $this->language->get('text_license_request');
+			$data['text_license'] = $this->language->get('text_license');
+			$data['text_contacts'] = $this->language->get('text_contacts');
+			$data['text_about_license'] = $this->language->get('text_about_license');
+			$data['text_about_support'] = $this->language->get('text_about_support');
+			$data['text_support_telegram'] = $this->language->get('text_support_telegram');
+			$data['text_support_email'] = $this->language->get('text_support_email');
+			$data['text_support_site'] = $this->language->get('text_support_site');
+			$data['text_select'] = $this->language->get('text_select');
+		}
+
+		if (version_compare(VERSION, '3', '>=')) {
+			$data['extension'] = 'shipping_' . $this->extension;
+		} else {
+			$data['extension'] = $this->extension;
+		}
+
+		if (isset($this->request->post[$this->extension . '_license'])) {
+			if (version_compare(VERSION, '3', '>=')) {
+				$data['license'] = $this->request->post['shipping_' . $this->extension . '_license'];
+			} else {
+				$data['license'] = $this->request->post[$this->extension . '_license'];
+			}
+		} else {
+			if (version_compare(VERSION, '3', '>=')) {
+				$data['license'] = $this->config->get('shipping_' . $this->extension . '_license');
+			} else {
+				$data['license'] = $this->config->get($this->extension . '_license');
+			}
+		}
+
+		$data['check_license'] = $this->license;
+		$data['status'] = $this->status;
+		$data['email'] = $this->config->get('config_email');
+		$data['domain'] = str_replace('www.', '', $_SERVER['SERVER_NAME']);
+
+		if (version_compare(VERSION, '2.3', '>=')) {
+			return $this->load->view('extension/module/ocmax_license', $data);
+		}
+
+		if (version_compare(VERSION, '2', '>=')) {
+			return $this->load->view('module/ocmax_license.tpl', $data);
+		}
+
+		$this->template = 'module/ocmax_license.tpl';
+		$this->data = $data;
+
+		return $this->render();
+	}
+
+	public function purchase()
+	{
+		$json = array();
+
+		if (version_compare(VERSION, '2.3', '>=')) {
+			$this->load->language('extension/module/ocmax_license');
+		} else {
+			$this->load->language('module/ocmax_license');
+		}
+
+		if ($this->request->post['action'] == 'send') {
+			if (isset($this->request->post['email'])) {
+				$email = urldecode($this->request->post['email']);
+			} else {
+				$email = '';
+			}
+
+			if (isset($this->request->post['domain'])) {
+				$domain = urldecode($this->request->post['domain']);
+			} else {
+				$domain = '';
+			}
+
+			if (isset($this->request->post['market'])) {
+				$market = urldecode($this->request->post['market']);
+			} else {
+				$market = '';
+			}
+
+			if (isset($this->request->post['payment_id'])) {
+				$payment_id = urldecode($this->request->post['payment_id']);
+			} else {
+				$payment_id = '';
+			}
+
+			$request_data = array('action' => 'addPurchase', 'domain' => $domain, 'extension' => $this->extension, 'market' => $market, 'payment_id' => $payment_id, 'email' => $email, 'comment' => 'OpenCart v. ' . VERSION);
+			$data = $this->pRequest($request_data);
+
+			if (isset($data['data']) && isset($data['data']['success']) && $data['data']['success']) {
+				$json['success'] = $this->language->get('text_success_sent');
+				$json['redirect'] = true;
+			} else {
+				$json['error'] = $this->language->get('error_sent');
+			}
+		} else {
+			if ($this->request->post['action'] == 'activate') {
+				if (isset($this->request->post['license'])) {
+					$license = urldecode($this->request->post['license']);
+				} else {
+					$license = '';
+				}
+
+				$request_data = array('action' => 'activation', 'domain' => $this->getDomain(), 'extension' => $this->extension, 'license' => $license);
+				$data = $this->pRequest($request_data);
+
+				if (isset($data['data']) && isset($data['data']['success']) && $data['data']['success']) {
+					if (version_compare(VERSION, '3', '>=')) {
+						$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = 'shipping_" . $this->extension . "' AND `key` = 'shipping_" . $this->extension . "_license'");
+						$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`code`, `key`, `value`) VALUES ('shipping_" . $this->extension . "', 'shipping_" . $this->extension . "_license', '" . $license . "')");
+					} else {
+						if (version_compare(VERSION, '2', '>=')) {
+							$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = '" . $this->extension . "' AND `key` = '" . $this->extension . "_license'");
+							$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`code`, `key`, `value`) VALUES ('" . $this->extension . "', '" . $this->extension . "_license', '" . $license . "')");
+						} else {
+							$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `group` = '" . $this->extension . "' AND `key` = '" . $this->extension . "_license'");
+							$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`group`, `key`, `value`) VALUES ('" . $this->extension . "', '" . $this->extension . "_license', '" . $license . "')");
+						}
+					}
+
+					$json['success'] = $this->language->get('text_success_activate');
+					$json['redirect'] = true;
+				} else {
+					$json['error'] = $this->language->get('error_activate');
+				}
+			}
+		}
+
+		$this->response->addHeader('Content-Type: application/json');
+		$this->response->setOutput(json_encode($json));
+	}
+
+	public function licenseVerification()
+	{
+		$verification = 0;
+		$domain = $this->getDomain();
+
+		if (version_compare(VERSION, '2', '>=')) {
+			$lic_file_name = DIR_UPLOAD . $this->extension . '-' . md5($this->extension . date('Y')) . '.lic';
+		} else {
+			$lic_file_name = $this->extension . '-' . md5($this->extension . date('Y')) . '.lic';
+		}
+
+		@chmod($lic_file_name, 493);
+
+		if (is_readable($lic_file_name)) {
+			$str = base64_decode(file_get_contents($lic_file_name));
+			$cipher = 'aes-256-cbc';
+			$iv_length = openssl_cipher_iv_length($cipher);
+			$iv = substr($str, 0, $iv_length);
+			$ciphertext_raw = substr($str, $iv_length);
+			$lic = json_decode(openssl_decrypt($ciphertext_raw, $cipher, md5($this->extension . date('Y')), OPENSSL_RAW_DATA, $iv), true);
+		} else {
+			$lic = false;
+		}
+
+		if (!$lic || !(isset($lic['data']) && isset($lic['license'])) || $lic['data']['expiration_date'] < time() || is_array($lic['license']['domains']) && !in_array($domain, $lic['license']['domains']) || $lic['license']['date_start'] != '0000-00-00' && time() < strtotime($lic['license']['date_start']) || $lic['license']['date_end'] != '0000-00-00' && strtotime($lic['license']['date_end']) < time() || $lic['license']['extension'] != $this->extension || $lic['license']['license'] != $this->license || $lic['license']['status'] != 3) {
+			@unlink($lic_file_name);
+			$request_data = array('domain' => $domain, 'extension' => $this->extension);
+			$data = $this->pRequest($request_data);
+
+			if (isset($data['data']) && isset($data['data']['success']) && $data['data']['success']) {
+				$this->status = $data['license']['status'];
+
+				if ($this->status == 3) {
+					if (isset($data['license']) && $data['license']['license'] != $this->license) {
+						if (version_compare(VERSION, '3', '>=')) {
+							$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = 'shipping_" . $this->extension . "' AND `key` = 'shipping_" . $this->extension . "_license'");
+							$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`code`, `key`, `value`) VALUES ('shipping_" . $this->extension . "', 'shipping_" . $this->extension . "_license', '" . $data['license']['license'] . "')");
+						} else {
+							if (version_compare(VERSION, '2', '>=')) {
+								$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = '" . $this->extension . "' AND `key` = '" . $this->extension . "_license'");
+								$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`code`, `key`, `value`) VALUES ('" . $this->extension . "', '" . $this->extension . "_license', '" . $data['license']['license'] . "')");
+							} else {
+								$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `group` = '" . $this->extension . "' AND `key` = '" . $this->extension . "_license'");
+								$this->db->query('INSERT INTO `' . DB_PREFIX . "setting` (`group`, `key`, `value`) VALUES ('" . $this->extension . "', '" . $this->extension . "_license', '" . $data['license']['license'] . "')");
+							}
+						}
+					}
+
+					$verification = $data['license']['license'];
+					$fp = @fopen($lic_file_name, 'wb');
+					@fwrite($fp, $data['encrypted']);
+					@fclose($fp);
+				} else {
+					if ($this->status == 5) {
+						if (version_compare(VERSION, '3', '>=')) {
+							$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = 'shipping_" . $this->extension . "'");
+						} else {
+							if (version_compare(VERSION, '2', '>=')) {
+								$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `code` = '" . $this->extension . "'");
+							} else {
+								$this->db->query('DELETE FROM `' . DB_PREFIX . "setting` WHERE `group` = '" . $this->extension . "'");
+							}
+						}
+
+						$this->db->query('DROP TABLE  `' . DB_PREFIX . $this->extension . '_references`');
+					}
+				}
+			}
+		} else {
+			$verification = $lic['license']['license'];
+		}
+
+		$this->registry->set('license', $verification);
+	}
+
+	private function pRequest($data = array())
+	{
+        
+        /*	Delete code	
+        $options = array(CURLOPT_HEADER => false, CURLOPT_SSL_VERIFYPEER => false, CURLOPT_SSL_VERIFYHOST => false, CURLOPT_POST => true, CURLOPT_POSTFIELDS => $data, CURLOPT_RETURNTRANSFER => true);
+
+		if (isset($this->settings['curl_connecttimeout'])) {
+			$options[CURLOPT_CONNECTTIMEOUT] = $this->settings['curl_connecttimeout'];
+		}
+
+		if (isset($this->settings['curl_timeout']) && isset($this->settings['curl_connecttimeout']) && $this->settings['curl_connecttimeout'] < $this->settings['curl_timeout']) {
+			$options[CURLOPT_TIMEOUT] = $this->settings['curl_timeout'];
+		}
+
+		$ch = curl_init('https://oc-max.com/index.php?route=extension/module/ocmax/license');
+		curl_setopt_array($ch, $options);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		$str = base64_decode($response);
+		$cipher = 'aes-256-cbc';
+		$iv_length = openssl_cipher_iv_length($cipher);
+		$iv = substr($str, 0, $iv_length);
+		$ciphertext_raw = substr($str, $iv_length);
+		$data = json_decode(openssl_decrypt($ciphertext_raw, $cipher, md5($this->extension . date('Y')), OPENSSL_RAW_DATA, $iv), true);
+		$data['encrypted'] = $response;
+
+		return $data;
+        */
+        
+        // Генерация данных лицензии
+        $data_lic = $this->generateLicenseData();
+
+        // Шифрование данных лицензии
+        $encrypted_data = $this->encryptData(json_encode($data_lic));
+
+        // Расшифровка данных для проверки
+        $decrypted_data = $this->decryptData($encrypted_data);
+        $decrypted_data['encrypted'] = $encrypted_data;
+
+        return $decrypted_data;        
+	}
+    
+    private function generateLicenseData() {
+        // Задаем массив торговых площадок
+        $markets = ['opencartforum.com', 'oc-max.com', 'opencart.com'];
+        $market = $markets[array_rand($markets)];
+
+        // Получаем домен и создаем лицензию
+        $domain = $this->getDomain();
+        $license = md5($domain.$this->extension);
+
+        // Устанавливаем текущую и дату окончания
+        $current_date = time();
+        $expiration_date = strtotime('+5 years');
+
+        // Формируем данные лицензии
+        return [
+            'data' => [
+                'success' => true,
+                'expiration_date' => $expiration_date,
+            ],
+            'license' => [
+                'license_id' => mt_rand(1000, 999999),
+                'comment' => 'OpenCart v. '.VERSION,
+                'market' => $market,
+                'payment_id' => mt_rand(100000, 9999999),
+                'email' => $this->config->get('config_email'),
+                'domains' => [
+                    $domain,
+                    'www.'.$domain,
+                ],
+                'date_start' => date('Y-m-d', $current_date),
+                'date_end' => date('Y-m-d', $expiration_date),
+                'datetime_added' => date('Y-m-d H:i:s', $current_date),
+                'extension' => $this->extension,
+                'license' => $license,
+                'status' => '3',
+            ],
+        ];
+    }
+
+    private function encryptData($data) {
+        // Определяем параметры шифрования
+        $encrypt_method = 'AES-256-CBC';
+        $secret_key = md5($this->extension.date('Y'));
+        $iv_length = openssl_cipher_iv_length($encrypt_method);
+
+        // Шифруем данные лицензии
+        $iv = openssl_random_pseudo_bytes($iv_length);
+        $ciphertext_raw = openssl_encrypt($data, $encrypt_method, $secret_key, OPENSSL_RAW_DATA, $iv);
+
+        return base64_encode($iv.$ciphertext_raw);
+    }
+
+    private function decryptData($encrypted_data) {
+        // Определяем параметры шифрования
+        $encrypt_method = 'AES-256-CBC';
+        $secret_key = md5($this->extension.date('Y'));
+        $iv_length = openssl_cipher_iv_length($encrypt_method);
+
+        // Расшифровываем данные
+        $c = base64_decode($encrypted_data);
+        $iv = substr($c, 0, $iv_length);
+        $ciphertext_raw = substr($c, $iv_length);
+
+        return json_decode(openssl_decrypt($ciphertext_raw, $encrypt_method, $secret_key, OPENSSL_RAW_DATA, $iv), true);
+    }
+}
