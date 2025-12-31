@@ -80,6 +80,7 @@ class ControllerCommonHeader extends Controller {
 		
 		$data['search'] = $this->load->controller('common/search');
 		$data['cart'] = $this->load->controller('common/cart');
+		$data['menu'] = $this->load->controller('common/menu');
 		$data['headertop'] = $this->load->controller('common/headertop');
 
 		$data['text_blog'] = $this->language->get('text_blog');
