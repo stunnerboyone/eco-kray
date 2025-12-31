@@ -376,9 +376,10 @@ function mobileToggleColumn(){
 $(document).ready(function(){mobileToggleColumn();});
 $(window).resize(function(){mobileToggleColumn();});
 
-function productCarouselAutoSet() { 
+function productCarouselAutoSet() {
 	$("#content .product-carousel, .banners-slider-carousel .product-carousel, .testimonial-area #testimonial-carousel, #products-related .product-carousel").each(function() {
 		var objectID = $(this).attr('id');
+		if (!objectID) return; // Skip elements without ID
 		var myObject = objectID.replace('-carousel','');
 		if(myObject.indexOf("-") >= 0)
 			myObject = myObject.substring(0,myObject.indexOf("-"));		
@@ -424,14 +425,17 @@ $(document).ready(function(){productCarouselAutoSet();});
 
 
 
-function productListAutoSet() { 
+function productListAutoSet() {
 	$("#content .productbox-grid").each(function(){
 		var objectID = $(this).attr('id');
-		if(objectID.length >0){
+		var myDefClass;
+		if(objectID && objectID.length > 0){
 			if(widthClassOptions[objectID.replace('-grid','')])
-				var myDefClass= widthClassOptions[objectID.replace('-grid','')];
+				myDefClass = widthClassOptions[objectID.replace('-grid','')];
+			else
+				myDefClass = 'grid_default_width';
 		}else{
-			var myDefClass= 'grid_default_width';
+			myDefClass = 'grid_default_width';
 		}	
 		$(this).smartColumnsRows({
 			defWidthClss : myDefClass,
@@ -444,14 +448,17 @@ $(window).load(function(){productListAutoSet();});
 $(window).resize(function(){productListAutoSet();});
 
 
-function productListAutoSethometab() { 
+function productListAutoSethometab() {
 	$("#content .hometab .productbox-grid-hometab").each(function(){
 		var objectID = $(this).attr('id');
-		if(objectID.length >0){
+		var myDefClass;
+		if(objectID && objectID.length > 0){
 			if(widthClassOptions[objectID.replace('-grid','')])
-				var myDefClass= widthClassOptions[objectID.replace('-grid','')];
+				myDefClass = widthClassOptions[objectID.replace('-grid','')];
+			else
+				myDefClass = 'grid_default_width';
 		}else{
-			var myDefClass= 'grid_default_width';
+			myDefClass = 'grid_default_width';
 		}	
 		$(this).smartColumnsRows({
 			defWidthClss : myDefClass,
