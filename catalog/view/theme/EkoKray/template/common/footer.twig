@@ -1,0 +1,217 @@
+<footer>
+	<div class="footer-container">
+  	<div id="footer" class="bottom-to-top hb-animate-element">
+      <div class="container">
+	  		<div class="row">
+     
+     			<div class="footer-blocks">
+      			{{ footerleft }}
+						<div id="info" class="col-sm-3 column">
+        			<h5>Контакти</h5>
+        				<ul class="list-unstyled">
+        					<li>
+            				<span class="contact-inner">
+            				      </span><a href="mailto:eco.kray.shop@gmail.com">eco.kray.shop@gmail.com</a><span class="contact-inner">
+            				</span>
+        					</li>
+        					<li>
+            				<span class="contact-inner">
+            				      </span><a href="tel:%phone%">+38(053)619-22-43</a><span class="contact-inner">
+            				</span>
+        					</li>
+        					<li>
+            				<p>Полтавська обл., Лубенський район, с.Засулля, вул.Харківська, 11А. Індекс: 37552.</p>
+        					</li>
+        				</ul>
+      			</div>
+      			{% if informations %}
+      			<div id="info" class="col-sm-3 column">
+        			<h5>{{ text_information }}</h5>
+        				<ul class="list-unstyled">
+         					{% for information in informations %}
+          				<li><a href="{{ information.href }}">{{ information.title }}</a></li>
+          				{% endfor %}
+          				<li><a href="{{ contact }}">{{ text_contact }}</a></li>
+        				</ul>
+      			</div>
+      			{% endif %}
+     				<div id="account_link" class="col-sm-3 column">
+        			<h5>{{ text_account }}</h5>
+        			<ul class="list-unstyled">
+          			<li><a href="{{ account }}">{{ text_account }}</a></li>
+          			<li><a href="{{ order }}">{{ text_order }}</a></li>
+          			<li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+          			<li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>
+          			<li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+        			</ul>
+      			</div> 
+	  				{# <div id="extra-link" class="col-sm-2 column">
+        			<h5>{{ text_extra }}</h5>
+        			<ul class="list-unstyled">
+        			  <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+        			  <li><a href="{{ account }}">{{ text_account }}</a></li>
+			  				<li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+          			<li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+		  					<li><a href="{{ account }}">{{ text_account }}</a></li>
+		  					<li><a href="{{ all_blogs }}">{{ text_blog }} </a></li>  
+       				 </ul>
+	  				</div> 
+	  
+	  				<div class="col-sm-3 column">
+        			<h5>{{ text_service }}</h5>
+        			<ul class="list-unstyled">
+        			  <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+        			  <li><a href="{{ return }}">{{ text_return }}</a></li>
+        			  <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+        			  <li><a href="{{ order }}">{{ text_order }}</a></li>
+        			  <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
+        			  <li><a href="{{ special }}">{{ text_special }}</a></li>
+        			  <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
+        			</ul>
+      			</div>#}
+      			{{ footerright }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<div class="bottomfooter">
+	   <div class="container">
+	  <div class="row">
+      <div class="bottomfooter-inner">
+			  {{ footerbottom }}
+				<h4> Еко Край © 2025 </h4>
+      </div>
+</div>
+</div>
+</div>
+	
+</footer>
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script type="text/javascript">
+
+$(document).ready(function(){
+$('#wdtestimonial-carousel').owlCarousel({
+		items: 1,
+		autoPlay: false,
+		singleItem: true,
+		navigation: true,
+		navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
+		pagination: true,
+	});
+});
+</script>
+
+{% if module_wd_live_search_status %}
+
+			<script><!--
+				var wd_live_search = {
+					selector: '#search input[name=\'search\']',
+					text_no_matches: '{{ text_empty }}',
+					height: '50px'
+				}
+
+				$(document).ready(function() {
+					var html = '';
+					html += '<div class="live-search">';
+					html += '	<ul>';
+					html += '	</ul>';
+					html += '<div class="result-text"></div>';
+					html += '</div>';
+
+					//$(wd_live_search.selector).parent().closest('div').after(html);
+					$(wd_live_search.selector).after(html);
+
+					$(wd_live_search.selector).autocomplete({
+						'source': function(request, response) {
+							var filter_name = $(wd_live_search.selector).val();
+							var cat_id = 0;
+							var module_wd_live_search_min_length = '{{ module_wd_live_search_min_length|abs }}';
+							if (filter_name.length < module_wd_live_search_min_length) {
+								$('.live-search').css('display','none');
+								 $('body').removeClass('search-open');
+							}
+							else{
+								var html = '';
+								html += '<li style="text-align: center;height:10px;">';
+								html +=	'<img class="loading" src="image/catalog/loading.gif" />';
+								html +=	'</li>';
+								$('.live-search ul').html(html);
+								$('.live-search').css('display','block');
+								$('body').addClass('search-open');
+
+								$.ajax({
+									url: 'index.php?route=extension/module/wd_live_search&filter_name=' +  encodeURIComponent(filter_name),
+									dataType: 'json',
+									success: function(result) {
+										var products = result.products;
+										$('.live-search ul li').remove();
+										$('.result-text').html('');
+										if (!$.isEmptyObject(products)) {
+											var show_image = {{ module_wd_live_search_show_image|abs }};
+											var show_price = {{ module_wd_live_search_show_price|abs }};
+											var show_description = {{ module_wd_live_search_show_description|abs }};
+											$('.result-text').html('<a href="{{ module_wd_live_search_href }}'+filter_name+'" class="view-all-results">{{ text_view_all_results|e }} ('+result.total+')</a>');
+
+											$.each(products, function(index,product) {
+												var html = '';
+
+												html += '<li>';
+												html += '<a href="' + product.url + '" title="' + product.name + '">';
+												if(product.image && show_image){
+													html += '	<div class="product-image col-sm-3 col-xs-4"><img alt="' + product.name + '" src="' + product.image + '"></div>';
+												}
+												html += '<div class="search-description col-sm-9 col-xs-8">';
+												html += '	<div class="product-name">' + product.name ;
+												if(show_description){
+													html += '<p>' + product.extra_info + '</p>';
+												}
+												html += '</div>';
+												if(show_price){
+													if (product.special) {
+														html += '	<div class="product-price"><span class="price">' + product.special + '</span><span class="special">' + product.price + '</span></div>';
+													} else {
+														html += '	<div class="product-price"><span class="price">' + product.price + '</span></div>';
+													}
+												}
+												html += '</div>';
+												html += '<span style="clear:both"></span>';
+												html += '</a>';
+												html += '</li>';
+												$('.live-search ul').append(html);
+											});
+										} else {
+											var html = '';
+											html += '<li style="text-align: center;height:10px;">';
+											html +=	wd_live_search.text_no_matches;
+											html +=	'</li>';
+
+											$('.live-search ul').html(html);
+										}
+										$('.live-search').css('display','block');
+										$('body').addClass('search-open');
+										return false;
+									}
+								});
+							}
+						},
+						'select': function(product) {
+							$(wd_live_search.selector).val(product.name);
+						}
+					});
+					
+					$(document).bind( "mouseup touchend", function(e){
+					  var container = $('.live-search');
+					  if (!container.is(e.target) && container.has(e.target).length === 0)
+					  {
+					    container.hide();
+					  }
+					});
+				});
+			//--></script>
+		{% endif %}
+
+</body></html>

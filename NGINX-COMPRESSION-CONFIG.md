@@ -128,10 +128,10 @@ curl -H "Accept-Encoding: gzip,deflate" -I https://stunnerboyone.live
 ### Test compression ratio:
 ```bash
 # Download uncompressed
-curl -s https://stunnerboyone.live/catalog/view/theme/Plantz/stylesheet/ultimate-combined.min.css | wc -c
+curl -s https://stunnerboyone.live/catalog/view/theme/EkoKray/stylesheet/ultimate-combined.min.css | wc -c
 
 # Download compressed
-curl -s -H "Accept-Encoding: gzip" https://stunnerboyone.live/catalog/view/theme/Plantz/stylesheet/ultimate-combined.min.css | wc -c
+curl -s -H "Accept-Encoding: gzip" https://stunnerboyone.live/catalog/view/theme/EkoKray/stylesheet/ultimate-combined.min.css | wc -c
 ```
 
 ### Online tools:

@@ -3,9 +3,9 @@ class ControllerCommonHeader extends Controller {
 	public function index() {
 		// Analytics
 		$this->load->model('setting/extension');
-		
-		$this->document->addStyle('catalog/view/theme/Plantz/stylesheet/cart-new.css');
-		$this->document->addStyle('catalog/view/theme/Plantz/stylesheet/unified-products.css');
+
+		$this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/cart-new.css');
+		$this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/unified-products.css');
 
 		$data['analytics'] = array();
 

@@ -1,0 +1,41 @@
+<div class="wd_category_feature bottom-to-top hb-animate-element" id="wd_category_feature">
+  <div class="container">
+<div class="row">
+	<div class="box-heading">{{heading_title}}</div>
+	<div class="box-desc">{{heading_desc}}</div>
+			<div class="wdfcat-items">
+				<div class="list_carousel row responsive clearfix">
+					<div class="product-list category_list_carousel" id="wd_cat_featured">
+						{% for category in categories %}
+						<div class="item">
+							<div class="content">
+								<div class="wd_cat_content">
+									<div class="cat-img">
+										<a href="{{ category.href }}">
+											<img src="{{ category.thumb }}" alt="{{ category.name }}" title="{{ category.name }}" class="cat_image1" />
+										</a>
+									</div>
+									<div class="wdcat-content">
+										<div class="wdcat-inner">
+											<div class="cat-infor">
+												<h4 class="title"><a href="{{ category.href }}" class="btn-pattern">{{ category.name }}{{ category.product_count }}</a></h4>
+											</div>
+
+											{% if category.children >= 4 %}
+											<li class="cat-more">
+											<a href="{{ category.href }}" class="category-viewall">Shop Now</a>
+											</li>
+											{% endif %}
+											
+										</div> 
+									</div> 
+								</div><!-- Caption END -->
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			</div>
+			</div>
+</div>
