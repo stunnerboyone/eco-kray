@@ -1,9 +1,9 @@
 <?php
 class ControllerCommonHome extends Controller {
 	public function index() {
-		$this->document->addStyle('catalog/view/theme/Plantz/stylesheet/services-section.css');
+		$this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/services-section.css');
 		$this->document->setTitle($this->config->get('config_meta_title'));
-		$this->document->addStyle('catalog/view/theme/Plantz/stylesheet/unified-products.css');
+		$this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/unified-products.css');
 		$this->document->setDescription($this->config->get('config_meta_description'));
 		$this->document->setKeywords($this->config->get('config_meta_keyword'));
 

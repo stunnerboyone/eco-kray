@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<!-- Critical JS only - jQuery must load first -->
+<script src="catalog/view/javascript/jquery/jquery-3.7.1.min.js"></script>
+<script src="catalog/view/javascript/ekokray/notifications.js"></script>
+<script src="catalog/view/javascript/jquery/jquery-migrate-3.4.1.min.js" defer></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap-3.4.1.min.js" defer></script>
+<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" defer></script>
+<script src="catalog/view/javascript/jquery.countdown.min.js" defer></script>
+<!-- Critical CSS loads normally - Ultimate optimized combined file (includes webdigify modules) -->
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/ultimate-combined.min.css" rel="stylesheet" type="text/css" />
+<!-- Main stylesheet with header icon improvements (loads after combined to override) -->
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/stylesheet.css" rel="stylesheet" type="text/css" />
+<!-- SEO-optimized typography -->
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/seo-typography.css" rel="stylesheet" type="text/css" />
+<!-- Unified product styles -->
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/unified-products.css" rel="stylesheet" type="text/css" />
+<link href="catalog/view/theme/{{ mytemplate }}/stylesheet/cart-new.css" rel="stylesheet" type="text/css" />
+<!-- Font display fix -->
+<style>
+@font-face { font-family: 'Font Awesome 6 Free'; font-display: swap; }
+@font-face { font-family: 'Font Awesome 6 Brands'; font-display: swap; }
+@font-face { font-family: 'fa-solid-900'; font-display: swap; }
+@font-face { font-family: 'fa-brands-400'; font-display: swap; }
+</style>
+<!-- Non-critical CSS deferred (Font Awesome, Google Fonts) -->
+<link rel="preload" href="catalog/view/javascript/font-awesome-6/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="catalog/view/javascript/font-awesome-6/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+</noscript>
+{% if direction == 'rtl' %}
+<link rel="stylesheet" type="text/css" href="catalog/view/theme/{{ mytemplate }}/stylesheet/webdigify/rtl.css">
+{% endif %}
+<link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
+{% for style in styles %}
+<link rel="preload" href="{{ style.href }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+{% endfor %}
+<noscript>
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="stylesheet" />
+{% endfor %}
+</noscript>
+{% for script in scripts %}
+<script src="{{ script }}" defer></script>
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+<!-- webdigify scripts - deferred -->
+<script src="catalog/view/javascript/webdigify/custom.js" defer></script>
+<script src="catalog/view/javascript/webdigify/parallax.js" defer></script>
+<script src="catalog/view/javascript/webdigify/jstree.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/carousel.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/webdigify.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/jquery.custom.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/jquery.formalize.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/jquery.elevatezoom.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/bootstrap-notify.min.js" defer></script>
+<script src="catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/tabs.js" defer></script>
+<script src="catalog/view/javascript/webdigify/jquery.hoverdir.js" defer></script>
+<script src="catalog/view/javascript/webdigify/modernizr.js" defer></script>
+<script src="catalog/view/javascript/lightbox/lightbox-2.6.min.js" defer></script>
+<script src="catalog/view/javascript/webdigify/inview.js" defer></script>
+<script src="catalog/view/javascript/webdigify/megamenu.js" defer></script>
+<script src="catalog/view/javascript/simple.js" defer></script>
+<script src="catalog/view/javascript/simplecheckout.js" defer></script>
+
+
+
+<!-- ======= Quick view JS ========= -->
+<script> 
+
+function quickbox(){
+ if ($(window).width() > 767) {
+    $('.quickview-button').magnificPopup({
+      type:'iframe',
+      delegate: 'a',
+      preloader: true,
+      tLoading: 'Loading image #%curr%...',
+    });
+ }  
+}
+jQuery(document).ready(function() {quickbox();});
+jQuery(window).resize(function() {quickbox();});
+
+$(document).ready(function(){
+			$('.category_list ul').owlCarousel({
+					items: 6,
+					autoPlay: false,
+					singleItem: false,
+					navigation: true,
+					navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
+					pagination: false,
+					itemsDesktop : [1459,5],
+					itemsDesktopSmall:[1199,4],
+					itemsTablet :	[543,4],
+					itemsTabletSmall : [479, 3],
+					itemsMobile: [379, 2]
+				});
+			});
+</script>
+
+<!-- webdigify www.templatemela.com - End -->
+
+<script src="catalog/view/javascript/common.js"></script>
+
+<!-- Debug: Check if notifications loaded -->
+<script>
+if (typeof showSuccess !== 'function') {
+  console.error('notifications.js не завантажився! showSuccess не визначена');
+  console.log('Доступні window функції:', Object.keys(window).filter(k => k.includes('show')));
+}
+</script>
+
+</head>
+
+{% if (column_left and column_right) %}
+{% set layoutclass = 'layout-3' %}
+{% elseif (column_left or column_right) %}
+{% if column_left %}
+{% set layoutclass = 'layout-2 left-col' %}
+{% elseif column_right %}
+{% set layoutclass = 'layout-2 right-col' %}
+{% endif %}
+{% else %}
+{% set layoutclass = 'layout-1' %}
+{% endif %}
+
+<body class="{{ class }} {{ " " }} {{ layoutclass }}">
+<header>
+
+  <div class="header_top">
+  <div class="container-fluid">
+<div class="row">
+  <div class="col-sm-4 header-logo">
+    <div id="logo" class="main-logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" /></a>{% else %}
+      <h1><a href="{{ home }}">{{ name }}</a></h1>
+      {% endif %}
+    </div>
+  </div>
+
+ <div class="headertop">
+  {{ headertop }}
+  </div> 
+
+  <div class="nav2">   
+    
+    <div class="col-sm-3 header_cart">{{ cart }}</div>
+    <div class="account">     
+      <div class="dropdown myaccount"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown"></a><span class="account-title">{{ text_account }}</span>
+          <ul class="dropdown-menu dropdown-menu-right myaccount-menu">
+            <span class="drop_account">
+        <div class="login_acc">
+        {% if logged %}
+          <li><a href="{{ account }}" title="{{ text_account }}">{{ text_account }}</a></li>
+          <li><a href="{{ wishlist }}" id="wishlist-total">{{ text_wishlist }}</a></li>
+          <li><a href="{{ checkout }}" title="{{ text_checkout }}">{{ text_checkout }}</a></li>
+          <li><a class="account_logout1" href="{{ logout }}">{{ text_logout }}</a></li>
+          {% else %}
+          	<li><a class="login" href="{{ login }}">{{ text_login }}</a></li>
+          <li><a class="reg" href="{{ register }}">{{ text_register }}</a></li>
+          <li><a href="{{ wishlist }}" id="wishlist-total">{{ text_wishlist }}</a></li>
+          <li><a href="{{ checkout }}" title="{{ text_checkout }}">{{ text_checkout }}</a></li>
+
+        {% endif %}
+        </div>	
+        
+          </span>      
+         </ul>
+        </div>
+      </div>
+      {# <div class="header_wishlist"><span>{{ text_wishlist }}</span><a href="{{ wishlist }}" id="wishlist-total"></a></div> #}
+      <div class="col-sm-5 header_search">{{ search }}</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Ekokray Megamenu -->
+{% if ekokray_megamenu %}
+<div class="ekokray-megamenu-wrapper">
+  <div class="container-fluid">
+    {{ ekokray_megamenu }}
+  </div>
+</div>
+{% endif %}
+
+</header>
+
+<div class="content-top-breadcum">
+<div class="container">
+</div>
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cartDropdown = document.querySelector(".cart-dropdown");
+  const button = cartDropdown?.querySelector(".cart-button");
+
+  if (button) {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      document.querySelectorAll(".cart-dropdown").forEach(function (el) {
+        if (el !== cartDropdown) {
+          el.classList.remove("open");
+        }
+      });
+
+
+      $("#cart").load("index.php?route=common/cart/info", function () {
+        cartDropdown.classList.toggle("open");
+      });
+    });
+  }
+});
+
+// $(document).ready(function () {
+//   if (typeof Simplecheckout === 'function' && Simplecheckout.init) {
+//     Simplecheckout.init();
+//   }
+// });
+
+</script>
