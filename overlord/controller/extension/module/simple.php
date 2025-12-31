@@ -1,6 +1,6 @@
 <?php
-/*
- * WTFPL https://ucrack.com
+/**
+ * Simple Module Controller
  */
 class ControllerModuleSimple extends Controller
 {

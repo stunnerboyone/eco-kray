@@ -216,9 +216,8 @@ class ControllerExtensionModuleExchange1c extends Controller {
 
 
 	/**
-	 * Формирует форму кнопки
-	 * 	onclick="$('#form-exchange1c').attr('action','<?php echo $refresh; ?>&refresh=1').submit()"
-	 *	$('#form-exchange1c').attr('action','http://opencart2302.ptr-print.ru/admin/index.php?route=extension/module/exchange1c/refresh&token=fza09Op5TOrxudmiD58SDKDpWBr18mNi&refresh=1').submit()
+	 * Generate form button
+	 * onclick="$('#form-exchange1c').attr('action','<?php echo $refresh; ?>&refresh=1').submit()"
 	 */
 	private function htmlButton($name, $param) {
 
@@ -1365,8 +1364,7 @@ class ControllerExtensionModuleExchange1c extends Controller {
 	/**
 	 * ver 3
 	 * update 2018-10-15
-	 * Алгортим описан https://dev.1c-bitrix.ru/api_help/sale/algorithms/data_2_site.php
-	 * Авторизация на сайте
+	 * Site authorization method (CommerceML protocol)
 	 */
 	public function modeCheckauth() {
 
