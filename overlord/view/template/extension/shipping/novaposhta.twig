@@ -1760,7 +1760,7 @@
 			data: post_data,
 			dataType: 'html',
 			beforeSend: function () {
-				$('body').fadeTo('fast', 0.7).prepend('<div id="ocmax-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
+				$('body').fadeTo('fast', 0.7).prepend('<div id="np-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
 			},
 			complete: function () {
 				var $alerts = $('.alert-danger, .alert-success');
@@ -1770,7 +1770,7 @@
 				}
 
 				$('body').fadeTo('fast', 1);
-				$('#ocmax-loader').remove();
+				$('#np-loader').remove();
 			},
 			success: function (data, textStatus, jqXHR) {
 				var $data = $(data);
@@ -1810,7 +1810,7 @@
 				type: 'GET',
 				dataType: 'json',
 				beforeSend: function () {
-					$('body').fadeTo('fast', 0.7).prepend('<div id="ocmax-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
+					$('body').fadeTo('fast', 0.7).prepend('<div id="np-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
 				},
 				complete: function () {
 					var $alerts = $('.alert-danger, .alert-success');
@@ -1820,7 +1820,7 @@
 					}
 
 					$('body').fadeTo('fast', 1);
-					$('#ocmax-loader').remove();
+					$('#np-loader').remove();
 				},
 				success: function (json) {
 					if (json['success']) {
@@ -1920,10 +1920,10 @@
 					data: 'action=getSenderContactPersons&filter=' + element.value,
 					dataType: 'json',
 					beforeSend: function () {
-						$('#input-sender_contact_person').parent().css('position', 'relative').prepend('<div id="ocmax-loader-sender_contact_person" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
+						$('#input-sender_contact_person').parent().css('position', 'relative').prepend('<div id="np-loader-sender_contact_person" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
 					},
 					complete: function () {
-						$('#ocmax-loader-sender_contact_person').remove();
+						$('#np-loader-sender_contact_person').remove();
 					},
 					success: function (json) {
 						var
@@ -1951,10 +1951,10 @@
 					data: 'action=getCities&filter=' + encodeURIComponent(element.value),
 					dataType: 'json',
 					beforeSend: function () {
-						$('#input-sender_city').parent().css('position', 'relative').prepend('<div id="ocmax-loader-sender_city" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
+						$('#input-sender_city').parent().css('position', 'relative').prepend('<div id="np-loader-sender_city" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
 					},
 					complete: function () {
-						$('#ocmax-loader-sender_city').remove();
+						$('#np-loader-sender_city').remove();
 					},
 					success: function (json) {
 						if (json instanceof Array) {
@@ -1993,10 +1993,10 @@
 					data: 'action=getDepartments&filter=' + encodeURIComponent(element.value),
 					dataType: 'json',
 					beforeSend: function () {
-						$('#input-sender_department').parent().css('position', 'relative').prepend('<div id="ocmax-loader-sender_department" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
+						$('#input-sender_department').parent().css('position', 'relative').prepend('<div id="np-loader-sender_department" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
 					},
 					complete: function () {
-						$('#ocmax-loader-sender_department').remove();
+						$('#np-loader-sender_department').remove();
 					},
 					success: function (json) {
 						if (json instanceof Array || json instanceof Object) {
@@ -2025,10 +2025,10 @@
 					data: 'action=getAddress&filter=' + encodeURIComponent(element.value) + '&sender=' + encodeURIComponent($('#input-sender').val()),
 					dataType: 'json',
 					beforeSend: function () {
-						$('#input-sender_address').parent().css('position', 'relative').prepend('<div id="ocmax-loader-sender_address" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
+						$('#input-sender_address').parent().css('position', 'relative').prepend('<div id="np-loader-sender_address" style="position: absolute; left: 50%; top: 50%; transform: translateY(-50%); z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-lg fa-fw" aria-hidden="true"></i></div>');
 					},
 					complete: function () {
-						$('#ocmax-loader-sender_address').remove();
+						$('#np-loader-sender_address').remove();
 					},
 					success: function (json) {
 						if (json instanceof Array || json instanceof Object) {
@@ -2303,11 +2303,11 @@
 					data: 'recipient_name=' + encodeURIComponent(request),
 					dataType: 'json',
 					beforeSend: function () {
-						$('body').fadeTo('fast', 0.7).prepend('<div id="ocmax-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
+						$('body').fadeTo('fast', 0.7).prepend('<div id="np-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
 					},
 					complete: function () {
 						$('body').fadeTo('fast', 1);
-						$('#ocmax-loader').remove();
+						$('#np-loader').remove();
 					},
 					success: function(json) {
 						response($.map(json, function(item) {

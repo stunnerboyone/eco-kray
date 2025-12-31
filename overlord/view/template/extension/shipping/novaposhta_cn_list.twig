@@ -879,7 +879,7 @@
 		$.ajaxSetup({
 			beforeSend: function (jqXHR, settings) {
 				if (settings.url.match(/novaposhta/i)) {
-					$('body').fadeTo('fast', 0.7).prepend('<div id="ocmax-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
+					$('body').fadeTo('fast', 0.7).prepend('<div id="np-loader" style="position: fixed; top: 50%;	left: 50%; z-index: 9999;"><i class="fa fa-clock-o fa-spin fa-3x fa-fw"></i></div>');
 				}
 			},
 			complete: function () {
@@ -890,7 +890,7 @@
 				}
 
 				$('body').fadeTo('fast', 1);
-				$('#ocmax-loader').remove();
+				$('#np-loader').remove();
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				console.log(textStatus);
