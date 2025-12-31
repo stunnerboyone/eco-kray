@@ -21,7 +21,6 @@
 <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
 <script src="catalog/view/javascript/jquery/ui/jquery-ui.min.js"></script>
 <script src="catalog/view/javascript/webdigify/tabs.js"></script>
-<script src="catalog/view/javascript/ekokray/notifications.js"></script>
 <script src="catalog/view/javascript/bootstrap/js/bootstrap-3.4.1.min.js" defer></script>
 <script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js" defer></script>
 <script src="catalog/view/javascript/jquery.countdown.min.js" defer></script>
@@ -89,7 +88,7 @@
 <script src="catalog/view/javascript/webdigify/modernizr.js" defer></script>
 <script src="catalog/view/javascript/lightbox/lightbox-2.6.min.js" defer></script>
 <script src="catalog/view/javascript/webdigify/inview.js" defer></script>
-<!-- megamenu.js removed - ekokray_megamenu module loads its own -->
+<script src="catalog/view/javascript/webdigify/megamenu.js" defer></script>
 <script src="catalog/view/javascript/simple.js" defer></script>
 <script src="catalog/view/javascript/simplecheckout.js" defer></script>
 
@@ -131,14 +130,6 @@ $(document).ready(function(){
 <!-- webdigify www.templatemela.com - End -->
 
 <script src="catalog/view/javascript/common.js"></script>
-
-<!-- Debug: Check if notifications loaded -->
-<script>
-if (typeof showSuccess !== 'function') {
-  console.error('notifications.js не завантажився! showSuccess не визначена');
-  console.log('Доступні window функції:', Object.keys(window).filter(k => k.includes('show')));
-}
-</script>
 
 </head>
 
@@ -204,15 +195,6 @@ if (typeof showSuccess !== 'function') {
 </div>
 </div>
 </div>
-
-<!-- Ekokray Megamenu -->
-{% if ekokray_megamenu %}
-<div class="ekokray-megamenu-wrapper">
-  <div class="container-fluid">
-    {{ ekokray_megamenu }}
-  </div>
-</div>
-{% endif %}
 
 </header>
 

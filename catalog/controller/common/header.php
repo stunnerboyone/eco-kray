@@ -80,12 +80,7 @@ class ControllerCommonHeader extends Controller {
 		
 		$data['search'] = $this->load->controller('common/search');
 		$data['cart'] = $this->load->controller('common/cart');
-		// OLD MENU REMOVED - using ekokray_megamenu instead
-		// $data['menu'] = $this->load->controller('common/menu');
 		$data['headertop'] = $this->load->controller('common/headertop');
-
-		// Load ekokray megamenu (menu_id = 1 by default)
-		$data['ekokray_megamenu'] = $this->load->controller('extension/module/ekokray_megamenu', array('menu_id' => 1));
 
 		$data['text_blog'] = $this->language->get('text_blog');
 		$data['all_blogs'] = $this->url->link('information/blogger/blogs');
