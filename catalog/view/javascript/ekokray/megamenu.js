@@ -362,7 +362,13 @@
             var data = $this.data('ekokray.megamenu');
 
             if (!data) {
-                var menuId = $this.attr('id').replace('ekokray-megamenu-', '');
+                var elementId = $this.attr('id');
+                if (!elementId) {
+                    console.error('Ekokray Megamenu: Element must have an ID attribute');
+                    return;
+                }
+
+                var menuId = elementId.replace('ekokray-megamenu-', '');
                 var config = window.ekokrayMegamenuData && window.ekokrayMegamenuData['menu_' + menuId]
                     ? window.ekokrayMegamenuData['menu_' + menuId]
                     : {};
@@ -377,7 +383,8 @@
     // Auto-init
     $(document).ready(function() {
 
-        $('[class*="ekokray-megamenu"]').each(function() {
+        // Initialize only top-level megamenu containers with ID starting with "ekokray-megamenu-"
+        $('div.ekokray-megamenu[id^="ekokray-megamenu-"]').each(function() {
             $(this).ekokrayMegamenu();
         });
 
