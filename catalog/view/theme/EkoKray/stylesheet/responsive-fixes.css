@@ -24,8 +24,25 @@ body {
 /* Hide duplicate header menu if exists */
 .header_bottom .main-category-list,
 .header_bottom .wd-menu,
-.content_headercms_bottom .wd-menu {
+.content_headercms_bottom .wd-menu,
+.header_bottom nav:not(.ekokray-menu-container),
+header nav.navbar,
+header .navbar-nav,
+.content_header_topleft,
+.content_headercms_top,
+#nav-one {
 	display: none !important;
+}
+
+/* Ensure only ekokray megamenu is visible */
+.ekokray-megamenu-wrapper {
+	display: block !important;
+}
+
+/* Fix megamenu positioning if needed */
+.ekokray-megamenu-wrapper .ekokray-megamenu {
+	background: #1d2835;
+	width: 100%;
 }
 
 /* ==========================================================================
