@@ -3618,7 +3618,7 @@ li.li-top-item.hiden_menu a.level-top:after {
 		content: "";
 		position: absolute;
 		content: "";
-		background-image: url(../../image/webdigify/menu.svg);
+		background-image: url(../image/webdigify/menu.svg);
 		background-repeat: no-repeat;
 		background-position: left;
 		background-size: 20px;
@@ -4047,10 +4047,10 @@ span.customSelect.changed {
 }
 
 .customSelectInner {
-	background:url('../../image/webdigify/select-arrow-down.gif') no-repeat center right;
+	background:url('../image/webdigify/select-arrow-down.gif') no-repeat center right;
 	width:100% !important;
 }
-.customSelectOpen .customSelectInner{ background:url('../../image/webdigify/select-arrow-up.gif') no-repeat center right; }
+.customSelectOpen .customSelectInner{ background:url('../image/webdigify/select-arrow-up.gif') no-repeat center right; }
 
 #input-sort , #input-limit, #product .form-group select { cursor:pointer;}
 
@@ -4216,7 +4216,7 @@ span.customSelect.changed {
 }
 
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-	background-image: url('../../image/webdigify/fancybox_sprite.png');
+	background-image: url('../image/webdigify/fancybox_sprite.png');
 }
 
 #fancybox-loading {
@@ -4237,7 +4237,7 @@ span.customSelect.changed {
 #fancybox-loading div {
 	width: 44px;
 	height: 44px;
-	background: url('../../image/webdigify/fancybox_loading.gif') center center no-repeat;
+	background: url('../image/webdigify/fancybox_loading.gif') center center no-repeat;
 }
 
 .fancybox-close {
@@ -4257,7 +4257,7 @@ span.customSelect.changed {
 	height: 100%;
 	cursor: pointer;
 	text-decoration: none;
-	background: transparent url('../../image/webdigify/blank.gif'); /* helps IE */
+	background: transparent url('../image/webdigify/blank.gif'); /* helps IE */
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	z-index: 8040;
 }
@@ -4318,7 +4318,7 @@ span.customSelect.changed {
 	overflow: hidden;
 	display: none;
 	z-index: 8010;
-	background: url('../../image/webdigify/fancybox_overlay.png');
+	background: url('../image/webdigify/fancybox_overlay.png');
 }
 
 .fancybox-overlay-fixed {
@@ -5193,7 +5193,7 @@ span.customSelect.changed {
 }
 /* line 7, ../sass/lightbox.sass */
 body:after {
-  content:url(../../image/lightbox/close.png) url(../../image/lightbox/loading.gif) url(../../image/lightbox/prev.png) url(../../image/lightbox/next.png);
+  content:url(../image/lightbox/close.png) url(../image/lightbox/loading.gif) url(../image/lightbox/prev.png) url(../image/lightbox/next.png);
   display: none;
 }
 
@@ -5277,7 +5277,7 @@ body:after {
   width: 32px;
   height: 32px;
   margin: 0 auto;
-  background:url(../../image/lightbox/loading.gif) no-repeat;
+  background:url(../image/lightbox/loading.gif) no-repeat;
 }
 
 /* line 63, ../sass/lightbox.sass */
@@ -5316,7 +5316,7 @@ body:after {
 }
 /* line 87, ../sass/lightbox.sass */
 .lb-prev:hover {
-  background:url(../../image/lightbox/prev.png) left 48% no-repeat;
+  background:url(../image/lightbox/prev.png) left 48% no-repeat;
 }
 
 /* line 90, ../sass/lightbox.sass */
@@ -5326,7 +5326,7 @@ body:after {
 }
 /* line 93, ../sass/lightbox.sass */
 .lb-next:hover {
-  background:url(../../image/lightbox/next.png) right 48% no-repeat;
+  background:url(../image/lightbox/next.png) right 48% no-repeat;
 }
 
 /* line 96, ../sass/lightbox.sass */
@@ -5381,7 +5381,7 @@ body:after {
   float: right;
   width: 30px;
   height: 30px;
-  background:url(../../image/lightbox/close.png) top right no-repeat;
+  background:url(../image/lightbox/close.png) top right no-repeat;
   text-align: right;
   outline: none;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
@@ -5415,7 +5415,7 @@ body:after {
 	-moz-transition: all 400ms ease-in-out 0s;
 	-o-transition: all 400ms ease-in-out 0s;
 	-ms-transition: all 400ms ease-in-out 0s;
-	background: url(../../image/webdigify/menu-close.svg);
+	background: url(../image/webdigify/menu-close.svg);
 	background-size: 15px;
 	background-repeat: no-repeat;
 	background-position: center;
