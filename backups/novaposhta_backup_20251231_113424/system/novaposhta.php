@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Nova Poshta API Helper Class
- *
- * This class provides integration with Nova Poshta API v2.0
- * Handles all API requests, data updates, and helper functions
- * for the Nova Poshta shipping module in OpenCart
- */
 class NovaPoshta
 {
 	public $key_api = null;
@@ -16,30 +9,22 @@ class NovaPoshta
 	private $settings = null;
 	private $registry = null;
 
-	/**
-	 * Constructor - Initialize Nova Poshta API helper
-	 *
-	 * @param object $registry OpenCart registry object
-	 */
 	public function __construct($registry)
 	{
 		$this->registry = $registry;
 
-		// Load module settings based on OpenCart version
 		if (version_compare(VERSION, '3', '>=')) {
 			$this->settings = $this->config->get('shipping_novaposhta');
 		} else {
 			$this->settings = $this->config->get('novaposhta');
 		}
 
-		// Set API key from settings
 		if (isset($this->settings['key_api'])) {
 			$this->key_api = $this->settings['key_api'];
 		} else {
 			$this->key_api = '';
 		}
 
-		// Set description field based on language
 		switch ($this->language->get('code')) {
 			case 'ru':
 			case 'ru-ru':
@@ -54,22 +39,11 @@ class NovaPoshta
 		}
 	}
 
-	/**
-	 * Magic method to access registry objects
-	 */
 	public function __get($name)
 	{
 		return $this->registry->get($name);
 	}
 
-	/**
-	 * Send API request to Nova Poshta API v2.0
-	 *
-	 * @param string $model Nova Poshta API model name
-	 * @param string $method Nova Poshta API method name
-	 * @param array $properties Request parameters
-	 * @return mixed API response data or false on failure
-	 */
 	public function apiRequest($model, $method, $properties = array())
 	{
 		$request = array('apiKey' => $this->key_api, 'modelName' => $model, 'calledMethod' => $method);
@@ -258,8 +232,22 @@ class NovaPoshta
 					}
 				} else {
 					if ($type == 'references') {
-						// Initialize references data array
-						$data = array();
+						$post = array('domain' => $this->getDomain(), 'extension' => 'novaposhta');
+						$options = array(CURLOPT_HEADER => false, CURLOPT_SSL_VERIFYPEER => false, CURLOPT_SSL_VERIFYHOST => false, CURLOPT_POST => true, CURLOPT_POSTFIELDS => $post, CURLOPT_RETURNTRANSFER => true);
+
+						if (isset($this->settings['curl_connecttimeout'])) {
+							$options[CURLOPT_CONNECTTIMEOUT] = $this->settings['curl_connecttimeout'];
+						}
+
+						if (isset($this->settings['curl_timeout']) && isset($this->settings['curl_connecttimeout']) && $this->settings['curl_connecttimeout'] < $this->settings['curl_timeout']) {
+							$options[CURLOPT_TIMEOUT] = $this->settings['curl_timeout'];
+						}
+
+						$ch = curl_init('https://oc-max.com/index.php?route=extension/module/ocmax/getData');
+						curl_setopt_array($ch, $options);
+						$response = curl_exec($ch);
+						curl_close($ch);
+						$data = json_decode($response, true);
 						$data['senders'] = $this->getCounterparties('Sender');
 						$data['third_persons'] = $this->getCounterparties('ThirdPerson');
 
