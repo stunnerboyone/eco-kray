@@ -1,12 +1,12 @@
-<div class="cart-dropdown">
-  <button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="cart-button">
+<div class="cart-dropdown dropdown">
+  <button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="cart-button dropdown-toggle">
     <div class="cart_detail">
       <div class="cart_image"><i class="material-icons-outlined shopping-cart"></i></div>
       <span id="cart-total" class="cart_total">{{ cart_count }}</span>
     </div>
   </button>
 
-  <div id="cart" class="cart-dropdown-menu">
+  <div id="cart" class="cart-dropdown-menu dropdown-menu dropdown-menu-right">
     {% if products or vouchers %}
       <div class="cart-items">
         {% for product in products %}
