@@ -376,14 +376,14 @@ class ModelModuleSimple extends Model {
             'name' => '2 simple url rewrite',
             'author' => 'deeman',
             'version' => '2.0.0',
-            'link' => 'http://simpleopencart.com',
+            'link' => '',
             'xml' => '
             <modification>
                 <name>2 simple url rewrite</name>
                 <code>2 simple url rewrite</code>
                 <version>2.0.0</version>
                 <author>deeman</author>
-                <link>http://simpleopencart.com</link>
+                <link></link>
 
                 <file path="catalog/controller/startup/startup.php">
                     <operation error="skip">

@@ -1,7 +1,7 @@
 <?php
 /*
 @author  Dmitriy Kubarev
-@link    http://www.simpleopencart.com
+
 */
 
 class ModelToolSimpleGeo extends Model {

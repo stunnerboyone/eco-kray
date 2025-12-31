@@ -1,8 +1,8 @@
 <?php
-/*
-Author: Denise (rei7092@gmail.com)
-Page: http://www.opencart.com/index.php?route=extension/extension/info&token=862f82b6be28a025c788dfff38c7a550&extension_id=26240
-*/
+/**
+ * WD Live Search Module
+ * OpenCart Extension
+ */
 
 class ControllerExtensionModuleWDLiveSearch extends Controller {
 	private $error = array();
