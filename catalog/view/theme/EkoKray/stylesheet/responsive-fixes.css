@@ -11,6 +11,24 @@
  */
 
 /* ==========================================================================
+   0. CRITICAL FIXES - Background and Layout
+   ========================================================================== */
+
+/* Fix black background issue */
+html,
+body {
+	background-color: #ffffff !important;
+	background: #ffffff !important;
+}
+
+/* Hide duplicate header menu if exists */
+.header_bottom .main-category-list,
+.header_bottom .wd-menu,
+.content_headercms_bottom .wd-menu {
+	display: none !important;
+}
+
+/* ==========================================================================
    1. PRODUCT GRID - Optimized Column Layout
    ========================================================================== */
 
