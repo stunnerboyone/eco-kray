@@ -1,0 +1,26 @@
+<div class="menu-item" data-item-id="{{ item.item_id }}" data-level="{{ level }}" style="margin-left: {{ level * 30 }}px;">
+  <div class="menu-item-content">
+    <div class="menu-item-handle">
+      <i class="fa fa-bars"></i>
+    </div>
+    <div class="menu-item-title">
+      <strong>{{ item.title }}</strong>
+      <small class="text-muted">({{ item.item_type }})</small>
+    </div>
+    <div class="menu-item-actions">
+      <button type="button" class="btn btn-xs btn-primary btn-edit-item" data-item-id="{{ item.item_id }}">
+        <i class="fa fa-pencil"></i>
+      </button>
+      <button type="button" class="btn btn-xs btn-danger btn-delete-item" data-item-id="{{ item.item_id }}">
+        <i class="fa fa-trash-o"></i>
+      </button>
+    </div>
+  </div>
+  {% if item.children %}
+  <div class="menu-item-children">
+    {% for child in item.children %}
+      {{ include('extension/module/ekokray_megamenu_item_row.twig', {'item': child, 'level': level + 1}) }}
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
