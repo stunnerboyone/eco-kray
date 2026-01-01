@@ -35,6 +35,14 @@
   min-height: 60px;
 }
 
+/* Header top wrapper */
+#header-top {
+  position: relative;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 /* Base Container - flex layout for desktop */
 .ekokray-megamenu {
   position: relative;
@@ -44,6 +52,7 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  z-index: 100;
 }
 
 /* Menu container - center on desktop */
@@ -87,7 +96,7 @@
 
 .ekokray-menu {
   list-style: none;
-  margin-top: 30px;
+  margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
@@ -162,8 +171,13 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: all var(--megamenu-transition);
-  z-index: 1000;
+  z-index: 9999 !important;
   margin-top: 8px;
+  pointer-events: none;
+}
+
+.ekokray-menu-item:hover > .ekokray-dropdown {
+  pointer-events: all;
 }
 
 .ekokray-menu-item:hover > .ekokray-dropdown {
