@@ -55,7 +55,9 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
 
             // If item has category_tree type, get all subcategories
             if ($item['item_type'] == 'category_tree' && $item['category_id']) {
+                error_log("MEGAMENU DEBUG - Loading category_tree for item_id={$item['item_id']}, category_id={$item['category_id']}, title={$item['title']}");
                 $item['subcategories'] = $this->getCategoryTree($item['category_id'], $language_id);
+                error_log("MEGAMENU DEBUG - Loaded " . count($item['subcategories']) . " subcategories for item '{$item['title']}'");
             }
         }
 
@@ -138,7 +140,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
     protected function getCategoryTree($parent_id, $language_id) {
         $this->load->model('tool/image');
 
-        $query = $this->db->query("
+        $sql = "
             SELECT DISTINCT
                 c.category_id,
                 cd.name,
@@ -153,7 +155,13 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
             AND c.status = '1'
             AND (c2s.store_id IS NULL OR c2s.store_id = '0' OR c2s.store_id = '" . (int)$this->config->get('config_store_id') . "')
             ORDER BY c.sort_order ASC, cd.name ASC
-        ");
+        ";
+
+        error_log("MEGAMENU DEBUG - getCategoryTree SQL for parent_id={$parent_id}, lang={$language_id}: " . $sql);
+
+        $query = $this->db->query($sql);
+
+        error_log("MEGAMENU DEBUG - getCategoryTree found " . count($query->rows) . " categories for parent_id={$parent_id}");
 
         $categories = array();
 
