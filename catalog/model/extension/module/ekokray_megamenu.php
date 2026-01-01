@@ -139,7 +139,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $this->load->model('tool/image');
 
         $query = $this->db->query("
-            SELECT
+            SELECT DISTINCT
                 c.category_id,
                 cd.name,
                 c.image,
@@ -151,8 +151,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
                 ON (c.category_id = c2s.category_id)
             WHERE c.parent_id = '" . (int)$parent_id . "'
             AND c.status = '1'
-            AND (c2s.store_id = '0' OR c2s.store_id = '" . (int)$this->config->get('config_store_id') . "' OR c2s.store_id IS NULL)
-            GROUP BY c.category_id
+            AND (c2s.store_id IS NULL OR c2s.store_id = '0' OR c2s.store_id = '" . (int)$this->config->get('config_store_id') . "')
             ORDER BY c.sort_order ASC, cd.name ASC
         ");
 
@@ -253,7 +252,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $language_id = (int)$this->config->get('config_language_id');
 
         $query = $this->db->query("
-            SELECT
+            SELECT DISTINCT
                 c.category_id,
                 cd.name,
                 c.image,
@@ -266,8 +265,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
                 ON (c.category_id = c2s.category_id)
             WHERE c.parent_id = '" . (int)$parent_id . "'
             AND c.status = '1'
-            AND (c2s.store_id = '0' OR c2s.store_id = '" . (int)$this->config->get('config_store_id') . "' OR c2s.store_id IS NULL)
-            GROUP BY c.category_id
+            AND (c2s.store_id IS NULL OR c2s.store_id = '0' OR c2s.store_id = '" . (int)$this->config->get('config_store_id') . "')
             ORDER BY c.sort_order ASC, cd.name ASC
         ");
 
