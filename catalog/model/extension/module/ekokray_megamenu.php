@@ -192,23 +192,6 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $this->load->model('catalog/product');
         $this->load->model('tool/image');
 
-        // Debug logging
-        error_log('=== GET CATEGORY PRODUCTS DEBUG ===');
-        error_log('Category ID: ' . $category_id);
-        error_log('Limit: ' . $limit);
-        error_log('Store ID: ' . $this->config->get('config_store_id'));
-        error_log('Language ID: ' . $language_id);
-
-        // First, try a simple query to check if products exist in category
-        $simple_sql = "
-            SELECT COUNT(*) as count
-            FROM `" . DB_PREFIX . "product_to_category`
-            WHERE category_id = '" . (int)$category_id . "'";
-
-        $simple_result = $this->db->query($simple_sql);
-        error_log('Simple count query - Products in category: ' . $simple_result->row['count']);
-
-        // Now the full query, but without store restriction first
         $sql = "
             SELECT p.product_id, p.status, p.date_available
             FROM `" . DB_PREFIX . "product` p
@@ -218,19 +201,12 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
             AND p.status = '1'
             LIMIT " . (int)$limit;
 
-        error_log('SQL Query: ' . $sql);
-
         $query = $this->db->query($sql);
-
-        error_log('Query returned ' . $query->num_rows . ' rows');
 
         $products = array();
 
         foreach ($query->rows as $result) {
-            error_log('Processing product ID: ' . $result['product_id']);
             $product_info = $this->model_catalog_product->getProduct($result['product_id']);
-
-            error_log('Product info returned: ' . ($product_info ? 'YES' : 'NO'));
 
             if ($product_info) {
                 if ($product_info['image']) {
@@ -260,12 +236,8 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
                     'special'     => $special,
                     'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id'])
                 );
-                error_log('Product added: ' . $product_info['name']);
             }
         }
-
-        error_log('Total products being returned: ' . count($products));
-        error_log('=== END GET CATEGORY PRODUCTS DEBUG ===');
 
         return $products;
     }
