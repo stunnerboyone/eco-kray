@@ -45,8 +45,13 @@ class ControllerCommonheadertop extends Controller {
 		
 		$modules = $this->model_design_layout->getLayoutModules($layout_id, 'headertop');
 
+		// DEBUG: Add HTML comment with module info
+		$debug = "\n<!-- DEBUG HEADERTOP: Layout ID = $layout_id, Modules found = " . count($modules) . " -->\n";
+
 		foreach ($modules as $module) {
 			$part = explode('.', $module['code']);
+
+			$debug .= "<!-- Module code: {$module['code']} -->\n";
 
 			if (isset($part[0]) && $this->config->get('module_' . $part[0] . '_status')) {
 				$module_data = $this->load->controller('extension/module/' . $part[0]);
@@ -59,16 +64,29 @@ class ControllerCommonheadertop extends Controller {
 			if (isset($part[1])) {
 				$setting_info = $this->model_setting_module->getModule($part[1]);
 
-				if ($setting_info && $setting_info['status']) {
-					$output = $this->load->controller('extension/module/' . $part[0], $setting_info);
+				if ($setting_info) {
+					$debug .= "<!-- Module instance found, status = " . (isset($setting_info['status']) ? $setting_info['status'] : 'not set') . " -->\n";
 
-					if ($output) {
-						$data['modules'][] = $output;
+					if (isset($setting_info['status']) && $setting_info['status']) {
+						$output = $this->load->controller('extension/module/' . $part[0], $setting_info);
+
+						if ($output) {
+							$data['modules'][] = $output;
+							$debug .= "<!-- Module loaded successfully -->\n";
+						} else {
+							$debug .= "<!-- WARNING: Controller returned empty -->\n";
+						}
+					} else {
+						$debug .= "<!-- WARNING: Module instance is DISABLED -->\n";
 					}
+				} else {
+					$debug .= "<!-- WARNING: Module instance NOT FOUND -->\n";
 				}
 			}
 		}
-				
+
+		$data['modules'][] = $debug;
+
 		return $this->load->view('common/headertop', $data); 
 	}
 }
