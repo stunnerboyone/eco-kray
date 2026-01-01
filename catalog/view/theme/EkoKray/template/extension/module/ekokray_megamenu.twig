@@ -143,6 +143,16 @@ window.ekokrayMegamenuData['menu_{{ menu_id }}'] = {
   mobileBreakpoint: {{ mobile_breakpoint }},
   getProductsUrl: 'index.php?route=extension/module/ekokray_megamenu/getProducts'
 };
+
+// DEBUG: Log menu items data
+console.log('MEGAMENU DEBUG - Template rendered with items:', {{ items|json_encode|raw }});
+{% for item in items %}
+  {% if item.subcategories %}
+    console.log('MEGAMENU DEBUG - Item "{{ item.title }}" has {{ item.subcategories|length }} subcategories:', {{ item.subcategories|json_encode|raw }});
+  {% else %}
+    console.log('MEGAMENU DEBUG - Item "{{ item.title }}" has NO subcategories');
+  {% endif %}
+{% endfor %}
 </script>
 
 <!-- Load megamenu JavaScript directly -->

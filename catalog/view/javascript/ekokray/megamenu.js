@@ -66,8 +66,10 @@
 
             // Desktop hover for product loading on category items
             $(document).on('mouseenter', '.ekokray-category-item', function() {
+                console.log('MEGAMENU DEBUG - mouseenter on category item');
 
                 if (self.isMobile) {
+                    console.log('MEGAMENU DEBUG - Mobile mode, skipping hover');
                     return;
                 }
 
@@ -76,6 +78,9 @@
                 var categoryId = $productsContainer.data('category-id');
                 var limit = $productsContainer.data('limit') || 8;
                 var loaded = $item.data('products-loaded');
+                var categoryName = $item.find('.ekokray-category-name').text();
+
+                console.log('MEGAMENU DEBUG - Hover on: ' + categoryName + ', categoryId: ' + categoryId + ', loaded: ' + loaded);
 
 
                 // CRITICAL: Hide all other product containers first
@@ -204,14 +209,17 @@
         },
 
         loadProducts: function(categoryId, limit, $container) {
+            console.log('MEGAMENU DEBUG - loadProducts() called for categoryId: ' + categoryId + ', limit: ' + limit);
 
             var self = this;
             var $loading = $container.find('.ekokray-products-loading');
             var $grid = $container.find('.ekokray-products-grid');
 
+            console.log('MEGAMENU DEBUG - Products grid already has ' + $grid.children().length + ' children');
 
             // Check if already loaded
             if ($grid.children().length > 0) {
+                console.log('MEGAMENU DEBUG - Products already loaded, skipping AJAX');
                 return;
             }
 
@@ -219,6 +227,7 @@
             $loading.show();
 
             var ajaxUrl = this.options.getProductsUrl;
+            console.log('MEGAMENU DEBUG - AJAX URL: ' + ajaxUrl);
 
             // AJAX request
             $.ajax({
@@ -230,14 +239,18 @@
                 },
                 dataType: 'json',
                 beforeSend: function() {
+                    console.log('MEGAMENU DEBUG - AJAX request sending...');
                 },
                 success: function(response) {
+                    console.log('MEGAMENU DEBUG - AJAX success! Response:', response);
 
                     // Log debug info from server
                     if (response.debug) {
+                        console.log('MEGAMENU DEBUG - Server debug info:', response.debug);
                     }
 
                     if (response.success && response.products && response.products.length > 0) {
+                        console.log('MEGAMENU DEBUG - Found ' + response.products.length + ' products');
                         self.renderProducts(response.products, $grid);
                         // Show the products container
                         $container.addClass('has-products-loaded');
@@ -248,6 +261,7 @@
                             'pointer-events': 'auto'
                         });
                     } else {
+                        console.warn('MEGAMENU DEBUG - No products found or error. Response:', response);
                         console.error('Response data:', JSON.stringify(response));
                         $grid.html('<p class="text-muted text-center" style="padding: 20px;">Товари не знайдено в цій категорії</p>');
                         $container.addClass('has-products-loaded');
@@ -382,18 +396,26 @@
 
     // Auto-init
     $(document).ready(function() {
+        console.log('MEGAMENU DEBUG - jQuery ready, initializing megamenu...');
 
         // Initialize only top-level megamenu containers with ID starting with "ekokray-megamenu-"
         $('div.ekokray-megamenu[id^="ekokray-megamenu-"]').each(function() {
+            console.log('MEGAMENU DEBUG - Found megamenu container:', this.id);
             $(this).ekokrayMegamenu();
         });
 
         // Debug: Check if category items exist after init
         setTimeout(function() {
+            console.log('MEGAMENU DEBUG - Checking for category items...');
+            var categoryItemCount = $('.ekokray-category-item').length;
+            console.log('MEGAMENU DEBUG - Found ' + categoryItemCount + ' category items in DOM');
+
             $('.ekokray-category-item').each(function(index) {
                 var $item = $(this);
                 var $productsContainer = $item.find('.ekokray-category-products');
                 var categoryId = $productsContainer.data('category-id');
+                var categoryName = $item.find('.ekokray-category-name').text();
+                console.log('MEGAMENU DEBUG - Category item #' + index + ': ' + categoryName + ' (ID: ' + categoryId + ')');
             });
         }, 1000);
 

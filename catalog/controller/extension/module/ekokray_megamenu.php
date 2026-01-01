@@ -41,6 +41,8 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         // Get menu structure
         $menu_data = $this->model_extension_module_ekokray_megamenu->getMenuStructure($menu_id, $language_id);
 
+        error_log("MEGAMENU DEBUG - Controller index() loaded menu_id={$menu_id}, items count: " . count($menu_data['items']));
+
         if (empty($menu_data)) {
             return '';
         }
@@ -50,6 +52,8 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         $data['menu_name'] = $menu_data['name'];
         $data['mobile_breakpoint'] = $menu_data['mobile_breakpoint'];
         $data['items'] = $this->buildMenuItems($menu_data['items']);
+
+        error_log("MEGAMENU DEBUG - Controller buildMenuItems() processed " . count($data['items']) . " items");
 
         // Add search, account, and cart data for mobile menu
         $data['search_url'] = $this->url->link('product/search');
@@ -122,6 +126,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
                 // Add subcategories if available
                 if (isset($item['subcategories'])) {
                     $item_data['subcategories'] = $item['subcategories'];
+                    error_log("MEGAMENU DEBUG - buildMenuItems() added " . count($item['subcategories']) . " subcategories to '{$item['title']}'");
+                } else {
+                    error_log("MEGAMENU DEBUG - buildMenuItems() NO subcategories for '{$item['title']}' (category_id={$item['category_id']})");
                 }
             }
 
