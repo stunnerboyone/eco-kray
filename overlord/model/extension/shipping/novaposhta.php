@@ -3,6 +3,16 @@ class ModelShippingNovaPoshta extends Model {
     protected $extension = 'novaposhta';
 
     public function creatTables() {
+        // Валідація константи DB_DATABASE для захисту від SQL ін'єкції
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', DB_DATABASE)) {
+            throw new Exception('Invalid database name: DB_DATABASE contains invalid characters');
+        }
+
+        // Валідація константи DB_PREFIX для додаткової безпеки
+        if (!preg_match('/^[a-zA-Z0-9_]*$/', DB_PREFIX)) {
+            throw new Exception('Invalid database prefix: DB_PREFIX contains invalid characters');
+        }
+
         $this->db->query('CREATE TABLE IF NOT EXISTS `' . DB_PREFIX . $this->extension . '_regions` (
    			`Ref` varchar(36) NOT NULL,
    			`AreasCenter` varchar(36) NOT NULL,
