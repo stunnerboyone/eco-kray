@@ -212,18 +212,34 @@ document.addEventListener("DOMContentLoaded", function () {
   if (button) {
     button.addEventListener("click", function (e) {
       e.preventDefault();
+      e.stopPropagation();
 
+      // Close other dropdowns
       document.querySelectorAll(".cart-dropdown").forEach(function (el) {
         if (el !== cartDropdown) {
           el.classList.remove("open");
         }
       });
 
-
+      // Load cart content and show dropdown
       $("#cart").load("index.php?route=common/cart/info", function () {
-        cartDropdown.classList.toggle("open");
+        cartDropdown.classList.add("open");
       });
     });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function(e) {
+      if (!cartDropdown.contains(e.target)) {
+        cartDropdown.classList.remove("open");
+      }
+    });
+
+    // Prevent dropdown from closing when clicking inside it
+    if (cartDropdown) {
+      cartDropdown.addEventListener("click", function(e) {
+        e.stopPropagation();
+      });
+    }
   }
 });
 
