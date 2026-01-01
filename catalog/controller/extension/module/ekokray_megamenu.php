@@ -20,10 +20,22 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
 
         // Get menu ID from settings
         if (!isset($setting['menu_id']) || empty($setting['menu_id'])) {
-            return '';
-        }
+            // Try to get the first active menu as fallback
+            $menu_query = $this->db->query("
+                SELECT menu_id FROM `" . DB_PREFIX . "ekokray_menu`
+                WHERE `status` = '1'
+                ORDER BY menu_id ASC
+                LIMIT 1
+            ");
 
-        $menu_id = $setting['menu_id'];
+            if ($menu_query->num_rows) {
+                $menu_id = $menu_query->row['menu_id'];
+            } else {
+                return '';
+            }
+        } else {
+            $menu_id = $setting['menu_id'];
+        }
         $language_id = (int)$this->config->get('config_language_id');
 
         // Get menu structure
@@ -65,9 +77,9 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         $data['text_cart'] = $this->language->get('text_cart');
         $data['text_checkout'] = $this->language->get('text_checkout');
 
-        // Add styles and scripts with cache busting
-        $this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/ekokray/megamenu.css?v=' . time());
-        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js?v=' . time());
+        // Add styles and scripts
+        $this->document->addStyle('catalog/view/theme/EkoKray/stylesheet/ekokray/megamenu.css');
+        $this->document->addScript('catalog/view/javascript/ekokray/megamenu.js');
 
         return $this->load->view('extension/module/ekokray_megamenu', $data);
     }
