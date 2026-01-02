@@ -455,7 +455,7 @@ class ControllerShippingNovaPoshta extends Controller
 			$json = array();
 
 			if ($this->validate() && $this->validateCNForm()) {
-				$json['success'] = $this->request->post;
+				$json['success'] = $this->sanitizePostData($this->request->post);
 			} else {
 				$json = $this->error;
 			}
@@ -3249,6 +3249,68 @@ class ControllerShippingNovaPoshta extends Controller
 		}
 
 		return !$this->error;
+	}
+	/**
+	 * Безпечна санітизація POST даних з whitelist підходом
+	 * Захист від XSS атак - повертає тільки дозволені поля з санітизацією
+	 */
+	private function sanitizePostData($data) {
+		// Whitelist дозволених полів на основі validateCNForm()
+		$allowed_fields = array(
+			// Sender fields
+			'sender', 'sender_contact_person', 'f_sender', 'sender_region', 'sender_city',
+			'sender_department', 'sender_address', 'sender_address_pick_up',
+			
+			// Recipient fields
+			'recipient', 'recipient_contact_person', 'recipient_contact_person_phone',
+			'recipient_address_type', 'recipient_region', 'recipient_region_name',
+			'recipient_district_name', 'recipient_city', 'recipient_settlement',
+			'recipient_settlement_name', 'recipient_department', 'recipient_poshtomat',
+			'recipient_street', 'recipient_street_name', 'recipient_house', 'recipient_flat',
+			
+			// Parcel fields
+			'departure_type', 'parcels', 'tires_and_wheels', 'general_parameters',
+			'weight_general', 'volume_general', 'volume_weight_general',
+			'pack_general', 'pack_type_general', 'seats_amount',
+			
+			// Cost and payment
+			'declared_cost', 'delivery_payer', 'payment_type', 'payment_control',
+			'backward_delivery', 'backward_delivery_total', 'backward_delivery_payer',
+			'third_person',
+			
+			// Additional info
+			'departure_description', 'additional_information', 'packing_number',
+			'order_number', 'departure_date', 'preferred_delivery_date', 'time_interval',
+			'avia_delivery', 'rise_on_floor', 'elevator'
+		);
+		
+		$safe_data = array();
+		
+		foreach ($allowed_fields as $field) {
+			if (isset($data[$field])) {
+				$safe_data[$field] = $this->sanitizeValue($data[$field]);
+			}
+		}
+		
+		return $safe_data;
+	}
+	
+	/**
+	 * Рекурсивна санітизація значення
+	 */
+	private function sanitizeValue($value) {
+		if (is_array($value)) {
+			$sanitized = array();
+			foreach ($value as $key => $val) {
+				// Санітизуємо і ключ і значення
+				$safe_key = htmlspecialchars($key, ENT_QUOTES, 'UTF-8');
+				$sanitized[$safe_key] = $this->sanitizeValue($val);
+			}
+			return $sanitized;
+		}
+		
+		// Для рядків - екрануємо HTML спецсимволи
+		return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 	}
 }
 
