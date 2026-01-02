@@ -139,11 +139,17 @@ class ControllerStartupStartup extends Controller {
 			$this->config->set('config_customer_group_id', $this->config->get('config_customer_group_id'));
 		}
 		
-		// Tracking Code
+		// Tracking Code (Проблема #22: валідація tracking для захисту від Cookie Injection)
 		if (isset($this->request->get['tracking'])) {
-			setcookie('tracking', $this->request->get['tracking'], time() + 3600 * 24 * 1000, '/');
-		
-			$this->db->query("UPDATE `" . DB_PREFIX . "marketing` SET clicks = (clicks + 1) WHERE code = '" . $this->db->escape($this->request->get['tracking']) . "'");
+			// Валідація tracking коду: тільки alphanumeric, дефіс, підкреслення, макс 64 символи
+			$tracking = preg_replace('/[^a-zA-Z0-9_-]/', '', $this->request->get['tracking']);
+			$tracking = substr($tracking, 0, 64);
+
+			if (!empty($tracking)) {
+				setcookie('tracking', $tracking, time() + 3600 * 24 * 1000, '/');
+
+				$this->db->query("UPDATE `" . DB_PREFIX . "marketing` SET clicks = (clicks + 1) WHERE code = '" . $this->db->escape($tracking) . "'");
+			}
 		}		
 		
 		// Currency
