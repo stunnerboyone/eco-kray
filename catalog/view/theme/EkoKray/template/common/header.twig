@@ -166,8 +166,8 @@ $(document).ready(function(){
 
   <div class="col-sm-3 nav2">
 
-    <div class="header_cart">{{ cart }}</div>
-    <div class="account">     
+    <div class="header_search">{{ search }}</div>
+    <div class="account">
       <div class="dropdown myaccount"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown"></a><span class="account-title">{{ text_account }}</span>
           <ul class="dropdown-menu dropdown-menu-right myaccount-menu">
             <span class="drop_account">
@@ -184,14 +184,14 @@ $(document).ready(function(){
           <li><a href="{{ checkout }}" title="{{ text_checkout }}">{{ text_checkout }}</a></li>
 
         {% endif %}
-        </div>	
-        
-          </span>      
+        </div>
+
+          </span>
          </ul>
         </div>
       </div>
       {# <div class="header_wishlist"><span>{{ text_wishlist }}</span><a href="{{ wishlist }}" id="wishlist-total"></a></div> #}
-      <div class="header_search">{{ search }}</div>
+      <div class="header_cart">{{ cart }}</div>
     </div>
   </div>
 </div>
