@@ -46,6 +46,7 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 			foreach ($category_ids as $category_id) {
 				error_log("WD_CATEGORY_LIST DEBUG - Loading category_id: " . $category_id);
 				$category_info = $this->model_catalog_category->getCategory($category_id);
+			error_log("WD_CATEGORY_LIST DEBUG - getCategory returned: " . json_encode($category_info));
 
 				if ($category_info) {
 					error_log("WD_CATEGORY_LIST DEBUG - Category loaded: " . $category_info['name'] . " (ID: " . (isset($category_info['category_id']) ? $category_info['category_id'] : 'MISSING') . ")");
