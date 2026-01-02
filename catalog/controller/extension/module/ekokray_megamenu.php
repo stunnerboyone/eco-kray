@@ -36,7 +36,21 @@ class ControllerExtensionModuleEkokrayMegamenu extends Controller {
         } else {
             $menu_id = $setting['menu_id'];
         }
-        $language_id = (int)$this->config->get('config_language_id');
+
+        // Get language_id from config_language code
+        $language_code = $this->config->get('config_language');
+        $language_query = $this->db->query("
+            SELECT language_id FROM `" . DB_PREFIX . "language`
+            WHERE code = '" . $this->db->escape($language_code) . "'
+            AND status = '1'
+        ");
+
+        if ($language_query->num_rows) {
+            $language_id = (int)$language_query->row['language_id'];
+        } else {
+            // Fallback to first active language
+            $language_id = 1;
+        }
 
         // Get menu structure
         $menu_data = $this->model_extension_module_ekokray_megamenu->getMenuStructure($menu_id, $language_id);
