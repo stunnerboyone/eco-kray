@@ -1,6 +1,8 @@
 <?php
 class ControllerExtensionModuleWDCategoryList extends Controller {
 	public function index($setting) {
+		error_log("WD_CATEGORY_LIST DEBUG - index() called with setting: " . json_encode($setting));
+
 		$this->load->language('extension/module/wd_category_list');
 
 		$data['heading_title1'] = $this->language->get('heading_title1');
@@ -17,18 +19,29 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 		$this->load->model('tool/image');
 
 		$data['categories'] = array();
-		
+
 		$categories = $this->model_catalog_category->getCategories(0);
+		error_log("WD_CATEGORY_LIST DEBUG - getCategories(0) returned: " . count($categories) . " categories");
 
 		if (!$setting['limit']) {
 			$setting['limit'] = 4;
 		}
 
 		if (!empty($setting['category'])) {
+			error_log("WD_CATEGORY_LIST DEBUG - setting['category']: " . json_encode($setting['category']));
 			$categories = array_slice($setting['category'], 0, (int)$setting['limit']);
+			error_log("WD_CATEGORY_LIST DEBUG - Processing " . count($categories) . " categories from settings");
 
 			foreach ($categories as $category_id) {
+				error_log("WD_CATEGORY_LIST DEBUG - Loading category_id: " . $category_id);
 				$category_info = $this->model_catalog_category->getCategory($category_id);
+
+				if ($category_info) {
+					error_log("WD_CATEGORY_LIST DEBUG - Category loaded: " . $category_info['name']);
+				} else {
+					error_log("WD_CATEGORY_LIST DEBUG - Category NOT found for ID: " . $category_id);
+				}
+
 				$children_data = array();
 
 				if ($category_info) {
@@ -82,8 +95,13 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 					);
 				}
 			}
-		}		
-	return $this->load->view('extension/module/wd_category_list', $data);
-		
+		} else {
+			error_log("WD_CATEGORY_LIST DEBUG - setting['category'] is EMPTY or not set!");
+		}
+
+		error_log("WD_CATEGORY_LIST DEBUG - Final data['categories'] count: " . count($data['categories']));
+		error_log("WD_CATEGORY_LIST DEBUG - Final data['categories']: " . json_encode($data['categories']));
+
+		return $this->load->view('extension/module/wd_category_list', $data);
 	}
 }
