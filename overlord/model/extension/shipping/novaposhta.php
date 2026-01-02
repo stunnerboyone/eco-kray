@@ -157,8 +157,42 @@ class ModelShippingNovaPoshta extends Model {
             $products = $this->db->query("SELECT `op`.*, `p`.`sku`, `p`.`upc`, `p`.`weight`, `p`.`weight_class_id`, `p`.`length`, `p`.`width`, `p`.`height`, `p`.`length_class_id` FROM `" . DB_PREFIX . "order_product` AS `op` INNER JOIN `" . DB_PREFIX . "product` AS `p` ON `op`.`product_id` = `p`.`product_id` AND `op`.`order_id` = " . (int)$order_id)->rows;
         }
 
+        // Оптимізація N+1: завантажити ВСІ order options одним запитом
+        $all_options = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_option` WHERE `order_id` = '" . (int)$order_id . "'")->rows;
+
+        // Згрупувати options по order_product_id для швидкого доступу
+        $options_grouped = array();
+        $product_option_value_ids = array();
+
+        foreach ($all_options as $option) {
+            $order_product_id = $option['order_product_id'];
+            if (!isset($options_grouped[$order_product_id])) {
+                $options_grouped[$order_product_id] = array();
+            }
+            $options_grouped[$order_product_id][] = $option;
+
+            // Зібрати всі product_option_value_id для batch запиту
+            if (!empty($option['product_option_value_id'])) {
+                $product_option_value_ids[] = (int)$option['product_option_value_id'];
+            }
+        }
+
+        // Завантажити ВСІ product_option_values одним запитом (якщо є)
+        $option_values_map = array();
+        if (!empty($product_option_value_ids)) {
+            $unique_ids = array_unique($product_option_value_ids);
+            $option_values_query = $this->db->query("SELECT `pov`.`product_option_value_id`, `pov`.`product_id`, `ovd`.`name`, `pov`.`option_value_id`, `pov`.`quantity`, `pov`.`subtract`, `pov`.`price`, `pov`.`price_prefix`, `pov`.`points`, `pov`.`points_prefix`, `pov`.`weight`, `pov`.`weight_prefix` FROM `" . DB_PREFIX . "product_option_value` AS `pov` LEFT JOIN `" . DB_PREFIX . "option_value_description` AS `ovd` ON (`pov`.`option_value_id` = `ovd`.`option_value_id`) WHERE `pov`.`product_option_value_id` IN (" . implode(',', $unique_ids) . ") AND `ovd`.`language_id` = '" . (int)$this->config->get('config_language_id') . "'")->rows;
+
+            // Індексувати по product_id та product_option_value_id для швидкого пошуку
+            foreach ($option_values_query as $row) {
+                $key = $row['product_id'] . '_' . $row['product_option_value_id'];
+                $option_values_map[$key] = $row;
+            }
+        }
+
         foreach ($products as $product) {
-            $options = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order_option` WHERE `order_id` = '" . (int)$order_id . "' AND `order_product_id` = '" . (int)$product['order_product_id'] . "'")->rows;
+            // Використовуємо вже завантажені options з групування
+            $options = isset($options_grouped[$product['order_product_id']]) ? $options_grouped[$product['order_product_id']] : array();
 
             $option_data   = array();
             $option_weight = 0;
@@ -171,7 +205,9 @@ class ModelShippingNovaPoshta extends Model {
                     );
                 }
 
-                $product_option_value_info = $this->db->query("SELECT `ovd`.`name`, `pov`.`option_value_id`, `pov`.`quantity`, `pov`.`subtract`, `pov`.`price`, `pov`.`price_prefix`, `pov`.`points`, `pov`.`points_prefix`, `pov`.`weight`, `pov`.`weight_prefix` FROM `" . DB_PREFIX . "product_option_value` AS `pov` LEFT JOIN `" . DB_PREFIX . "option_value_description` AS `ovd` ON (`pov`.`option_value_id` = `ovd`.`option_value_id`) WHERE `pov`.`product_id` = '" . (int)$product['product_id'] . "' AND `pov`.`product_option_value_id` = '" . (int)$option['product_option_value_id'] . "' AND `ovd`.`language_id` = '" . (int)$this->config->get('config_language_id') . "'")->row;
+                // Використовуємо вже завантажені option values з map
+                $key = $product['product_id'] . '_' . $option['product_option_value_id'];
+                $product_option_value_info = isset($option_values_map[$key]) ? $option_values_map[$key] : null;
 
                 if ($product_option_value_info) {
                     if ($product_option_value_info['weight_prefix'] == '+') {
