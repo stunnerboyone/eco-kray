@@ -42,7 +42,8 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 			$selected_categories = array_slice($categories, 0, (int)$setting['limit']);
 			
 			foreach ($selected_categories as $category_info) {
-				error_log("WD_CATEGORY_LIST DEBUG - Processing category_id: " . $category_info['category_id'] . " name: " . $category_info['name']);
+				error_log("WD_CATEGORY_LIST DEBUG - Category keys: " . implode(", ", array_keys($category_info)));
+				error_log("WD_CATEGORY_LIST DEBUG - Category data: " . json_encode($category_info));
 				$this->processCategoryData($category_info, $setting, $data);
 			}
 		}
