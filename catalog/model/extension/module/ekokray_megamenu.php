@@ -9,6 +9,27 @@
 class ModelExtensionModuleEkokrayMegamenu extends Model {
 
     /**
+     * Get current language ID from config_language code
+     *
+     * @return int Language ID
+     */
+    protected function getLanguageId() {
+        $language_code = $this->config->get('config_language');
+        $language_query = $this->db->query("
+            SELECT language_id FROM `" . DB_PREFIX . "language`
+            WHERE code = '" . $this->db->escape($language_code) . "'
+            AND status = '1'
+        ");
+
+        if ($language_query->num_rows) {
+            return (int)$language_query->row['language_id'];
+        }
+
+        // Fallback to first active language
+        return 1;
+    }
+
+    /**
      * Get menu structure with all items (hierarchical)
      *
      * @param int $menu_id Menu ID
@@ -17,7 +38,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
      */
     public function getMenuStructure($menu_id, $language_id = null) {
         if ($language_id === null) {
-            $language_id = (int)$this->config->get('config_language_id');
+            $language_id = $this->getLanguageId();
         }
 
         // Try to get from cache
@@ -194,7 +215,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
      */
     public function getCategoryProducts($category_id, $limit = 8, $language_id = null) {
         if ($language_id === null) {
-            $language_id = (int)$this->config->get('config_language_id');
+            $language_id = $this->getLanguageId();
         }
 
         $this->load->model('catalog/product');
@@ -257,7 +278,7 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
      * @return array Category tree
      */
     public function getAllCategories($parent_id = 0) {
-        $language_id = (int)$this->config->get('config_language_id');
+        $language_id = $this->getLanguageId();
 
         $query = $this->db->query("
             SELECT DISTINCT
