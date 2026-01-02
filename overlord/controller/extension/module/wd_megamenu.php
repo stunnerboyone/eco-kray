@@ -526,7 +526,15 @@ class ControllerExtensionModuleWDmegamenu extends Controller
 
         $json = array();
 
-        $menu_id = $this->request->get['menu_id'];
+        // Валідація menu_id (захист від некоректних даних та XSS)
+        $menu_id = isset($this->request->get['menu_id']) ? (int)$this->request->get['menu_id'] : 0;
+
+        if ($menu_id <= 0) {
+            $json['error'] = 'Invalid menu ID';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
 
         $results = $this->model_webdigify_wd_megamenu->getTopItems($menu_id);
 
@@ -1191,7 +1199,15 @@ class ControllerExtensionModuleWDmegamenu extends Controller
 
         $json = array();
 
-        $category_id = $this->request->get['category_id'];
+        // Валідація category_id (захист від SQL ін'єкції та XSS)
+        $category_id = isset($this->request->get['category_id']) ? (int)$this->request->get['category_id'] : 0;
+
+        if ($category_id < 0) {
+            $json['error'] = 'Invalid category ID';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
 
         $json['category_link'] = 'index.php?route=product/category&path=' . $category_id;
 
