@@ -526,6 +526,24 @@ class ControllerExtensionModuleWDmegamenu extends Controller
 
         $json = array();
 
+        // Захист від CSRF атак - перевірка user_token
+        if (!isset($this->session->data['user_token']) ||
+            !isset($this->request->get['user_token']) ||
+            $this->session->data['user_token'] !== $this->request->get['user_token']) {
+            $json['error'] = 'Invalid token';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
+        // Перевірка прав доступу (Auth Bypass захист)
+        if (!$this->user->hasPermission('access', 'extension/module/wd_megamenu')) {
+            $json['error'] = 'Access denied';
+            $this->response->addHeader('Content-Type: application/json');
+            $this->response->setOutput(json_encode($json));
+            return;
+        }
+
         // Валідація menu_id (захист від некоректних даних та XSS)
         $menu_id = isset($this->request->get['menu_id']) ? (int)$this->request->get['menu_id'] : 0;
 

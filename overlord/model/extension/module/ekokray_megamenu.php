@@ -390,6 +390,13 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
      * @param int $menu_id Menu ID
      */
     public function clearMenuCache($menu_id) {
+        // Валідація menu_id (захист від cache poisoning та path traversal)
+        $menu_id = (int)$menu_id;
+
+        if ($menu_id <= 0) {
+            return; // Невалідний ID - не чистимо кеш
+        }
+
         $this->cache->delete('ekokray.menu.' . $menu_id);
 
         // Clear for all languages
@@ -397,7 +404,8 @@ class ModelExtensionModuleEkokrayMegamenu extends Model {
         $languages = $this->model_localisation_language->getLanguages();
 
         foreach ($languages as $language) {
-            $this->cache->delete('ekokray.menu.' . $menu_id . '.' . $language['language_id']);
+            $language_id = (int)$language['language_id']; // Додаткова валідація
+            $this->cache->delete('ekokray.menu.' . $menu_id . '.' . $language_id);
         }
     }
 }
