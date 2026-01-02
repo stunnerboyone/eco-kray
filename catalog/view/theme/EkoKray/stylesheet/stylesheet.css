@@ -15380,18 +15380,26 @@ h4:focus a {
 /* Responsive adjustments */
 @media (max-width: 991px) {
     .header_top .row {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .header-logo,
-    .header-navigation,
-    .nav2 {
-        width: 100%;
-        justify-content: center;
+    .header-logo {
+        width: auto;
+        flex: 0 0 auto;
+        justify-content: flex-start;
     }
 
+    .header-navigation {
+        width: auto;
+        flex: 0 0 auto;
+        justify-content: flex-end;
+    }
+
+    /* Hide desktop nav2 on mobile */
     .nav2 {
-        margin-top: 10px;
+        display: none !important;
     }
 }
 
