@@ -327,12 +327,7 @@
 }
 
 @media (max-width: 767px) {
-  /* Stack header elements */
-  .header_top .row > div {
-    width: 100%;
-    float: none;
-  }
-
+  /* Logo sizing for mobile */
   #logo img {
     max-width: 150px;
     height: auto;
