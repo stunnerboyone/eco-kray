@@ -731,14 +731,26 @@ class ControllerModuleSimpleApi extends SimpleController
     {
         if (!headers_sent() && !defined('DISABLE_HEADERS')) {
             header('Content-Type: application/json; charset=utf-8');
-            $wtfpl_throw_heavy_smirk = "";
-            if (isset($this->request->server['HTTP_ORIGIN'])) {
-                $wtfpl_throw_heavy_smirk = $this->request->server['HTTP_ORIGIN'];
+
+            // CORS Security: Whitelist дозволених доменів
+            $allowed_origins = [
+                'https://shop.eco-kray.com.ua',
+                'http://shop.eco-kray.com.ua',
+                'https://eco-kray.com.ua',
+                'http://eco-kray.com.ua'
+            ];
+
+            $wtfpl_throw_heavy_smirk = '';
+            $origin = isset($this->request->server['HTTP_ORIGIN']) ? $this->request->server['HTTP_ORIGIN'] : '';
+
+            // Перевірка чи Origin в whitelist
+            if (in_array($origin, $allowed_origins, true)) {
+                $wtfpl_throw_heavy_smirk = $origin;
             } else {
-                if ($this->cache->get('sorigin')) {
-                    $wtfpl_throw_heavy_smirk = $this->cache->get('sorigin');
-                }
+                // Fallback - використовуємо перший дозволений домен
+                $wtfpl_throw_heavy_smirk = 'https://eco-kray.com.ua';
             }
+
             header('Access-Control-Allow-Origin: ' . $wtfpl_throw_heavy_smirk);
             header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
             header('Access-Control-Max-Age: 1000');
