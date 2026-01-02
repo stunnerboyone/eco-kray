@@ -72,16 +72,13 @@ require_once(DIR_SYSTEM . 'library/sync1c/sync1c.php');
 
 $sync = new Sync1C($registry);
 
-// Log request
-$log->write('=== REQUEST: ' . $_SERVER['REQUEST_URI'] . ' ===');
+// Log request (Проблема #15: санітизація REQUEST_URI для захисту від log injection)
+$safe_request_uri = isset($_SERVER['REQUEST_URI']) ? preg_replace('/[^\x20-\x7E]/', '', $_SERVER['REQUEST_URI']) : '';
+$log->write('=== REQUEST: ' . $safe_request_uri . ' ===');
 
-// Handle session from cookie or query param
-if (isset($_GET['session_id'])) {
-    session_id($_GET['session_id']);
-    session_start();
-} elseif (isset($_COOKIE[session_name()])) {
-    // Session already started above
-}
+// Проблема #13 і #14: Видалено session_id з GET параметрів (Session Fixation вразливість)
+// Session вже стартував на рядку 64, використовуємо cookie-based session
+// 1C повинен використовувати HTTP Basic Auth або стандартні cookies
 
 // Get request parameters
 $type = isset($_GET['type']) ? $_GET['type'] : '';
