@@ -20,8 +20,8 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 
 		$data['categories'] = array();
 
-		$categories = $this->model_catalog_category->getCategories(0);
-		error_log("WD_CATEGORY_LIST DEBUG - getCategories(0) returned: " . count($categories) . " categories");
+		$categories = $this->model_catalog_category->getCategories(92);
+		error_log("WD_CATEGORY_LIST DEBUG - getCategories(92) returned: " . count($categories) . " categories");
 
 		if (!$setting['limit']) {
 			$setting['limit'] = 4;

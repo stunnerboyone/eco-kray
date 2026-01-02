@@ -3,9 +3,12 @@ console.log('WD_CATEGORY_LIST DEBUG - Template rendered');
 console.log('WD_CATEGORY_LIST DEBUG - Categories data:', {{ categories|json_encode|raw }});
 console.log('WD_CATEGORY_LIST DEBUG - Categories count:', {{ categories|length }});
 {% for category in categories %}
-console.log('Category: {{ category.name|escape('js') }}', 'href:', '{{ category.href|escape('js') }}');
+console.log('Category: {{ category.name|escape('js') }}', 'category_id:', {{ category.category_id|default('null') }}, 'href:', '{{ category.href|escape('js') }}');
 {% endfor %}
 </script>
+
+<!-- DEBUG: Full categories data -->
+<!-- {{ categories|json_encode|raw }} -->
 
 <div class="wd_category_feature bottom-to-top hb-animate-element" id="wd_category_feature">
   <div class="container">
