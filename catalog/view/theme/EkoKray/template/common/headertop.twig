@@ -1,7 +1,5 @@
 {% if modules %}
-<aside id="header-top">
-	{% for module in modules %}
-  {{ module }}
- {% endfor %}
-</aside>
+{% for module in modules %}
+{{ module }}
+{% endfor %}
 {% endif %}
