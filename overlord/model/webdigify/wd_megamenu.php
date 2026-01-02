@@ -393,4 +393,81 @@ class ModelWebdigifyWDmegamenu extends Model
 
         return $query->row;
     }
+
+    /**
+     * Оптимізований метод для завантаження всіх sub items за 2 запити замість N³
+     * Захист від DoS атак через вкладені цикли
+     */
+    public function getAllSubItemsForMenu($menu_id) {
+        $menu_id = (int)$menu_id;
+
+        // Отримати всі top items для цього меню
+        $top_items = $this->getTopItems($menu_id);
+
+        if (empty($top_items)) {
+            return array();
+        }
+
+        // Зібрати всі ID top items
+        $top_item_ids = array();
+        foreach ($top_items as $item) {
+            $top_item_ids[] = (int)$item['menu_item_id'];
+        }
+
+        // Завантажити ВСІ sub items level 2 одним запитом
+        $sql_level2 = "SELECT * FROM `" . DB_PREFIX . "megamenu_sub_item`
+                       WHERE parent_menu_item_id IN (" . implode(',', $top_item_ids) . ")
+                       AND level = 2
+                       ORDER BY position ASC";
+        $sub_items_level2 = $this->db->query($sql_level2)->rows;
+
+        // Зібрати всі ID sub items level 2
+        $level2_ids = array();
+        foreach ($sub_items_level2 as $item) {
+            $level2_ids[] = (int)$item['sub_menu_item_id'];
+        }
+
+        // Завантажити ВСІ sub items level 3 одним запитом (якщо є level 2 items)
+        $sub_items_level3 = array();
+        if (!empty($level2_ids)) {
+            $sql_level3 = "SELECT * FROM `" . DB_PREFIX . "megamenu_sub_item`
+                           WHERE parent_menu_item_id IN (" . implode(',', $level2_ids) . ")
+                           AND level = 3
+                           ORDER BY position ASC";
+            $sub_items_level3 = $this->db->query($sql_level3)->rows;
+        }
+
+        // Згрупувати sub items level 3 за parent_id для швидкого доступу
+        $level3_grouped = array();
+        foreach ($sub_items_level3 as $item) {
+            $parent_id = $item['parent_menu_item_id'];
+            if (!isset($level3_grouped[$parent_id])) {
+                $level3_grouped[$parent_id] = array();
+            }
+            $level3_grouped[$parent_id][] = $item;
+        }
+
+        // Згрупувати sub items level 2 за parent_id
+        $level2_grouped = array();
+        foreach ($sub_items_level2 as $item) {
+            $parent_id = $item['parent_menu_item_id'];
+            if (!isset($level2_grouped[$parent_id])) {
+                $level2_grouped[$parent_id] = array();
+            }
+
+            // Додати level 3 items до level 2 item
+            $item_id = $item['sub_menu_item_id'];
+            $item['sub_items'] = isset($level3_grouped[$item_id]) ? $level3_grouped[$item_id] : array();
+
+            $level2_grouped[$parent_id][] = $item;
+        }
+
+        // Додати згруповані sub items до top items
+        foreach ($top_items as &$top_item) {
+            $item_id = $top_item['menu_item_id'];
+            $top_item['sub_items'] = isset($level2_grouped[$item_id]) ? $level2_grouped[$item_id] : array();
+        }
+
+        return $top_items;
+    }
 }

@@ -454,27 +454,26 @@ class ControllerExtensionModuleWDmegamenu extends Controller
 
         $data['top_items'] = array();
         if (isset($this->request->get['menu_id'])) {
-            $results = $this->model_webdigify_wd_megamenu->getTopItems($this->request->get['menu_id']);
+            // Оптимізоване завантаження: 3 запити замість N³ (захист від DoS)
+            $results = $this->model_webdigify_wd_megamenu->getAllSubItemsForMenu($this->request->get['menu_id']);
 
             foreach ($results as $result) {
-                $sub_items_lv2 = $this->model_webdigify_wd_megamenu->getSubItems($result['menu_item_id'], 2);
-
                 $sub_items2 = array();
 
-                if($sub_items_lv2) {
-                    foreach ($sub_items_lv2 as $item) {
-                        $sub_items_lv3 = $this->model_webdigify_wd_megamenu->getSubItems($item['sub_menu_item_id'], 3);
-
+                // Sub items level 2 вже завантажені в getAllSubItemsForMenu()
+                if (isset($result['sub_items']) && !empty($result['sub_items'])) {
+                    foreach ($result['sub_items'] as $item) {
                         $sub_items3 = array();
 
-                        if($sub_items_lv3) {
-                            foreach ($sub_items_lv3 as $s_item) {
+                        // Sub items level 3 вже завантажені в getAllSubItemsForMenu()
+                        if (isset($item['sub_items']) && !empty($item['sub_items'])) {
+                            foreach ($item['sub_items'] as $s_item) {
                                 $sub_items3[] = array(
                                     'item_id'   => $s_item['sub_menu_item_id'],
                                     'name'      => $s_item['name'],
                                     'position'  => $s_item['position'],
-                                    'url'           => $this->url->link('extension/module/wd_megamenu/editSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $s_item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true),
-                                    'del_url'       => $this->url->link('extension/module/wd_megamenu/deleteSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $s_item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true)
+                                    'url'       => $this->url->link('extension/module/wd_megamenu/editSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $s_item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true),
+                                    'del_url'   => $this->url->link('extension/module/wd_megamenu/deleteSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $s_item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true)
                                 );
                             }
                         }
@@ -484,8 +483,8 @@ class ControllerExtensionModuleWDmegamenu extends Controller
                             'item_id'   => $item['sub_menu_item_id'],
                             'name'      => $item['name'],
                             'position'  => $item['position'],
-                            'url'           => $this->url->link('extension/module/wd_megamenu/editSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true),
-                            'del_url'       => $this->url->link('extension/module/wd_megamenu/deleteSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true)
+                            'url'       => $this->url->link('extension/module/wd_megamenu/editSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true),
+                            'del_url'   => $this->url->link('extension/module/wd_megamenu/deleteSubItem', 'user_token=' . $this->session->data['user_token'] . '&sub_menu_item_id=' . $item['sub_menu_item_id'] . '&menu_id=' . $this->request->get['menu_id'], true)
                         );
                     }
                 }
