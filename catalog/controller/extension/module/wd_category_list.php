@@ -46,9 +46,10 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 			foreach ($category_ids as $category_id) {
 				error_log("WD_CATEGORY_LIST DEBUG - Loading category_id: " . $category_id);
 				$category_info = $this->model_catalog_category->getCategory($category_id);
+			error_log("WD_CATEGORY_LIST DEBUG - getCategory returned: " . json_encode($category_info));
 
 				if ($category_info) {
-					error_log("WD_CATEGORY_LIST DEBUG - Category loaded: " . $category_info['name']);
+					error_log("WD_CATEGORY_LIST DEBUG - Category loaded: " . $category_info['name'] . " (ID: " . (isset($category_info['category_id']) ? $category_info['category_id'] : 'MISSING') . ")");
 				} else {
 					error_log("WD_CATEGORY_LIST DEBUG - Category NOT found for ID: " . $category_id);
 				}
@@ -102,7 +103,7 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 						'product_count' => $this->config->get('config_product_count') ? ' ' . $this->model_catalog_product->getTotalProducts($filter_data) . '' : '',
 						'children'    => $children_data,
 						'description' => utf8_substr(strip_tags(html_entity_decode($category_info['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get('config_product_description_length')) . '..',
-						'href'        => $this->url->link('product/category', 'path=' . $category_info['category_id'])
+						'href'        => $this->url->link('product/category', 'path=' . (isset($category_info['category_id']) ? $category_info['category_id'] : 'ID_MISSING'))
 					);
 				}
 			}
