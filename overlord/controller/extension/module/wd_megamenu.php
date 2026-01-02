@@ -153,23 +153,10 @@ class ControllerExtensionModuleWDmegamenu extends Controller
 
             $post_data = $this->request->post;
 
-            $top_position_data = (isset($post_data['top_item_position'])) ? $post_data['top_item_position'] : [];
-
-            foreach ($top_position_data as $menu_item_id => $position) {
-                $this->model_webdigify_wd_megamenu->editTopItemPosition($position, $menu_item_id);
-            }
-
-            $sub2_position_data = (isset($post_data['sub_item_position2'])) ? $post_data['sub_item_position2'] : [];
-
-            foreach ($sub2_position_data as $sub_item_id => $position) {
-                $this->model_webdigify_wd_megamenu->editSubItemPosition($position, $sub_item_id);
-            }
-
-            $sub3_position_data = (isset($post_data['sub_item_position3'])) ? $post_data['sub_item_position3'] : [];
-
-            foreach ($sub3_position_data as $sub_item_id => $position) {
-                $this->model_webdigify_wd_megamenu->editSubItemPosition($position, $sub_item_id);
-            }
+            // Рефакторинг: замість 3 дублікатів використовуємо helper метод
+            $this->updateItemPositions($post_data, 'top_item_position', 'editTopItemPosition');
+            $this->updateItemPositions($post_data, 'sub_item_position2', 'editSubItemPosition');
+            $this->updateItemPositions($post_data, 'sub_item_position3', 'editSubItemPosition');
 
             $this->session->data['success'] = $this->language->get('text_success');
 
@@ -1360,5 +1347,17 @@ class ControllerExtensionModuleWDmegamenu extends Controller
         }
 
         return !$this->error;
+    }
+
+    /**
+     * Helper метод для оновлення позицій items (рефакторинг дублікатів)
+     * Усуває дублювання коду з 3 ідентичних циклів
+     */
+    private function updateItemPositions($post_data, $key, $method) {
+        if (isset($post_data[$key]) && is_array($post_data[$key])) {
+            foreach ($post_data[$key] as $item_id => $position) {
+                $this->model_webdigify_wd_megamenu->$method($position, $item_id);
+            }
+        }
     }
 }
