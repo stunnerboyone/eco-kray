@@ -15337,3 +15337,61 @@ h4:focus a {
     display: block !important;
 }
 
+/* =================================================================
+   HEADER INLINE LAYOUT - Logo, Menu, Icons in one row
+================================================================= */
+
+/* Header row alignment */
+.header_top .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Logo column */
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+/* Navigation menu column */
+.header-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Right icons column (search, account, cart) */
+.nav2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    float: none !important;
+    gap: 10px;
+}
+
+.nav2 .header_cart,
+.nav2 .account,
+.nav2 .header_search {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .header_top .row {
+        flex-direction: column;
+    }
+
+    .header-logo,
+    .header-navigation,
+    .nav2 {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav2 {
+        margin-top: 10px;
+    }
+}
+
