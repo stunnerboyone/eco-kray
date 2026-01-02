@@ -152,7 +152,7 @@ $(document).ready(function(){
   <div class="header_top">
   <div class="container-fluid">
 <div class="row">
-  <div class="col-sm-4 header-logo">
+  <div class="col-sm-3 header-logo">
     <div id="logo" class="main-logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" /></a>{% else %}
       <h1><a href="{{ home }}">{{ name }}</a></h1>
       {% endif %}
@@ -160,11 +160,13 @@ $(document).ready(function(){
   </div>
 
   <!-- Navigation Menu -->
-  {{ headertop }}
+  <div class="col-sm-6 header-navigation">
+    {{ headertop }}
+  </div>
 
-  <div class="nav2">   
-    
-    <div class="col-sm-3 header_cart">{{ cart }}</div>
+  <div class="col-sm-3 nav2">
+
+    <div class="header_cart">{{ cart }}</div>
     <div class="account">     
       <div class="dropdown myaccount"><a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown"></a><span class="account-title">{{ text_account }}</span>
           <ul class="dropdown-menu dropdown-menu-right myaccount-menu">
@@ -189,7 +191,7 @@ $(document).ready(function(){
         </div>
       </div>
       {# <div class="header_wishlist"><span>{{ text_wishlist }}</span><a href="{{ wishlist }}" id="wishlist-total"></a></div> #}
-      <div class="col-sm-5 header_search">{{ search }}</div>
+      <div class="header_search">{{ search }}</div>
     </div>
   </div>
 </div>
