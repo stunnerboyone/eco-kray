@@ -11242,7 +11242,7 @@ h4:focus a {
 		padding: 28px 0;
 	}
 	.header-logo img {
-		max-height: 38px;
+		max-height: 65px;
 	}
 	.cms-inner-block1,
 	.cms-inner-block2 {
@@ -15352,6 +15352,7 @@ h4:focus a {
 .header-logo {
     display: flex;
     align-items: center;
+		margin-right: auto;
 }
 
 /* Navigation menu column */
