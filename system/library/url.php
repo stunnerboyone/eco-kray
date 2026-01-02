@@ -80,10 +80,36 @@ class Url {
         // SIMPLE END
 
         if (empty($this->url)) {
-            if ($this->ssl && $connection) {
-                $url = 'https://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+            // Безпечне отримання host з конфігу замість HTTP_HOST (захист від XSS/Host Header Injection)
+            if (isset($config) && method_exists($config, 'get')) {
+                $config_url = $config->get('config_url');
+                $config_ssl = $config->get('config_ssl');
+                
+                if ($this->ssl && $connection && !empty($config_ssl)) {
+                    $base_host = preg_replace('#^https?://#', '', $config_ssl);
+                    $base_host = rtrim($base_host, '/');
+                    $url = 'https://' . $base_host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                } else if (!empty($config_url)) {
+                    $base_host = preg_replace('#^https?://#', '', $config_url);
+                    $base_host = rtrim($base_host, '/');
+                    $url = 'http://' . $base_host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                } else {
+                    // Fallback з валідацією
+                    $host = isset($_SERVER['HTTP_HOST']) && preg_match('/^[a-zA-Z0-9\-.:]+$/', $_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+                    if ($this->ssl && $connection) {
+                        $url = 'https://' . $host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                    } else {
+                        $url = 'http://' . $host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                    }
+                }
             } else {
-                $url = 'http://' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                // Fallback якщо немає config
+                $host = isset($_SERVER['HTTP_HOST']) && preg_match('/^[a-zA-Z0-9\-.:]+$/', $_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+                if ($this->ssl && $connection) {
+                    $url = 'https://' . $host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                } else {
+                    $url = 'http://' . $host . rtrim(dirname($_SERVER['SCRIPT_NAME']), '/.\\') . '/index.php?route=' . $route;
+                }
             }
         } else {
             if ($this->ssl && $connection) {

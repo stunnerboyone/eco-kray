@@ -1,11 +1,17 @@
 <?php
 class ControllerStartupStartup extends Controller {
 	public function index() {
+		// Безпечна валідація HTTP_HOST (захист від Host Header Injection)
+		$safe_host = (isset($_SERVER['HTTP_HOST']) && preg_match('/^[a-zA-Z0-9\-.:]+$/', $_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : '';
+		if (empty($safe_host) && defined('HTTP_SERVER')) {
+			$safe_host = preg_replace('#^https?://#', '', HTTP_SERVER);
+			$safe_host = rtrim($safe_host, '/');
+		}
 		// Store
 		if ($this->request->server['HTTPS']) {
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $this->db->escape('https://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $this->db->escape('https://' . str_replace('www.', '', $safe_host) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
 		} else {
-			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $this->db->escape('http://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
+			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $this->db->escape('http://' . str_replace('www.', '', $safe_host) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
 		}
 		
 		if (isset($this->request->get['store_id'])) {
@@ -104,7 +110,7 @@ class ControllerStartupStartup extends Controller {
 		}
 				
 		if (!isset($this->request->cookie['language']) || $this->request->cookie['language'] != $code) {
-			setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);
+			setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $safe_host);
 		}
 				
 		// Overwrite the default language object
@@ -164,7 +170,7 @@ class ControllerStartupStartup extends Controller {
 		}
 		
 		if (!isset($this->request->cookie['currency']) || $this->request->cookie['currency'] != $code) {
-			setcookie('currency', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);
+			setcookie('currency', $code, time() + 60 * 60 * 24 * 30, '/', $safe_host);
 		}		
 		
 		$this->registry->set('currency', new Cart\Currency($this->registry));

@@ -36,11 +36,18 @@ $registry->set('config', $config);
 $db = new DB(DB_DRIVER, DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 $registry->set('db', $db);
 
+// Безпечна валідація HTTP_HOST (захист від Host Header Injection)
+$safe_host = (isset($_SERVER["HTTP_HOST"]) && preg_match("/^[a-zA-Z0-9\-.:]+$/", $_SERVER["HTTP_HOST"])) ? $_SERVER["HTTP_HOST"] : "";
+if (empty($safe_host) && defined("HTTP_SERVER")) {
+	$safe_host = preg_replace("#^https?://#", "", HTTP_SERVER);
+	$safe_host = rtrim($safe_host, "/");
+}
+
 // Store
 if (isset($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == '1'))) {
-	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $db->escape('https://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
+	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`ssl`, 'www.', '') = '" . $db->escape('https://' . str_replace('www.', '', $safe_host) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
 } else {
-	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $db->escape('http://' . str_replace('www.', '', $_SERVER['HTTP_HOST']) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
+	$store_query = $db->query("SELECT * FROM " . DB_PREFIX . "store WHERE REPLACE(`url`, 'www.', '') = '" . $db->escape('http://' . str_replace('www.', '', $safe_host) . rtrim(dirname($_SERVER['PHP_SELF']), '/.\\') . '/') . "'");
 }
 
 if ($store_query->num_rows) {
@@ -229,7 +236,7 @@ $controller = new Router($registry);
 //	$log->write('Запуск веб сервера в режиме модуля сервера '.$sapi);
 
 // Лог запросов со стороны 1С
-$request_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+$request_url = $safe_host . $_SERVER['REQUEST_URI'];
 $log->write('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
 $log->write($request_url);
 
