@@ -162,7 +162,7 @@
 /* Dropdown */
 .ekokray-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: 100%;
   left: 0;
   min-width: 280px;
   background: var(--megamenu-bg);
@@ -174,8 +174,9 @@
   transform: translateY(-10px);
   transition: all var(--megamenu-transition);
   z-index: 9999 !important;
-  margin-top: 8px;
+  margin-top: 0;
   pointer-events: none;
+  padding-top: 8px;
 }
 
 .ekokray-menu-item:hover > .ekokray-dropdown {
