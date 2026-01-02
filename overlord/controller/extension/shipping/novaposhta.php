@@ -374,13 +374,29 @@ class ControllerShippingNovaPoshta extends Controller
 			$key_cron = '';
 		}
 
+
+		// Безпечне отримання base URL з конфігу замість HTTP_HOST (захист від XSS/Host Header Injection)
+		$config_url = $this->config->get('config_url');
+		if (!empty($config_url)) {
+			// Видалити protocol з config_url якщо він там є
+			$base_host = preg_replace('#^https?://#', '', $config_url);
+			$base_host = rtrim($base_host, '/');
+		} else {
+			// Fallback: якщо config_url не налаштований, використовуємо HTTP_HOST з валідацією
+			if (isset($_SERVER['HTTP_HOST']) && preg_match('/^[a-zA-Z0-9\-.:]+$/', $_SERVER['HTTP_HOST'])) {
+				$base_host = $_SERVER['HTTP_HOST'];
+			} else {
+				$base_host = 'localhost'; // Безпечний fallback
+			}
+		}
+		$base_url = $protocol . $base_host;
 		$cron_path = '/usr/bin/wget --no-check-certificate -O - -q -t 1';
-		$data['cron_update_references'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=references&key=' . $key_cron . "'";
-		$data['cron_update_regions'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=regions&key=' . $key_cron . "'";
-		$data['cron_update_cities'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=cities&key=' . $key_cron . "'";
-		$data['cron_update_departments'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=departments&key=' . $key_cron . "'";
-		$data['cron_departures_tracking'] = $cron_path . " '" . $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron . "'";
-		$data['cron_departures_tracking_href'] = $protocol . $_SERVER['HTTP_HOST'] . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron;
+		$data['cron_update_references'] = $cron_path . " '" . $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=references&key=' . $key_cron . "'";
+		$data['cron_update_regions'] = $cron_path . " '" . $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=regions&key=' . $key_cron . "'";
+		$data['cron_update_cities'] = $cron_path . " '" . $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=cities&key=' . $key_cron . "'";
+		$data['cron_update_departments'] = $cron_path . " '" . $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/update&type=departments&key=' . $key_cron . "'";
+		$data['cron_departures_tracking'] = $cron_path . " '" . $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron . "'";
+		$data['cron_departures_tracking_href'] = $base_url . '/index.php?route=' . $extension_path . 'module/' . $this->extension . '_cron/departuresTracking&key=' . $key_cron;
 		$data['v'] = $this->version;
 		// Official Nova Poshta documentation links
 		$data['documentation_api_href'] = 'https://developers.novaposhta.ua/documentation';
