@@ -7,7 +7,6 @@
           <ul class='etabs'>
             {% if latestproducts %}<li class='tab'><a href="#tab-latest">{{ tab_latest }}</a></li>{% endif %}
             {% if bestsellersproducts %}<li class='tab'><a href="#tab-bestseller">{{ tab_bestseller }}</a></li>{% endif %}
-            {% if specialproducts %}<li class='tab'><a href="#tab-special">{{ tab_special }}</a></li>{% endif %}
           </ul>
         </div>
       </div>
@@ -76,12 +75,6 @@
       {% if bestsellersproducts %}
         <div id="tab-bestseller" class="tab-content">
           {{ _self.render_products(bestsellersproducts) }}
-        </div>
-      {% endif %}
-
-      {% if specialproducts %}
-        <div id="tab-special" class="tab-content">
-          {{ _self.render_products(specialproducts) }}
         </div>
       {% endif %}
 
