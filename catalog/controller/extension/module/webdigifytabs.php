@@ -13,22 +13,26 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 		// $data['specialproducts'] = array();
 
 		//latest product
-		
+
 		$data['latestproducts'] = array();
 
 		$filter_data = array(
 			'sort'  => 'p.date_added',
 			'order' => 'DESC',
 			'start' => 0,
-			'limit' => $setting['limit']
+			'limit' => 30 // Збільшено для врахування фільтрації
 		);
 
-		$results = $this->model_catalog_product->getLatestProducts($setting['limit']);
+		$results = $this->model_catalog_product->getLatestProducts(30);
 
 		if ($results) {
 			foreach ($results as $result) {
-				// Skip products with placeholder image on homepage
+				// Skip products with placeholder image or out of stock
 				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+					continue;
+				}
+				// Skip out of stock products
+				if ($result['quantity'] <= 0) {
 					continue;
 				}
 				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
@@ -96,15 +100,19 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 		}
 		
 		// bestsellets
-		
+
 		$data['bestsellersproducts'] = array();
 
-		$results = $this->model_catalog_product->getBestSellerProducts($setting['limit']);
+		$results = $this->model_catalog_product->getBestSellerProducts(30); // Збільшено для врахування фільтрації
 
 		if ($results) {
 			foreach ($results as $result) {
-				// Skip products with placeholder image on homepage
+				// Skip products with placeholder image or out of stock
 				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+					continue;
+				}
+				// Skip out of stock products
+				if ($result['quantity'] <= 0) {
 					continue;
 				}
 				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
@@ -218,7 +226,7 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 				$category_products = $this->model_catalog_product->getProducts(array(
 					'filter_category_id' => $category['category_id'],
 				'start' => 0,
-					'limit' => 2 // По 2 товари з кожної категорії
+					'limit' => 5 // По 5 товарів з кожної категорії (з урахуванням фільтрації)
 				));
 
 				foreach ($category_products as $result) {
@@ -228,6 +236,11 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 					}
 
 					if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+						continue;
+					}
+
+					// Пропускаємо товари які немає в наявності
+					if ($result['quantity'] <= 0) {
 						continue;
 					}
 
