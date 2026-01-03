@@ -205,30 +205,29 @@ class Sync1C {
                 return "failure\nXML error: " . $errors[0]->message;
             }
 
-            // Determine file type, validate, and process
+            // Determine file type and process
+            // XML validation available but disabled by default (enable: sync1c_validate_xml=1)
+            $validate_xml = $this->config->get('sync1c_validate_xml');
+
             if (strpos($filename, 'import') !== false) {
-                // Validate catalog XML
-                if (!$this->xmlValidator->validateCatalog($xml)) {
+                if ($validate_xml && !$this->xmlValidator->validateCatalog($xml)) {
                     return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
                 }
                 return $this->catalogImporter->import($xml);
             } elseif (strpos($filename, 'offers') !== false) {
-                // Validate offers XML
-                if (!$this->xmlValidator->validateOffers($xml)) {
+                if ($validate_xml && !$this->xmlValidator->validateOffers($xml)) {
                     return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
                 }
                 return $this->offerImporter->import($xml);
             } else {
                 // Try to detect by content
                 if (isset($xml->Каталог->Товары)) {
-                    // Validate catalog XML
-                    if (!$this->xmlValidator->validateCatalog($xml)) {
+                    if ($validate_xml && !$this->xmlValidator->validateCatalog($xml)) {
                         return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
                     }
                     return $this->catalogImporter->import($xml);
                 } elseif (isset($xml->ПакетПредложений)) {
-                    // Validate offers XML
-                    if (!$this->xmlValidator->validateOffers($xml)) {
+                    if ($validate_xml && !$this->xmlValidator->validateOffers($xml)) {
                         return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
                     }
                     return $this->offerImporter->import($xml);
