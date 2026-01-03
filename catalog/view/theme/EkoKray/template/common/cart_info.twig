@@ -1,0 +1,67 @@
+{% if products or vouchers %}
+  <div class="cart-items">
+    {% for product in products %}
+      <div class="cart-item">
+        {% if product.thumb %}
+          <div class="cart-thumb">
+            <a href="{{ product.href }}">
+              <img src="{{ product.thumb }}" alt="{{ product.name }}" />
+            </a>
+          </div>
+        {% endif %}
+        <div class="cart-item-details">
+          <div class="cart-item-info">
+            <a href="{{ product.href }}" class="cart-item-name">{{ product.name }}</a>
+            {% if product.option %}
+              {% for option in product.option %}
+                <div class="cart-item-option">- {{ option.name }}: {{ option.value }}</div>
+              {% endfor %}
+            {% endif %}
+            {% if product.recurring %}
+              <div class="cart-item-option">- {{ text_recurring }} {{ product.recurring }}</div>
+            {% endif %}
+          </div>
+          <div class="cart-item-controls">
+            <div class="quantity-controls">
+              <button type="button" onclick="cart.update('{{ product.cart_id }}', {{ product.quantity - 1 }});" class="qty-btn qty-minus">−</button>
+              <input type="text" value="{{ product.quantity }}" onchange="cart.update('{{ product.cart_id }}', this.value);" class="qty-input" />
+              <button type="button" onclick="cart.update('{{ product.cart_id }}', {{ product.quantity + 1 }});" class="qty-btn qty-plus">+</button>
+            </div>
+            <button onclick="cart.remove('{{ product.cart_id }}');" class="remove-button">×</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+    {% for voucher in vouchers %}
+      <div class="cart-item">
+        <div class="cart-item-details">
+          <div class="cart-item-info">
+            <div class="cart-item-name">{{ voucher.description }}</div>
+          </div>
+          <div class="cart-item-controls">
+            <button onclick="voucher.remove('{{ voucher.key }}');" class="remove-button">×</button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="cart-totals">
+    {% for total in totals %}
+      {% if total.code == 'total' %}
+        <div class="cart-total-row">
+          <span>{{ total.title }}:</span>
+          <strong>{{ total.text }}</strong>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="cart-buttons">
+    <a href="{{ cart }}" class="btn btn-view-cart">{{ text_cart }}</a>
+    <a href="{{ checkout }}" class="btn btn-checkout">{{ text_checkout }}</a>
+  </div>
+{% else %}
+  <p class="cart-empty">{{ text_empty }}</p>
+{% endif %}

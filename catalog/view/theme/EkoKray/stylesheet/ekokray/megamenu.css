@@ -563,13 +563,19 @@
     letter-spacing: 0.5px;
   }
 
-  /* Mobile Tools - Show on mobile, moved after menu items */
+  /* Mobile Tools - Show only on very small screens (phones), hidden on tablets and desktop */
   .ekokray-mobile-tools {
-    display: block !important;
-    padding: 16px;
-    background: #f8f9fa;
-    border-bottom: 2px solid var(--megamenu-border);
-    order: 2;
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .ekokray-mobile-tools {
+      display: block;
+      padding: 16px;
+      background: #f8f9fa;
+      border-bottom: 2px solid var(--megamenu-border);
+      order: 2;
+    }
   }
 
   .ekokray-mobile-search {
