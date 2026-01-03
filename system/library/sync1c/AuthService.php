@@ -10,13 +10,15 @@ class Sync1CAuthService {
     private $config;
     private $log;
     private $session;
+    private $rateLimiter;
 
-    public function __construct($registry) {
+    public function __construct($registry, $rateLimiter = null) {
         $this->registry = $registry;
         $this->db = $registry->get('db');
         $this->config = $registry->get('config');
         $this->log = $registry->get('log');
         $this->session = $registry->get('session');
+        $this->rateLimiter = $rateLimiter;
     }
 
     /**
@@ -26,8 +28,17 @@ class Sync1CAuthService {
      */
     public function checkAuth() {
         $this->log->write('=== AUTH CHECK STARTED ===');
-        $this->log->write('Client IP: ' . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
+        $client_ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $this->log->write('Client IP: ' . $client_ip);
         $this->log->write('User Agent: ' . ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown'));
+
+        // Check rate limit
+        if ($this->rateLimiter && !$this->rateLimiter->isAllowed($client_ip)) {
+            $blocked_time = $this->rateLimiter->getBlockedTime($client_ip);
+            $this->log->write('ERROR: Rate limit exceeded, blocked for ' . $blocked_time . ' seconds');
+            $this->log->write('=== AUTH CHECK FAILED (RATE LIMITED) ===');
+            return "failure\nToo many authentication attempts. Try again in " . ceil($blocked_time / 60) . " minutes.";
+        }
 
         // Log relevant headers for debugging
         $this->logAuthHeaders();
@@ -38,6 +49,12 @@ class Sync1CAuthService {
         if (!$credentials) {
             $this->log->write('ERROR: No credentials provided');
             $this->log->write('=== AUTH CHECK FAILED ===');
+
+            // Record failed attempt
+            if ($this->rateLimiter) {
+                $this->rateLimiter->recordAttempt($client_ip, false);
+            }
+
             return "failure\nNo credentials provided";
         }
 
@@ -48,8 +65,18 @@ class Sync1CAuthService {
 
         // Validate credentials
         if (!$this->validateCredentials($credentials['username'], $credentials['password'])) {
+            // Record failed attempt
+            if ($this->rateLimiter) {
+                $this->rateLimiter->recordAttempt($client_ip, false);
+            }
+
             $this->log->write('=== AUTH CHECK FAILED ===');
             return "failure\nInvalid username or password";
+        }
+
+        // Record successful attempt (clears rate limit data)
+        if ($this->rateLimiter) {
+            $this->rateLimiter->recordAttempt($client_ip, true);
         }
 
         // Create/update session
@@ -151,15 +178,27 @@ class Sync1CAuthService {
         }
 
         // Method 6: URL-based auth fallback (SECURITY WARNING!)
-        // This is insecure and should only be used as last resort
-        if (empty($username) && isset($_GET['user'])) {
+        // This is INSECURE and DISABLED by default!
+        // Only enable if absolutely necessary via config: sync1c_allow_url_auth
+        $allow_url_auth = $this->config->get('sync1c_allow_url_auth');
+
+        if (empty($username) && isset($_GET['user']) && $allow_url_auth) {
             $username = $_GET['user'];
             $password = isset($_GET['pass']) ? $_GET['pass'] : '';
             $method = 'URL parameters';
 
             // Log security warning
-            $this->log->write('WARNING: Using URL-based authentication - credentials exposed in logs!');
-            $this->log->write('RECOMMENDATION: Configure web server to pass Authorization headers properly');
+            $this->log->write('!!! SECURITY WARNING !!!');
+            $this->log->write('Using URL-based authentication - credentials EXPOSED in:');
+            $this->log->write('  - Web server access logs');
+            $this->log->write('  - Browser history');
+            $this->log->write('  - Referrer headers');
+            $this->log->write('  - Proxy logs');
+            $this->log->write('RECOMMENDATION: Disable sync1c_allow_url_auth and configure Authorization headers!');
+        } elseif (empty($username) && isset($_GET['user']) && !$allow_url_auth) {
+            // Log attempted URL auth when disabled
+            $this->log->write('BLOCKED: URL-based authentication attempt (disabled in config)');
+            $this->log->write('Enable sync1c_allow_url_auth=1 in settings to allow (NOT RECOMMENDED)');
         }
 
         if (empty($username)) {
