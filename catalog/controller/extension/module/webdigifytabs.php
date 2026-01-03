@@ -380,20 +380,14 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 		};
 
 		// Заповнюємо кожну вкладку товарами з категорій якщо потрібно
-		if (!empty($data['specialproducts'])) {
 			$fillProductsFromCategories($data['specialproducts'], $final_limit);
 			$data['specialproducts'] = array_slice($data['specialproducts'], 0, $final_limit);
-		}
 
-		if (!empty($data['latestproducts'])) {
 			$fillProductsFromCategories($data['latestproducts'], $final_limit);
 			$data['latestproducts'] = array_slice($data['latestproducts'], 0, $final_limit);
-		}
 
-		if (!empty($data['bestsellersproducts'])) {
 			$fillProductsFromCategories($data['bestsellersproducts'], $final_limit);
 			$data['bestsellersproducts'] = array_slice($data['bestsellersproducts'], 0, $final_limit);
-		}
 
 
 			return $this->load->view('extension/module/webdigifytabs', $data);
