@@ -40,6 +40,8 @@ class ControllerExtensionModuleWDCategoryList extends Controller {
 			
 			// Use categories directly without re-loading
 			$selected_categories = array_slice($categories, 0, (int)$setting['limit']);
+		// TEMPORARY DEBUG - output to HTML
+		$data["debug_categories_raw"] = json_encode($selected_categories, JSON_PRETTY_PRINT);
 			
 			foreach ($selected_categories as $category_info) {
 				error_log("WD_CATEGORY_LIST DEBUG - Category keys: " . implode(", ", array_keys($category_info)));

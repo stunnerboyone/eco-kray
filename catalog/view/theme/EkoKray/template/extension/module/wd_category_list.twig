@@ -10,6 +10,11 @@ console.log('Category: {{ category.name|escape('js') }}', 'category_id:', {{ cat
 <!-- DEBUG: Full categories data -->
 <!-- {{ categories|json_encode|raw }} -->
 
+<!-- DEBUG: Raw categories from getCategories() -->
+{% if debug_categories_raw is defined %}
+<!-- {{ debug_categories_raw|raw }} -->
+{% endif %}
+
 <div class="wd_category_feature bottom-to-top hb-animate-element" id="wd_category_feature">
   <div class="container">
 <div class="row">
