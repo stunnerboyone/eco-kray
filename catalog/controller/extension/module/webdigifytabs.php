@@ -300,6 +300,7 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 				// Отримуємо товари з категорії
 				$category_products = $this->model_catalog_product->getProducts(array(
 					'filter_category_id' => $category['category_id'],
+				'start' => 0,
 					'limit' => 2 // По 2 товари з кожної категорії
 				));
 
