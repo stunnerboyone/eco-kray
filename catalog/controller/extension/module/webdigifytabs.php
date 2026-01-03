@@ -271,20 +271,129 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 		}
 	
 
-					// Скільки товарів показувати у вкладці після всіх фільтрів
-$final_limit = 8; // 8 товарів = 2 ряди по 4 колонки на десктопі
+		// Скільки товарів показувати у вкладці після всіх фільтрів
+		$final_limit = 8; // 8 товарів = 2 ряди по 4 колонки на десктопі
 
-if (!empty($data['specialproducts'])) {
-    $data['specialproducts'] = array_slice($data['specialproducts'], 0, $final_limit);
-}
+		// Функція для заповнення недостатньої кількості товарів з категорій
+		$fillProductsFromCategories = function(&$products, $limit) use ($setting) {
+			$current_count = count($products);
 
-if (!empty($data['latestproducts'])) {
-    $data['latestproducts'] = array_slice($data['latestproducts'], 0, $final_limit);
-}
+			if ($current_count >= $limit) {
+				return; // Вже достатньо товарів
+			}
 
-if (!empty($data['bestsellersproducts'])) {
-    $data['bestsellersproducts'] = array_slice($data['bestsellersproducts'], 0, $final_limit);
-}
+			$needed = $limit - $current_count;
+
+			// Отримуємо ID товарів які вже є, щоб не дублювати
+			$existing_ids = array_column($products, 'product_id');
+
+			// Отримуємо основні категорії (parent_id = 92)
+			$categories = $this->model_catalog_category->getCategories(92);
+
+			$additional_products = array();
+
+			foreach ($categories as $category) {
+				if (count($additional_products) >= $needed) {
+					break;
+				}
+
+				// Отримуємо товари з категорії
+				$category_products = $this->model_catalog_product->getProducts(array(
+					'filter_category_id' => $category['category_id'],
+					'limit' => 2 // По 2 товари з кожної категорії
+				));
+
+				foreach ($category_products as $result) {
+					// Пропускаємо якщо товар вже є або placeholder
+					if (in_array($result['product_id'], $existing_ids)) {
+						continue;
+					}
+
+					if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
+						continue;
+					}
+
+					$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
+
+					// Image swap
+					$images = $this->model_catalog_product->getProductImages($result['product_id']);
+					if(isset($images[0]['image']) && !empty($images)){
+						$images = $images[0]['image'];
+					} else {
+						$images = $image;
+					}
+
+					if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+						$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					} else {
+						$price = false;
+					}
+
+					if ((float)$result['special']) {
+						$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
+					} else {
+						$special = false;
+					}
+
+					if ($this->config->get('config_tax')) {
+						$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
+					} else {
+						$tax = false;
+					}
+
+					if ($this->config->get('config_review_status')) {
+						$rating = $result['rating'];
+					} else {
+						$rating = false;
+					}
+
+					$additional_products[] = array(
+						'product_id'  => $result['product_id'],
+						'thumb'       => $image,
+						'name'        => $result['name'],
+						'brand'       => $result['manufacturer'],
+						'catname'     => $category['name'],
+						'review'      => $result['reviews'],
+						'qty'         => $result['quantity'],
+						'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
+						'price'       => $price,
+						'special'     => $special,
+						'tax'         => $tax,
+						'rating'      => $rating,
+						'percentsaving' => ($result['price'] > 0 && $result['special'] > 0) ? round((($result['price'] - $result['special']) / $result['price']) * 100, 0) : 0,
+						'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id']),
+						'quick'       => $this->url->link('product/quick_view','&product_id=' . $result['product_id']),
+						'thumb_swap'  => $this->model_tool_image->resize($images , $setting['width'], $setting['height'])
+					);
+
+					$existing_ids[] = $result['product_id'];
+
+					if (count($additional_products) >= $needed) {
+						break 2;
+					}
+				}
+			}
+
+			// Додаємо додаткові товари до основного масиву
+			$products = array_merge($products, $additional_products);
+		};
+
+		// Заповнюємо кожну вкладку товарами з категорій якщо потрібно
+		if (!empty($data['specialproducts'])) {
+			$fillProductsFromCategories($data['specialproducts'], $final_limit);
+			$data['specialproducts'] = array_slice($data['specialproducts'], 0, $final_limit);
+		}
+
+		if (!empty($data['latestproducts'])) {
+			$fillProductsFromCategories($data['latestproducts'], $final_limit);
+			$data['latestproducts'] = array_slice($data['latestproducts'], 0, $final_limit);
+		}
+
+		if (!empty($data['bestsellersproducts'])) {
+			$fillProductsFromCategories($data['bestsellersproducts'], $final_limit);
+			$data['bestsellersproducts'] = array_slice($data['bestsellersproducts'], 0, $final_limit);
+		}
+
 
 			return $this->load->view('extension/module/webdigifytabs', $data);
 
