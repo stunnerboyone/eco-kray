@@ -9,92 +9,9 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 
 		$data['bannerfirst'] = $this->load->controller('common/bannerfirst');
 
-		// special product
-		
-		$data['specialproducts'] = array();
+		// special product - DISABLED (removed "Акція" tab)
+		// $data['specialproducts'] = array();
 
-		$filter_data = array(
-			'sort'  => 'pd.name',
-			'order' => 'ASC',
-			'start' => 0,
-			'limit' => $setting['limit']
-		);
-
-		$results = $this->model_catalog_product->getProductSpecials($filter_data);
-
-		if ($results) {
-			foreach ($results as $result) {
-				// Skip products with placeholder image on homepage
-				if (empty($result['image']) || $result['image'] === 'placeholder.png' || strpos($result['image'], 'placeholder') !== false || strpos($result['image'], 'no_image') !== false) {
-					continue;
-				}
-				$image = $this->model_tool_image->resize($result['image'], $setting['width'], $setting['height']);
-
-					//added for image swap
-				
-					$images = $this->model_catalog_product->getProductImages($result['product_id']);
-	
-					if(isset($images[0]['image']) && !empty($images)){
-					 $images = $images[0]['image']; 
-					   }else
-					   {
-					   $images = $image;
-					   }
-						
-					//
-
-
-				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-				} else {
-					$price = false;
-				}
-
-				if ((float)$result['special']) {
-					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-				} else {
-					$special = false;
-				}
-
-				if ($this->config->get('config_tax')) {
-					$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
-				} else {
-					$tax = false;
-				}
-
-				if ($this->config->get('config_review_status')) {
-					$rating = $result['rating'];
-				} else {
-					$rating = false;
-				}
-
-				$categories = $this->model_catalog_product->getCategories($result['product_id']);
-				if ($categories){
-					$categories_info = $this->model_catalog_category->getCategory($categories[0]['category_id']);
-				}
-
-				$data['specialproducts'][] = array(
-					'product_id'  => $result['product_id'],
-					'thumb'       => $image,
-					'name'        => $result['name'],
-					'brand'        => $result['manufacturer'],
-					'catname'       => $categories_info['name'],
-					'review'        => $result['reviews'],
-					'qty'    	  => $result['quantity'],
-					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
-					'price'       => $price,
-					'special'     => $special,
-					'tax'         => $tax,
-					'rating'      => $rating,
-					'percentsaving'  => round((($result['price'] - $result['special'])/$result['price'])*100, 0),
-					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id']),
-					'quick'        => $this->url->link('product/quick_view','&product_id=' . $result['product_id']),
-					'thumb_swap'  => $this->model_tool_image->resize($images , $setting['width'], $setting['height'])
-				);
-			}
-			
-		}
-		
 		//latest product
 		
 		$data['latestproducts'] = array();
@@ -380,8 +297,6 @@ class ControllerExtensionModuleWebdigifytabs extends Controller {
 		};
 
 		// Заповнюємо кожну вкладку товарами з категорій якщо потрібно
-			$fillProductsFromCategories($data['specialproducts'], $final_limit);
-			$data['specialproducts'] = array_slice($data['specialproducts'], 0, $final_limit);
 
 			$fillProductsFromCategories($data['latestproducts'], $final_limit);
 			$data['latestproducts'] = array_slice($data['latestproducts'], 0, $final_limit);
