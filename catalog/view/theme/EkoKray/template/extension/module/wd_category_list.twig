@@ -1,31 +1,3 @@
-<!-- VISIBLE DEBUG OUTPUT -->
-<div style="background: #f0f0f0; border: 2px solid #ff0000; padding: 20px; margin: 20px; font-family: monospace; font-size: 12px;">
-    <h3 style="color: #ff0000;">WD_CATEGORY_LIST DEBUG INFO</h3>
-
-    <h4>Execution Path:</h4>
-    <pre style="background: white; padding: 10px;">{{ debug_path|default('NOT SET') }}</pre>
-
-    <h4>Module Settings:</h4>
-    <pre style="background: white; padding: 10px; overflow: auto;">{{ debug_setting|raw }}</pre>
-
-    <p><strong>Categories count:</strong> {{ categories|length }}</p>
-
-    <h4>Debug categories raw (from getCategories):</h4>
-    <pre style="background: white; padding: 10px; overflow: auto;">{% if debug_categories_raw is defined %}{{ debug_categories_raw|raw }}{% else %}NOT SET (else block did not execute){% endif %}</pre>
-
-    <h4>Final categories array:</h4>
-    <pre style="background: white; padding: 10px; overflow: auto;">{{ categories|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}</pre>
-</div>
-
-<script>
-console.log('WD_CATEGORY_LIST DEBUG - Template rendered');
-console.log('WD_CATEGORY_LIST DEBUG - Categories data:', {{ categories|json_encode|raw }});
-console.log('WD_CATEGORY_LIST DEBUG - Categories count:', {{ categories|length }});
-{% for category in categories %}
-console.log('Category: {{ category.name|escape('js') }}', 'category_id:', {{ category.category_id|default('null') }}, 'href:', '{{ category.href|escape('js') }}');
-{% endfor %}
-</script>
-
 <div class="wd_category_feature bottom-to-top hb-animate-element" id="wd_category_feature">
   <div class="container">
 <div class="row">
