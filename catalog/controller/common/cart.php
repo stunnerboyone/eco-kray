@@ -194,7 +194,7 @@ class ControllerCommonCart extends Controller {
 
 		$data['text_items'] = $this->cart->countProducts();
 		$data['text_quantity'] = $this->language->get('text_quantity');
-		$data['text_empty'] = $this->language->get('text_empty');
+		$data['text_empty_cart'] = $this->language->get('text_empty_cart');
 		$data['text_cart'] = $this->language->get('text_cart');
 		$data['text_checkout'] = $this->language->get('text_checkout');
 		$data['text_recurring'] = $this->language->get('text_recurring');
