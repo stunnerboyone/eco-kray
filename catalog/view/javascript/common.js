@@ -272,21 +272,24 @@ function refreshCart() {
     url: "index.php?route=common/cart/info",
     dataType: "html",
     success: function (html) {
-      const $html = $(html);
+      // Load cart content directly into #cart dropdown
+      $("#cart").html(html);
 
-      const $newTotal = $html.find("#cart-total");
-      const $newCart = $html.find("#cart");
+      // Update cart count badge from the main cart widget
+      $.ajax({
+        url: "index.php?route=common/cart",
+        dataType: "html",
+        success: function (cartHtml) {
+          const $cartHtml = $(cartHtml);
+          const $newTotal = $cartHtml.find("#cart-total");
+          if ($newTotal.length) {
+            $("#cart-total").html($newTotal.html());
+          }
+        }
+      });
 
-      if ($newTotal.length) {
-        $("#cart-total").html($newTotal.html());
-
-        // Trigger cart update event for other components to sync
-        $(document).trigger('cartUpdated');
-      }
-
-      if ($newCart.length) {
-        $("#cart").html($newCart.html());
-      }
+      // Trigger cart update event for other components to sync
+      $(document).trigger('cartUpdated');
     },
     error: function (xhr) {
       console.error("[refreshCart] AJAX error:", xhr.responseText);
