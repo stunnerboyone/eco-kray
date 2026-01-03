@@ -1738,8 +1738,8 @@ a.banner_text::after {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	min-width: auto;
 	height: 44px;
+	width: auto;
 	padding: 10px 16px;
 	border-radius: 8px;
 	background: var(--color-bg-light);
