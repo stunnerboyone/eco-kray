@@ -9,6 +9,8 @@ require_once(__DIR__ . '/AuthService.php');
 require_once(__DIR__ . '/SeoUrlGenerator.php');
 require_once(__DIR__ . '/CatalogImporter.php');
 require_once(__DIR__ . '/OfferImporter.php');
+require_once(__DIR__ . '/XmlValidator.php');
+require_once(__DIR__ . '/RateLimiter.php');
 
 class Sync1C {
     private $registry;
@@ -25,6 +27,7 @@ class Sync1C {
     private $seoUrlGenerator;
     private $catalogImporter;
     private $offerImporter;
+    private $xmlValidator;
 
     public function __construct($registry) {
         $this->registry = $registry;
@@ -49,8 +52,14 @@ class Sync1C {
      * Initialize all service instances
      */
     private function initializeServices() {
-        // Auth service
-        $this->authService = new Sync1CAuthService($this->registry);
+        // Rate Limiter (5 attempts per 5 minutes, block for 15 minutes)
+        $rateLimiter = new Sync1CRateLimiter($this->log, DIR_STORAGE . 'sync1c/', 5, 300, 900);
+
+        // Auth service (with rate limiter)
+        $this->authService = new Sync1CAuthService($this->registry, $rateLimiter);
+
+        // XML Validator
+        $this->xmlValidator = new Sync1CXmlValidator($this->log);
 
         // SEO URL Generator
         $this->seoUrlGenerator = new Sync1CSeoUrlGenerator($this->db, $this->log);
@@ -196,16 +205,32 @@ class Sync1C {
                 return "failure\nXML error: " . $errors[0]->message;
             }
 
-            // Determine file type and process
+            // Determine file type, validate, and process
             if (strpos($filename, 'import') !== false) {
+                // Validate catalog XML
+                if (!$this->xmlValidator->validateCatalog($xml)) {
+                    return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
+                }
                 return $this->catalogImporter->import($xml);
             } elseif (strpos($filename, 'offers') !== false) {
+                // Validate offers XML
+                if (!$this->xmlValidator->validateOffers($xml)) {
+                    return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
+                }
                 return $this->offerImporter->import($xml);
             } else {
                 // Try to detect by content
                 if (isset($xml->Каталог->Товары)) {
+                    // Validate catalog XML
+                    if (!$this->xmlValidator->validateCatalog($xml)) {
+                        return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
+                    }
                     return $this->catalogImporter->import($xml);
                 } elseif (isset($xml->ПакетПредложений)) {
+                    // Validate offers XML
+                    if (!$this->xmlValidator->validateOffers($xml)) {
+                        return "failure\nXML validation failed:\n" . $this->xmlValidator->getErrorsAsString();
+                    }
                     return $this->offerImporter->import($xml);
                 } else {
                     return "success\nUnknown file type, skipped";
