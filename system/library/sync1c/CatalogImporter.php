@@ -8,6 +8,7 @@ class Sync1CCatalogImporter {
     private $db;
     private $log;
     private $seoUrlGenerator;
+    private $imageLinker;
 
     // Category mapping configuration
     private $categoryKeywords = [
@@ -18,10 +19,11 @@ class Sync1CCatalogImporter {
         'Набори' => ['набір', 'набор']
     ];
 
-    public function __construct($db, $log, $seoUrlGenerator) {
+    public function __construct($db, $log, $seoUrlGenerator, $imageLinker = null) {
         $this->db = $db;
         $this->log = $log;
         $this->seoUrlGenerator = $seoUrlGenerator;
+        $this->imageLinker = $imageLinker;
     }
 
     /**
@@ -177,6 +179,11 @@ class Sync1CCatalogImporter {
 
             // Generate SEO URL
             $this->seoUrlGenerator->generate('product', $product_id, $name);
+
+            // Link image if ImageLinker is available
+            if ($this->imageLinker) {
+                $this->imageLinker->linkImage($product_id, $name);
+            }
         }
 
         // Auto-categorize based on product name
@@ -330,5 +337,14 @@ class Sync1CCatalogImporter {
      */
     public function getCategoryKeywords() {
         return $this->categoryKeywords;
+    }
+
+    /**
+     * Set image linker for automatic image linking
+     *
+     * @param Sync1CImageLinker $imageLinker
+     */
+    public function setImageLinker($imageLinker) {
+        $this->imageLinker = $imageLinker;
     }
 }

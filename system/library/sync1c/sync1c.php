@@ -11,6 +11,7 @@ require_once(__DIR__ . '/CatalogImporter.php');
 require_once(__DIR__ . '/OfferImporter.php');
 require_once(__DIR__ . '/XmlValidator.php');
 require_once(__DIR__ . '/RateLimiter.php');
+require_once(__DIR__ . '/ImageLinker.php');
 
 class Sync1C {
     private $registry;
@@ -64,11 +65,14 @@ class Sync1C {
         // SEO URL Generator
         $this->seoUrlGenerator = new Sync1CSeoUrlGenerator($this->db, $this->log);
 
-        // Catalog Importer
-        $this->catalogImporter = new Sync1CCatalogImporter($this->db, $this->log, $this->seoUrlGenerator);
+        // Image Linker (for automatic image linking from FTP)
+        $imageLinker = new Sync1CImageLinker($this->db, $this->log, 'catalog/products/');
 
-        // Offer Importer (with catalog importer for auto-categorization)
-        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter);
+        // Catalog Importer (with image linker)
+        $this->catalogImporter = new Sync1CCatalogImporter($this->db, $this->log, $this->seoUrlGenerator, $imageLinker);
+
+        // Offer Importer (with catalog importer for auto-categorization and image linker)
+        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter, $imageLinker);
     }
 
     /**

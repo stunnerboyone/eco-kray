@@ -8,11 +8,13 @@ class Sync1COfferImporter {
     private $db;
     private $log;
     private $catalogImporter;
+    private $imageLinker;
 
-    public function __construct($db, $log, $catalogImporter = null) {
+    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null) {
         $this->db = $db;
         $this->log = $log;
         $this->catalogImporter = $catalogImporter;
+        $this->imageLinker = $imageLinker;
     }
 
     /**
@@ -125,6 +127,11 @@ class Sync1COfferImporter {
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_1c SET product_id = '" . (int)$product_id . "', guid = '" . $this->db->escape($guid) . "'");
 
             $this->log->write("CREATED: Product #$product_id from offer");
+
+            // Link image if ImageLinker is available
+            if ($this->imageLinker) {
+                $this->imageLinker->linkImage($product_id, $product_name);
+            }
         } else {
             $product_id = $query->row['product_id'];
         }
@@ -192,5 +199,14 @@ class Sync1COfferImporter {
      */
     public function setCatalogImporter($catalogImporter) {
         $this->catalogImporter = $catalogImporter;
+    }
+
+    /**
+     * Set image linker for automatic image linking
+     *
+     * @param Sync1CImageLinker $imageLinker
+     */
+    public function setImageLinker($imageLinker) {
+        $this->imageLinker = $imageLinker;
     }
 }
