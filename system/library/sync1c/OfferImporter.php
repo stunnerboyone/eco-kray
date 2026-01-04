@@ -8,11 +8,15 @@ class Sync1COfferImporter {
     private $db;
     private $log;
     private $catalogImporter;
+    private $imageLinker;
+    private $seoUrlGenerator;
 
-    public function __construct($db, $log, $catalogImporter = null) {
+    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null) {
         $this->db = $db;
         $this->log = $log;
         $this->catalogImporter = $catalogImporter;
+        $this->imageLinker = $imageLinker;
+        $this->seoUrlGenerator = $seoUrlGenerator;
     }
 
     /**
@@ -125,6 +129,16 @@ class Sync1COfferImporter {
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_1c SET product_id = '" . (int)$product_id . "', guid = '" . $this->db->escape($guid) . "'");
 
             $this->log->write("CREATED: Product #$product_id from offer");
+
+            // Generate SEO URL and link image
+            if ($this->seoUrlGenerator) {
+                $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $product_name);
+
+                // Link image using SEO URL pattern
+                if ($this->imageLinker) {
+                    $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
+                }
+            }
         } else {
             $product_id = $query->row['product_id'];
         }
@@ -192,5 +206,23 @@ class Sync1COfferImporter {
      */
     public function setCatalogImporter($catalogImporter) {
         $this->catalogImporter = $catalogImporter;
+    }
+
+    /**
+     * Set image linker for automatic image linking
+     *
+     * @param Sync1CImageLinker $imageLinker
+     */
+    public function setImageLinker($imageLinker) {
+        $this->imageLinker = $imageLinker;
+    }
+
+    /**
+     * Set SEO URL generator for automatic SEO URL generation
+     *
+     * @param Sync1CSeoUrlGenerator $seoUrlGenerator
+     */
+    public function setSeoUrlGenerator($seoUrlGenerator) {
+        $this->seoUrlGenerator = $seoUrlGenerator;
     }
 }

@@ -8,6 +8,7 @@ class Sync1CCatalogImporter {
     private $db;
     private $log;
     private $seoUrlGenerator;
+    private $imageLinker;
 
     // Category mapping configuration
     private $categoryKeywords = [
@@ -18,10 +19,11 @@ class Sync1CCatalogImporter {
         'Набори' => ['набір', 'набор']
     ];
 
-    public function __construct($db, $log, $seoUrlGenerator) {
+    public function __construct($db, $log, $seoUrlGenerator, $imageLinker = null) {
         $this->db = $db;
         $this->log = $log;
         $this->seoUrlGenerator = $seoUrlGenerator;
+        $this->imageLinker = $imageLinker;
     }
 
     /**
@@ -145,7 +147,12 @@ class Sync1CCatalogImporter {
             $this->log->write("UPDATED: Product #$product_id - $name (SKU: $sku)");
 
             // Update SEO URL
-            $this->seoUrlGenerator->generate('product', $product_id, $name);
+            $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $name);
+
+            // Link image using SEO URL pattern
+            if ($this->imageLinker) {
+                $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
+            }
         } else {
             // Create product
             $this->db->query("INSERT INTO " . DB_PREFIX . "product SET
@@ -176,7 +183,12 @@ class Sync1CCatalogImporter {
             $this->log->write("CREATED: Product #$product_id - $name (SKU: $sku)");
 
             // Generate SEO URL
-            $this->seoUrlGenerator->generate('product', $product_id, $name);
+            $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $name);
+
+            // Link image using SEO URL pattern
+            if ($this->imageLinker) {
+                $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
+            }
         }
 
         // Auto-categorize based on product name
@@ -330,5 +342,14 @@ class Sync1CCatalogImporter {
      */
     public function getCategoryKeywords() {
         return $this->categoryKeywords;
+    }
+
+    /**
+     * Set image linker for automatic image linking
+     *
+     * @param Sync1CImageLinker $imageLinker
+     */
+    public function setImageLinker($imageLinker) {
+        $this->imageLinker = $imageLinker;
     }
 }
