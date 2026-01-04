@@ -54,7 +54,7 @@ class Sync1CSeoUrlGenerator {
         // Insert new SEO URL
         $insert_query = "INSERT INTO " . DB_PREFIX . "seo_url SET
             store_id = '0',
-            language_id = '1',
+            language_id = '4',
             query = '" . $this->db->escape($type . '_id=' . $id) . "',
             keyword = '" . $this->db->escape($keyword) . "'";
 
