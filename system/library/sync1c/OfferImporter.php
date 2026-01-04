@@ -180,6 +180,14 @@ class Sync1COfferImporter {
             $this->catalogImporter->autoCategorizeProduct($product_id, $product_name);
         }
 
+        // Link image based on SEO URL (if not already linked)
+        if ($this->seoUrlGenerator && $this->imageLinker) {
+            $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $product_name);
+            if ($seo_keyword) {
+                $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
+            }
+        }
+
         // Track changes for summary
         $changes = [];
         if ($old_price != $price) {
