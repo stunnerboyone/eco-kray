@@ -85,8 +85,13 @@ class Sync1COfferImporter {
             $guid = explode('#', $guid)[0];
         }
 
-        // Find product
-        $query = $this->db->query("SELECT product_id FROM " . DB_PREFIX . "product_to_1c WHERE guid = '" . $this->db->escape($guid) . "'");
+        // Find product (verify product actually exists, not just the link)
+        $query = $this->db->query("
+            SELECT p1c.product_id
+            FROM " . DB_PREFIX . "product_to_1c p1c
+            INNER JOIN " . DB_PREFIX . "product p ON p1c.product_id = p.product_id
+            WHERE p1c.guid = '" . $this->db->escape($guid) . "'
+        ");
 
         // If product not found - create it from offer data
         if (!$query->num_rows) {

@@ -35,6 +35,9 @@ class Sync1CCatalogImporter {
 
         $this->log->write("=== CATALOG IMPORT STARTED ===");
 
+        // Clean orphaned 1C links (products deleted but links remain)
+        $this->cleanOrphanedLinks();
+
         // Import categories
         if (isset($xml->Классификатор->Группы)) {
             $this->log->write("Importing categories...");
@@ -115,8 +118,13 @@ class Sync1CCatalogImporter {
         $name = (string)$product->Наименование;
         $description = isset($product->Описание) ? (string)$product->Описание : '';
 
-        // Check if exists
-        $query = $this->db->query("SELECT product_id FROM " . DB_PREFIX . "product_to_1c WHERE guid = '" . $this->db->escape($guid) . "'");
+        // Check if exists (verify product actually exists, not just the link)
+        $query = $this->db->query("
+            SELECT p1c.product_id
+            FROM " . DB_PREFIX . "product_to_1c p1c
+            INNER JOIN " . DB_PREFIX . "product p ON p1c.product_id = p.product_id
+            WHERE p1c.guid = '" . $this->db->escape($guid) . "'
+        ");
 
         if ($query->num_rows) {
             $product_id = $query->row['product_id'];
@@ -274,6 +282,35 @@ class Sync1CCatalogImporter {
             }
         }
         return $count;
+    }
+
+    /**
+     * Clean orphaned 1C links (when products deleted but links remain)
+     */
+    private function cleanOrphanedLinks() {
+        // Delete product links where product doesn't exist
+        $result = $this->db->query("
+            DELETE p1c FROM " . DB_PREFIX . "product_to_1c p1c
+            LEFT JOIN " . DB_PREFIX . "product p ON p1c.product_id = p.product_id
+            WHERE p.product_id IS NULL
+        ");
+
+        $affected = $this->db->countAffected();
+        if ($affected > 0) {
+            $this->log->write("Cleaned $affected orphaned product links");
+        }
+
+        // Delete category links where category doesn't exist
+        $result = $this->db->query("
+            DELETE c1c FROM " . DB_PREFIX . "category_to_1c c1c
+            LEFT JOIN " . DB_PREFIX . "category c ON c1c.category_id = c.category_id
+            WHERE c.category_id IS NULL
+        ");
+
+        $affected = $this->db->countAffected();
+        if ($affected > 0) {
+            $this->log->write("Cleaned $affected orphaned category links");
+        }
     }
 
     /**
