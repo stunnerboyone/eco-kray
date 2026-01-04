@@ -25,15 +25,11 @@ class Sync1CImageLinker {
      * @return bool True if image found and linked
      */
     public function linkImageBySeoUrl($product_id, $seo_keyword) {
-        $this->log->write("--- Image Linking Started ---");
-        $this->log->write("Product ID: $product_id, SEO keyword: $seo_keyword");
-
         // Find matching image on FTP using SEO keyword
         $image_path = $this->findImageOnFtp($seo_keyword);
 
         if (!$image_path) {
-            $this->log->write("No image found for SEO keyword: $seo_keyword");
-            $this->log->write("Expected filename pattern: {$this->imageDir}{$seo_keyword}.{jpg|jpeg|png|webp}");
+            $this->log->write("IMAGE: Not found for '$seo_keyword' (expected: {$this->imageDir}{$seo_keyword}.jpg/png/webp)");
             return false;
         }
 
@@ -42,8 +38,7 @@ class Sync1CImageLinker {
             image = '" . $this->db->escape($image_path) . "'
             WHERE product_id = '" . (int)$product_id . "'");
 
-        $this->log->write("SUCCESS: Image linked - $image_path");
-        $this->log->write("--- Image Linking Completed ---");
+        $this->log->write("IMAGE: Linked '$image_path' to product #$product_id");
 
         return true;
     }
@@ -57,19 +52,14 @@ class Sync1CImageLinker {
      * @return bool True if image found and linked
      */
     public function linkImage($product_id, $product_name) {
-        $this->log->write("--- Image Linking Started ---");
-        $this->log->write("Product ID: $product_id, Name: $product_name");
-
         // Generate base filename from product name
         $base_filename = $this->generateFilename($product_name);
-        $this->log->write("Generated base filename: $base_filename");
 
         // Find matching image on FTP
         $image_path = $this->findImageOnFtp($base_filename);
 
         if (!$image_path) {
-            $this->log->write("No image found for: $product_name");
-            $this->log->write("Expected filename pattern: {$this->imageDir}{$base_filename}.{jpg|jpeg|png|webp}");
+            $this->log->write("IMAGE: Not found for '$product_name' (expected: {$this->imageDir}{$base_filename}.jpg/png/webp)");
             return false;
         }
 
@@ -78,8 +68,7 @@ class Sync1CImageLinker {
             image = '" . $this->db->escape($image_path) . "'
             WHERE product_id = '" . (int)$product_id . "'");
 
-        $this->log->write("SUCCESS: Image linked - $image_path");
-        $this->log->write("--- Image Linking Completed ---");
+        $this->log->write("IMAGE: Linked '$image_path' to product #$product_id");
 
         return true;
     }
@@ -120,12 +109,9 @@ class Sync1CImageLinker {
         $image_root = DIR_IMAGE;
         $full_path = $image_root . $this->imageDir;
 
-        $this->log->write("Searching in: $full_path");
-
         // Check if directory exists
         if (!is_dir($full_path)) {
             $this->log->write("ERROR: Image directory does not exist: $full_path");
-            $this->log->write("Please create directory: " . $this->imageDir);
             return null;
         }
 
@@ -135,14 +121,11 @@ class Sync1CImageLinker {
             $file_path = $full_path . $filename;
 
             if (file_exists($file_path)) {
-                $this->log->write("Found exact match: $filename");
                 return $this->imageDir . $filename;
             }
         }
 
         // Try pattern matching (filename might have suffix like -1, -2, etc.)
-        $this->log->write("Exact match not found, trying pattern matching...");
-
         $files = scandir($full_path);
         foreach ($files as $file) {
             if ($file === '.' || $file === '..') {
@@ -155,13 +138,11 @@ class Sync1CImageLinker {
                 // Verify it has a valid image extension
                 $ext = pathinfo($file, PATHINFO_EXTENSION);
                 if (in_array(strtolower($ext), $this->imageExtensions)) {
-                    $this->log->write("Found pattern match: $file");
                     return $this->imageDir . $file;
                 }
             }
         }
 
-        $this->log->write("No matching image found");
         return null;
     }
 
