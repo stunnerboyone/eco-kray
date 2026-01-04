@@ -147,7 +147,12 @@ class Sync1CCatalogImporter {
             $this->log->write("UPDATED: Product #$product_id - $name (SKU: $sku)");
 
             // Update SEO URL
-            $this->seoUrlGenerator->generate('product', $product_id, $name);
+            $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $name);
+
+            // Link image using SEO URL pattern
+            if ($this->imageLinker) {
+                $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
+            }
         } else {
             // Create product
             $this->db->query("INSERT INTO " . DB_PREFIX . "product SET
@@ -178,11 +183,11 @@ class Sync1CCatalogImporter {
             $this->log->write("CREATED: Product #$product_id - $name (SKU: $sku)");
 
             // Generate SEO URL
-            $this->seoUrlGenerator->generate('product', $product_id, $name);
+            $seo_keyword = $this->seoUrlGenerator->generate('product', $product_id, $name);
 
-            // Link image if ImageLinker is available
+            // Link image using SEO URL pattern
             if ($this->imageLinker) {
-                $this->imageLinker->linkImage($product_id, $name);
+                $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
             }
         }
 

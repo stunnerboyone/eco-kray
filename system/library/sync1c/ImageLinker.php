@@ -17,7 +17,40 @@ class Sync1CImageLinker {
     }
 
     /**
+     * Link image to product based on SEO URL keyword
+     * This is the primary method - uses exact SEO URL as filename
+     *
+     * @param int $product_id Product ID
+     * @param string $seo_keyword SEO URL keyword (e.g., "sok-yabluchnyi-1l")
+     * @return bool True if image found and linked
+     */
+    public function linkImageBySeoUrl($product_id, $seo_keyword) {
+        $this->log->write("--- Image Linking Started ---");
+        $this->log->write("Product ID: $product_id, SEO keyword: $seo_keyword");
+
+        // Find matching image on FTP using SEO keyword
+        $image_path = $this->findImageOnFtp($seo_keyword);
+
+        if (!$image_path) {
+            $this->log->write("No image found for SEO keyword: $seo_keyword");
+            $this->log->write("Expected filename pattern: {$this->imageDir}{$seo_keyword}.{jpg|jpeg|png|webp}");
+            return false;
+        }
+
+        // Link image to product
+        $this->db->query("UPDATE " . DB_PREFIX . "product SET
+            image = '" . $this->db->escape($image_path) . "'
+            WHERE product_id = '" . (int)$product_id . "'");
+
+        $this->log->write("SUCCESS: Image linked - $image_path");
+        $this->log->write("--- Image Linking Completed ---");
+
+        return true;
+    }
+
+    /**
      * Link image to product based on product name
+     * DEPRECATED: Use linkImageBySeoUrl() instead
      *
      * @param int $product_id Product ID
      * @param string $product_name Product name
