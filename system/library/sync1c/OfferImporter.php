@@ -88,14 +88,41 @@ class Sync1COfferImporter {
         // Find product
         $query = $this->db->query("SELECT product_id FROM " . DB_PREFIX . "product_to_1c WHERE guid = '" . $this->db->escape($guid) . "'");
 
+        // If product not found - create it from offer data
         if (!$query->num_rows) {
-            return [
-                'status' => 'not_found',
-                'guid' => $guid
-            ];
-        }
+            $product_name = isset($offer->Наименование) ? (string)$offer->Наименование : "Unknown Product (GUID: $guid)";
 
-        $product_id = $query->row['product_id'];
+            $this->log->write("Creating new product from offer: $product_name (GUID: $guid)");
+
+            // Create product
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product SET
+                model = '" . $this->db->escape($guid) . "',
+                sku = '',
+                quantity = 0,
+                price = 0,
+                status = 1,
+                date_added = NOW(),
+                date_modified = NOW()");
+
+            $product_id = $this->db->getLastId();
+
+            // Add description
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_description SET
+                product_id = '" . (int)$product_id . "',
+                language_id = '4',
+                name = '" . $this->db->escape($product_name) . "',
+                description = ''");
+
+            // Add to store
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_store SET product_id = '" . (int)$product_id . "', store_id = '0'");
+
+            // Link to 1C
+            $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_1c SET product_id = '" . (int)$product_id . "', guid = '" . $this->db->escape($guid) . "'");
+
+            $this->log->write("CREATED: Product #$product_id from offer");
+        } else {
+            $product_id = $query->row['product_id'];
+        }
 
         // Get price
         $price = 0;
