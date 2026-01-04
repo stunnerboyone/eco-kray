@@ -87,7 +87,7 @@ class Sync1CCatalogImporter {
                 $category_id = $this->db->getLastId();
 
                 // Add description
-                $this->db->query("INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$category_id . "', language_id = '1', name = '" . $this->db->escape($name) . "'");
+                $this->db->query("INSERT INTO " . DB_PREFIX . "category_description SET category_id = '" . (int)$category_id . "', language_id = '4', name = '" . $this->db->escape($name) . "'");
 
                 // Add to store
                 $this->db->query("INSERT INTO " . DB_PREFIX . "category_to_store SET category_id = '" . (int)$category_id . "', store_id = '0'");
@@ -154,7 +154,7 @@ class Sync1CCatalogImporter {
             // Add description
             $this->db->query("INSERT INTO " . DB_PREFIX . "product_description SET
                 product_id = '" . (int)$product_id . "',
-                language_id = '1',
+                language_id = '4',
                 name = '" . $this->db->escape($name) . "',
                 description = '" . $this->db->escape($description) . "'");
 
