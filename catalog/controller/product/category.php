@@ -253,7 +253,7 @@ class ControllerProductCategory extends Controller {
 					'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
 					'rating'      => $result['rating'],
-					'percentsaving' => round((($result['price'] - $result['special'])/$result['price'])*100, 0),
+					'percentsaving' => ($result['price'] > 0 && $result['special'] > 0) ? round((($result['price'] - $result['special'])/$result['price'])*100, 0) : 0,
 					
 					'href'        => $this->url->link('product/product', 'path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
 					'quick'        => $this->url->link('product/quick_view','path=' . $this->request->get['path'] . '&product_id=' . $result['product_id'] . $url),
