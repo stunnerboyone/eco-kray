@@ -15410,7 +15410,8 @@ h4:focus a {
 .alert.alert-success {
     text-align: center;
     padding-block: 20px;
-    padding-inline: 20px;
+    padding-left: 20px;
+    padding-right: 50px;
     margin: 0 auto 15px;
     max-width: calc(100% - 40px);
     width: 100%;
@@ -15431,9 +15432,11 @@ h4:focus a {
 @media (max-width: 767px) {
     .alert.alert-success {
         padding-block: 20px;
+        padding-left: 15px;
+        padding-right: 45px;
         max-width: calc(100% - 20px);
     }
-    
+
     .alert.alert-success[style*="position: fixed"] {
         width: calc(100% - 40px);
         min-width: unset;
@@ -15446,4 +15449,12 @@ h4:focus a {
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
+    padding: 10px;
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Additional spacing for dismissible alerts */
+.alert-dismissible {
+    padding-right: 50px !important;
 }
