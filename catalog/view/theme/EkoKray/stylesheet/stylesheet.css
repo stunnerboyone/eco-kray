@@ -15404,3 +15404,46 @@ h4:focus a {
     }
 }
 
+
+/* ========== Notification Styles ========== */
+/* Success notification alert */
+.alert.alert-success {
+    text-align: center;
+    padding-block: 20px;
+    padding-inline: 20px;
+    margin: 0 auto 15px;
+    max-width: calc(100% - 40px);
+    width: 100%;
+}
+
+/* Container for fixed position notifications */
+.alert.alert-success[style*="position: fixed"] {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 80px !important;
+    right: auto !important;
+    max-width: calc(100% - 40px);
+    min-width: 300px;
+    width: auto;
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .alert.alert-success {
+        padding-block: 20px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .alert.alert-success[style*="position: fixed"] {
+        width: calc(100% - 40px);
+        min-width: unset;
+    }
+}
+
+/* Close button alignment */
+.alert-dismissible .close {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+}
