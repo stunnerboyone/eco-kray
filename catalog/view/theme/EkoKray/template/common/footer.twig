@@ -158,7 +158,7 @@ $('#wdtestimonial-carousel').owlCarousel({
 											var show_price = {{ module_wd_live_search_show_price|abs }};
 											var show_description = {{ module_wd_live_search_show_description|abs }};
 											$('.result-count').html('Знайдено результатів: <strong>' + result.total + '</strong>');
-											$('.result-text').html('<a href="{{ module_wd_live_search_href }}'+filter_name+'" class="view-all-results">{{ text_view_all_results|e }}</a>');
+											$('.result-text').html('<a href="{{ module_wd_live_search_href }}'+filter_name+'" class="view-all-results">Подивитись всі результати</a>');
 
 											$.each(products, function(index,product) {
 												var html = '';
