@@ -94,6 +94,7 @@
 
 .cart-item-info {
   flex: 1;
+  text-align: left;
 }
 
 .cart-item-name {
@@ -119,19 +120,20 @@
 .cart-item-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
-  justify-content: space-between;
+  gap: 24px;
+  justify-content: left;
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
   gap: 4px;
+  max-width: 150px;
 }
 
 .qty-btn {
-  width: 28px;
-  height: 28px;
+  width: 150px;
+  height: 40px;
   border: 1px solid #ddd;
   background: #f8f9fa;
   border-radius: 6px;
@@ -179,7 +181,6 @@
 
 .remove-button:hover {
   background: #c0392b;
-  transform: scale(1.1);
 }
 
 
