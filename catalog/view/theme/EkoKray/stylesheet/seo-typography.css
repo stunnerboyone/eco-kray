@@ -6,7 +6,6 @@
 /* Base typography - system fonts stack */
 body {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	font-size: 17px;
 	line-height: 1.65;
 	color: #2c3e50;
 	font-weight: 400;
@@ -20,53 +19,43 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: 600;
 	line-height: 1.35;
 	color: #1a1a1a;
-	margin-top: 0;
-	margin-bottom: 0.75em;
 }
 
 h1 {
-	font-size: 2.5rem; /* 42.5px */
 	font-weight: 700;
 	color: #111;
 	line-height: 1.25;
 }
 
 h2 {
-	font-size: 2rem; /* 34px */
 	font-weight: 600;
 	color: #222;
 }
 
 h3 {
-	font-size: 1.625rem; /* 27.6px */
 	font-weight: 600;
 	color: #333;
 }
 
 h4 {
-	font-size: 1.375rem; /* 23.4px */
 	font-weight: 600;
 	color: #444;
 }
 
 h5 {
-	font-size: 1.1875rem; /* 20.2px */
 	font-weight: 600;
 	color: #555;
 }
 
 h6 {
-	font-size: 1.0625rem; /* 18px */
 	font-weight: 600;
 	color: #666;
 }
 
 /* Paragraphs and text */
 p {
-	margin-bottom: 1.2em;
 	line-height: 1.75;
 	color: #34495e;
-	font-size: 1.0625rem; /* 18px */
 }
 
 /* Links - high contrast for accessibility */
@@ -98,46 +87,36 @@ em, i {
 
 /* Lists */
 ul, ol {
-	margin-bottom: 1em;
-	padding-left: 1.5em;
 	color: #333;
 }
 
 li {
-	margin-bottom: 0.5em;
 	line-height: 1.6;
 }
 
 /* Small text */
 small {
-	font-size: 0.875rem; /* 14px */
 	color: #666;
 }
 
 /* Code and pre */
 code {
 	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-	font-size: 0.875em;
 	background: #f5f5f5;
-	padding: 0.2em 0.4em;
 	border-radius: 3px;
 	color: #d63384;
 }
 
 pre {
 	font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-	font-size: 0.875rem;
 	background: #f8f9fa;
-	padding: 1rem;
 	border-radius: 6px;
 	overflow-x: auto;
-	margin-bottom: 1em;
 }
 
 /* Buttons - readable text */
 button, .btn {
 	font-family: inherit;
-	font-size: 1rem;
 	font-weight: 500;
 	line-height: 1.5;
 }
@@ -145,7 +124,6 @@ button, .btn {
 /* Form inputs */
 input, textarea, select {
 	font-family: inherit;
-	font-size: 1rem;
 	line-height: 1.5;
 	color: #212529;
 }
@@ -158,17 +136,14 @@ textarea::placeholder {
 
 /* Labels */
 label {
-	font-size: 0.9375rem; /* 15px */
 	font-weight: 500;
 	color: #495057;
-	margin-bottom: 0.5rem;
 	display: inline-block;
 }
 
 /* Product names and titles */
 .product-card_title,
 .product-title {
-	font-size: 1.125rem; /* 18px */
 	font-weight: 500;
 	line-height: 1.4;
 	color: #1a1a1a;
@@ -188,26 +163,22 @@ label {
 
 /* Category names */
 .category-item > a {
-	font-size: 0.9375rem; /* 15px */
 	font-weight: 500;
 	color: #333;
 }
 
 /* Prices - high contrast */
 .price {
-	font-size: 1.25rem; /* 20px */
 	font-weight: 600;
 	color: #1a1a1a;
 }
 
 .price-new {
-	font-size: 1.25rem;
 	font-weight: 600;
 	color: #dc3545;
 }
 
 .price-old {
-	font-size: 1rem;
 	font-weight: 400;
 	color: #6c757d;
 	text-decoration: line-through;
@@ -252,42 +223,29 @@ label {
 .information-information #content,
 .information-contact #content {
 	max-width: 1200px;
-	margin: 0 auto;
-	padding: 40px 20px;
 }
 
 /* Information page headings */
 .information-information h1,
 .information-contact h1 {
-	font-size: 2.5rem;
-	margin-bottom: 30px;
 	color: #1a1a1a;
 	border-bottom: 3px solid #c67d4e;
-	padding-bottom: 15px;
 }
 
 .information-information h2,
 .information-contact h2 {
-	font-size: 2rem;
-	margin-top: 40px;
-	margin-bottom: 20px;
 	color: #2c3e50;
 }
 
 .information-information h3,
 .information-contact h3 {
-	font-size: 1.625rem;
-	margin-top: 30px;
-	margin-bottom: 15px;
 	color: #34495e;
 }
 
 /* Information page paragraphs */
 .information-information p,
 .information-contact p {
-	font-size: 1.125rem; /* 19px */
 	line-height: 1.8;
-	margin-bottom: 1.5em;
 	color: #34495e;
 }
 
@@ -296,54 +254,40 @@ label {
 .information-information ol,
 .information-contact ul,
 .information-contact ol {
-	font-size: 1.0625rem; /* 18px */
 	line-height: 1.75;
-	margin-bottom: 1.5em;
-	padding-left: 2em;
 }
 
 .information-information li,
 .information-contact li {
-	margin-bottom: 0.75em;
 }
 
 /* Contact information */
 .information-contact .left {
 	background: #f8f9fa;
-	padding: 30px;
 	border-radius: 8px;
 	border-left: 4px solid #c67d4e;
-	margin-bottom: 30px;
 }
 
 .information-contact .left strong {
-	font-size: 1.125rem;
 	color: #1a1a1a;
 	display: block;
-	margin-bottom: 10px;
 	font-weight: 600;
 }
 
 .information-contact .left p {
-	font-size: 1.0625rem;
 	line-height: 1.7;
-	margin-bottom: 15px;
 	color: #495057;
 }
 
 /* Contact form */
 .information-contact .form-group label {
-	font-size: 1rem;
 	font-weight: 500;
 	color: #2c3e50;
-	margin-bottom: 8px;
 }
 
 .information-contact input[type="text"],
 .information-contact input[type="email"],
 .information-contact textarea {
-	font-size: 1.0625rem;
-	padding: 12px 15px;
 	border: 2px solid #e0e0e0;
 	border-radius: 6px;
 	transition: border-color 0.3s ease;
@@ -359,8 +303,6 @@ label {
 /* Submit button */
 .information-contact button[type="submit"],
 .information-contact .btn-primary {
-	font-size: 1.125rem;
-	padding: 14px 32px;
 	font-weight: 600;
 	background: #c67d4e;
 	border: none;
@@ -379,14 +321,11 @@ label {
 .information-information #column-left,
 .information-contact #column-left {
 	background: #f8f9fa;
-	padding: 25px;
 	border-radius: 8px;
 }
 
 .information-information #column-left h3,
 .information-contact #column-left h3 {
-	font-size: 1.25rem;
-	margin-bottom: 15px;
 	color: #1a1a1a;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
@@ -395,21 +334,17 @@ label {
 .information-information #column-left ul,
 .information-contact #column-left ul {
 	list-style: none;
-	padding: 0;
 }
 
 .information-information #column-left li,
 .information-contact #column-left li {
-	margin-bottom: 12px;
 }
 
 .information-information #column-left a,
 .information-contact #column-left a {
-	font-size: 1rem;
 	color: #495057;
 	text-decoration: none;
 	transition: color 0.2s ease;
-	padding: 8px 12px;
 	display: block;
 	border-radius: 4px;
 }
@@ -433,22 +368,18 @@ label {
 @media (max-width: 768px) {
 	.information-information #content,
 	.information-contact #content {
-		padding: 20px 15px;
 	}
 
 	.information-information h1,
 	.information-contact h1 {
-		font-size: 2rem;
 	}
 
 	.information-information h2,
 	.information-contact h2 {
-		font-size: 1.625rem;
 	}
 
 	.information-information p,
 	.information-contact p {
-		font-size: 1rem;
 	}
 }
 
@@ -461,23 +392,19 @@ label {
 .dropdown-menu,
 #top-links .dropdown-menu,
 .myaccount-menu {
-	font-size: 14px !important;
 	line-height: 1.5 !important;
 }
 
 .dropdown-menu li,
 #top-links .dropdown-menu li,
 .myaccount-menu li {
-	margin-bottom: 0 !important;
 	line-height: 1.5 !important;
 }
 
 .dropdown-menu a,
 #top-links .dropdown-menu a,
 .myaccount-menu a {
-	font-size: 14px !important;
 	color: #333 !important;
-	padding: 10px 20px !important;
 	display: block !important;
 	text-decoration: none !important;
 	transition: background 0.2s ease !important;
@@ -493,40 +420,29 @@ label {
 
 /* Cart dropdown */
 #cart .dropdown-menu {
-	font-size: 14px !important;
 	min-width: 300px !important;
 }
 
 #cart .dropdown-menu ul {
-	padding: 0 !important;
-	margin: 0 !important;
 	list-style: none !important;
 }
 
 #cart .dropdown-menu li {
-	margin-bottom: 0 !important;
-	padding: 10px 15px !important;
 	border-bottom: 1px solid #eee !important;
 }
 
 #cart .dropdown-menu p {
-	margin-bottom: 10px !important;
-	font-size: 14px !important;
 	line-height: 1.5 !important;
 }
 
 #cart .dropdown-menu a {
-	font-size: 14px !important;
 	color: #333 !important;
 }
 
 /* Search dropdown */
 .search .dropdown-menu {
-	font-size: 14px !important;
 }
 
 .search .dropdown-menu a {
-	padding: 8px 15px !important;
-	font-size: 14px !important;
 }
 
