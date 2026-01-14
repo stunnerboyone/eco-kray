@@ -14013,7 +14013,6 @@ h4:focus a {
 .live-search ul li a {
 	display: block;
 	float: left;
-	padding: 12px;
 	text-decoration: none;
 	width: 100%;
 	margin: 0 0 5px 0;
@@ -14028,7 +14027,6 @@ h4:focus a {
 	font-size: 12px;
 	font-weight: normal;
 	margin: 0;
-	padding: 10px 0 0;
 }
 .live-search ul li .search-description {
 	float: left;
