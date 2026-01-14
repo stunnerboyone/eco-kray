@@ -14331,10 +14331,6 @@ h4:focus a {
 	overflow: hidden !important;
 }
 
-.live-search ul {
-	padding: 8px !important;
-}
-
 .live-search ul li {
 	border-radius: var(--radius-medium) !important;
 	transition: all 0.2s ease !important;
