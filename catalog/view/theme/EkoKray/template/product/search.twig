@@ -46,30 +46,11 @@
             {% endfor %}
           </select>
         </div>
-        <div class="col-sm-3 search_subcategory">
-          <label class="checkbox-inline">
-           {% if sub_category %}
-            <input type="checkbox" name="sub_category" value="1" checked="checked" />
-            {% else %}
-            <input type="checkbox" name="sub_category" value="1" />
-            {% endif %}
-            {{ text_sub_category }}</label>
-        </div>
       </div>
-      <p>
-          <label class="checkbox-inline">
-          {% if description %}
-          <input type="checkbox" name="description" value="1" id="description" checked="checked" />
-          {% else %}
-          <input type="checkbox" name="description" value="1" id="description" />
-          {% endif %}
-          {{ entry_description }}</label>
-      </p>
       <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary" />
       <h3>{{ text_search }}</h3>
       {% if products %}
       <div class="category_filter">
-    <div class="compare-total"><a href="{{ compare }}" id="compare-total">{{ text_compare }}</a></div>
     <div class="pagination-right">
      <div class="sort-by-wrapper">
       <div class="col-md-2 text-right sort-by">
@@ -256,18 +237,6 @@ $('#button-search').bind('click', function() {
   if (category_id > 0) {
     url += '&category_id=' + encodeURIComponent(category_id);
   }
-  
-  var sub_category = $('#content input[name=\'sub_category\']:checked').prop('value');
-  
-  if (sub_category) {
-    url += '&sub_category=true';
-  }
-    
-  var filter_description = $('#content input[name=\'description\']:checked').prop('value');
-  
-  if (filter_description) {
-    url += '&description=true';
-  }
 
   location = url;
 });
@@ -277,14 +246,4 @@ $('#content input[name=\'search\']').bind('keydown', function(e) {
     $('#button-search').trigger('click');
   }
 });
-
-$('select[name=\'category_id\']').on('change', function() {
-  if (this.value == '0') {
-    $('input[name=\'sub_category\']').prop('disabled', true);
-  } else {
-    $('input[name=\'sub_category\']').prop('disabled', false);
-  }
-});
-
-$('select[name=\'category_id\']').trigger('change');
 //--></script>
