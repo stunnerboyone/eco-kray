@@ -13980,7 +13980,6 @@ h4:focus a {
 	border: 1px solid #e5e5e5;
 	display: none;
 	top: 43px;
-	padding: 10px;
 }
 .live-search .loading {
 	display: block;
@@ -14032,7 +14031,6 @@ h4:focus a {
 	float: left;
 	text-align: left;
 	width: 67%;
-	padding: 0 0 0 15px;
 }
 .live-search ul li .product-name {
 	color: #000000;
@@ -14118,7 +14116,6 @@ h4:focus a {
 		width: 100%;
 	}
 	.live-search ul li a {
-		padding: 5px 0;
 		margin: 0;
 	}
 	.live-search {
@@ -14129,7 +14126,6 @@ h4:focus a {
 	}
 	.live-search ul li .search-description {
 		width: 70%;
-		padding: 0 0px 0 10px;
 	}
 }
 
@@ -14340,7 +14336,6 @@ h4:focus a {
 }
 
 .live-search ul li {
-	padding: 12px 16px !important;
 	border-radius: var(--radius-medium) !important;
 	transition: all 0.2s ease !important;
 	cursor: pointer !important;
