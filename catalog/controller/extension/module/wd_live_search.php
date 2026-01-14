@@ -20,7 +20,7 @@ class ControllerExtensionModuleWDLiveSearch extends Controller {
 		$sort          = 'p.sort_order';
 		$order         = 'ASC';
 		$page          = 1;
-		$limit         = $this->config->get('module_wd_live_search_limit');
+		$limit         = $this->config->get('module_wd_live_search_limit') ? $this->config->get('module_wd_live_search_limit') : 15;
 		$search_result = 0;
 		$error         = false;
 		if( version_compare(VERSION, '3.0.0.0', '>=') ){

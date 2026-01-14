@@ -117,6 +117,7 @@ $('#wdtestimonial-carousel').owlCarousel({
 				$(document).ready(function() {
 					var html = '';
 					html += '<div class="live-search">';
+					html += '	<div class="result-count"></div>';
 					html += '	<ul>';
 					html += '	</ul>';
 					html += '<div class="result-text"></div>';
@@ -132,7 +133,8 @@ $('#wdtestimonial-carousel').owlCarousel({
 							var module_wd_live_search_min_length = '{{ module_wd_live_search_min_length|abs }}';
 							if (filter_name.length < module_wd_live_search_min_length) {
 								$('.live-search').css('display','none');
-								 $('body').removeClass('search-open');
+								$('body').removeClass('search-open');
+								$('.result-count').html('');
 							}
 							else{
 								var html = '';
@@ -150,11 +152,13 @@ $('#wdtestimonial-carousel').owlCarousel({
 										var products = result.products;
 										$('.live-search ul li').remove();
 										$('.result-text').html('');
+										$('.result-count').html('');
 										if (!$.isEmptyObject(products)) {
 											var show_image = {{ module_wd_live_search_show_image|abs }};
 											var show_price = {{ module_wd_live_search_show_price|abs }};
 											var show_description = {{ module_wd_live_search_show_description|abs }};
-											$('.result-text').html('<a href="{{ module_wd_live_search_href }}'+filter_name+'" class="view-all-results">{{ text_view_all_results|e }} ('+result.total+')</a>');
+											$('.result-count').html('Знайдено результатів: <strong>' + result.total + '</strong>');
+											$('.result-text').html('<a href="{{ module_wd_live_search_href }}'+filter_name+'" class="view-all-results">{{ text_view_all_results|e }}</a>');
 
 											$.each(products, function(index,product) {
 												var html = '';

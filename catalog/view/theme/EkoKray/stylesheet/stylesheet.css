@@ -13982,6 +13982,8 @@ h4:focus a {
 	display: none;
 	top: 43px;
 	padding: 10px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
 }
 .live-search .loading {
 	display: block;
@@ -13998,6 +14000,27 @@ h4:focus a {
 	margin: 0;
 	padding: 0;
 	width: 100%;
+	max-height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.live-search ul::-webkit-scrollbar {
+	width: 8px;
+}
+
+.live-search ul::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+
+.live-search ul::-webkit-scrollbar-thumb {
+	background: #88b04b;
+	border-radius: 4px;
+}
+
+.live-search ul::-webkit-scrollbar-thumb:hover {
+	background: #6a8f3a;
 }
 .live-search ul li {
 	background-color: #ffffff;
@@ -14067,6 +14090,19 @@ h4:focus a {
 	float: left;
 	margin: 0 0 0 5px;
 }
+.live-search .result-count {
+	float: left;
+	width: 100%;
+	padding: 8px 12px;
+	background-color: #f9f9f9;
+	border-bottom: 1px solid #e5e5e5;
+	font-size: 12px;
+	color: #666;
+	margin: -10px -10px 10px -10px;
+	font-weight: 500;
+	border-radius: 4px 4px 0 0;
+}
+
 .live-search .result-text {
 	float: left;
 	font-size: 13px;
