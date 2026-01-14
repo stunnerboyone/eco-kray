@@ -1,22 +1,23 @@
 /**
  * EKO-KRAY Megamenu - Modern Design with Category List
+ * Now uses global CSS variables from core/variables.css
  */
 
-/* Variables */
+/* Megamenu-specific Variables (extending global variables) */
 :root {
-  --megamenu-primary: #2d8f3c;
-  --megamenu-primary-dark: #1a5c28;
+  --megamenu-primary: var(--color-accent-green);
+  --megamenu-primary-dark: var(--color-accent-dark);
   --megamenu-accent: #f7941d;
-  --megamenu-text: #333;
-  --megamenu-text-light: #666;
-  --megamenu-bg: #fff;
-  --megamenu-bg-hover: #f8f9fa;
-  --megamenu-border: #e0e0e0;
-  --megamenu-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --megamenu-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
-  --megamenu-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --megamenu-text: var(--color-gray-700);
+  --megamenu-text-light: var(--color-gray-500);
+  --megamenu-bg: var(--color-white);
+  --megamenu-bg-hover: var(--color-gray-50);
+  --megamenu-border: var(--color-border);
+  --megamenu-shadow: var(--shadow);
+  --megamenu-shadow-lg: var(--shadow-lg);
+  --megamenu-transition: var(--transition-cubic);
   --megamenu-mobile-width: 280px;
-  --megamenu-radius: 8px;
+  --megamenu-radius: var(--radius);
 }
 
 /* Header - don't modify original header */
