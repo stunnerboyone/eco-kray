@@ -45,14 +45,6 @@ body {
 	line-height: 22px;
 }
 
-/* Add spacing after header for all main page containers */
-#product-product.container,
-#product-special.container,
-#product-category.container,
-#information-information.container,
-#information-contact.container {
-	padding-top: 35px;
-}
 /* ========== UNIFIED INPUT STYLES ========== */
 /* Apply consistent styling to all form inputs across the site */
 
@@ -9048,12 +9040,9 @@ h2.price {
 	padding: 30px 0px 0 0;
 }
 .contact-form-design.container {
-	padding: 30px 0 70px 0;
 	background: #fff;
-	margin: 40px auto;
 	position: relative;
 	display: flex;
-	gap: 30px;
 	align-items: flex-start;
 }
 
