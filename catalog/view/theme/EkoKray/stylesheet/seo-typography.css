@@ -219,12 +219,6 @@ label {
    INFORMATION PAGES STYLES
    ============================================ */
 
-/* Information page container */
-.information-information #content,
-.information-contact #content {
-	max-width: 1200px;
-}
-
 /* Information page headings */
 .information-information h1,
 .information-contact h1 {
