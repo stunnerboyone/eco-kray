@@ -55,13 +55,10 @@
       <h3>{{ text_search }}</h3>
       {% if products %}
       <div class="category_filter">
-        <div class="pagination-right">
-          <div class="row sort-by-wrapper">
-            <div class="col-md-2 text-right sort-by">
-              <label class="control-label" for="input-sort">{{ text_sort }}</label>
-            </div>
-            <div class="col-md-3 text-right sort">
-              <select id="input-sort" class="form-control" onchange="location = this.value;">
+        <div class="filter-right">
+          <div class="filter-control">
+            <label class="control-label" for="input-sort">{{ text_sort }}</label>
+            <select id="input-sort" class="form-control" onchange="location = this.value;">
               {% for sorts in sorts %}
               {% if sorts.value == '%s-%s'|format(sort, order) %}
               <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
@@ -69,15 +66,12 @@
               <option value="{{ sorts.href }}">{{ sorts.text }}</option>
               {% endif %}
               {% endfor %}
-              </select>
-            </div>
+            </select>
           </div>
-          <div class="row show-wrapper">
-            <div class="col-md-1 text-right show">
-              <label class="control-label" for="input-limit">{{ text_limit }}</label>
-            </div>
-            <div class="col-md-2 text-right limit">
-              <select id="input-limit" class="form-control" onchange="location = this.value;">
+
+          <div class="filter-control">
+            <label class="control-label" for="input-limit">{{ text_limit }}</label>
+            <select id="input-limit" class="form-control" onchange="location = this.value;">
               {% for limits in limits %}
               {% if limits.value == limit %}
               <option value="{{ limits.href }}" selected="selected">{{ limits.text }}</option>
@@ -85,8 +79,7 @@
               <option value="{{ limits.href }}">{{ limits.text }}</option>
               {% endif %}
               {% endfor %}
-              </select>
-            </div>
+            </select>
           </div>
         </div>
       </div>
