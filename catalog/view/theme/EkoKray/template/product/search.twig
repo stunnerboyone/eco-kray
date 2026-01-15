@@ -46,8 +46,10 @@
             {% endfor %}
           </select>
         </div>
+        <div class="col-sm-3">
+          <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary" />
+        </div>
       </div>
-      <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary" />
       <h3>{{ text_search }}</h3>
       {% if products %}
       <div class="category_filter">
@@ -136,8 +138,10 @@
 
       <div class="pagination-wrapper">
         <div class="row">
-          <div class="col-sm-6 text-left page-link">{{ pagination }}</div>
-          <div class="col-sm-6 text-right page-result">{{ results }}</div>
+          <div class="col-sm-12 text-right page-result">{{ results }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 text-center page-link">{{ pagination }}</div>
         </div>
       </div>  
       {% else %}
