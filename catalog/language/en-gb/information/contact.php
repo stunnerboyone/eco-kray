@@ -15,7 +15,7 @@ $_['text_message']   = '<p>Ваш запит був успішно надісл�
 
 // Entry
 $_['entry_name']     = 'Ваше ім’я';
-$_['entry_email']    = 'E-Mail адреса';
+$_['entry_email']    = 'E-Mail';
 $_['entry_enquiry']  = 'Запит';
 
 // Email
