@@ -70,11 +70,12 @@ $(document).ready(function(){
 		$(".top-links").slideToggle("slow");
 	});}
 
-	/*$('.image').each(function(){  						   
-			$(this).hoverdir();   
+	/*$('.image').each(function(){
+			$(this).hoverdir();
 		});
 	/*bx slider for vertical blog */
-	$('#content select, .header-search select').customSelect();	
+	// Disabled customSelect - using native browser selects
+	// $('#content select, .header-search select').customSelect();
 	$('ul.breadcrumb').prependTo('.content-top-breadcum .container');
 	$('#content h1').prependTo('.row .page-title');
 	$('#content h2').prependTo('.row .page-title');
