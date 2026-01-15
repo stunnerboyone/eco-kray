@@ -15,7 +15,7 @@
     {% endif %}
     <div id="content" class="{{ class }}">{{ content_top }}
       <h2 class="page-title">{{ heading_title }}</h2>
-      <label class="control-label " for="input-search">{{ entry_search }}</label>
+      <label class="control-label" for="input-search">{{ entry_search }}</label>
       <div class="row">
         <div class="col-sm-4 search_term">
           <input type="text" name="search" value="{{ search }}" placeholder="{{ text_keyword }}" id="input-search" class="form-control" />
@@ -51,41 +51,41 @@
       <h3>{{ text_search }}</h3>
       {% if products %}
       <div class="category_filter">
-    <div class="pagination-right">
-     <div class="sort-by-wrapper">
-      <div class="col-md-2 text-right sort-by">
-        <label class="control-label" for="input-sort">{{ text_sort }}</label>
+        <div class="pagination-right">
+          <div class="row sort-by-wrapper">
+            <div class="col-md-2 text-right sort-by">
+              <label class="control-label" for="input-sort">{{ text_sort }}</label>
+            </div>
+            <div class="col-md-3 text-right sort">
+              <select id="input-sort" class="form-control" onchange="location = this.value;">
+              {% for sorts in sorts %}
+              {% if sorts.value == '%s-%s'|format(sort, order) %}
+              <option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
+              {% else %}
+              <option value="{{ sorts.href }}">{{ sorts.text }}</option>
+              {% endif %}
+              {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="row show-wrapper">
+            <div class="col-md-1 text-right show">
+              <label class="control-label" for="input-limit">{{ text_limit }}</label>
+            </div>
+            <div class="col-md-2 text-right limit">
+              <select id="input-limit" class="form-control" onchange="location = this.value;">
+              {% for limits in limits %}
+              {% if limits.value == limit %}
+              <option value="{{ limits.href }}" selected="selected">{{ limits.text }}</option>
+              {% else %}
+              <option value="{{ limits.href }}">{{ limits.text }}</option>
+              {% endif %}
+              {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-3 text-right sort">
-        <select id="input-sort" class="form-control" onchange="location = this.value;">
-        {% for sorts in sorts %} 
-        {% if sorts.value == '%s-%s'|format(sort, order) %}
-        <option value="{{ sorts.href }} " selected="selected">{{ sorts.text }}</option>
-        {% else %}
-        <option value="{{ sorts.href }} ">{{ sorts.text }} </option>
-         {% endif %}
-        {% endfor %}
-        </select>
-      </div>
-     </div>
-     <div class="show-wrapper">
-      <div class="col-md-1 text-right show">
-        <label class="control-label" for="input-limit">{{ text_limit }}</label>
-      </div>
-      <div class="col-md-2 text-right limit">
-        <select id="input-limit" class="form-control" onchange="location = this.value;">
-        {% for limits in limits %}
-        {% if limits.value == limit %}
-        <option value="{{ limits.href }} " selected="selected">{{ limits.text }}</option>
-        {% else %}
-        <option value="{{ limits.href }} ">{{ limits.text }} </option>
-        {% endif %}
-        {% endfor %}
-        </select>
-      </div>
-    </div>
-      </div>
-    </div>
 
 <div class="box-product">
   {% for product in products %}
@@ -134,10 +134,12 @@
   {% endfor %}
 </div>
 
-       <div class="pagination-wrapper">
-      <div class="col-sm-6 text-left page-link">{{ pagination }}</div>
-      <div class="col-sm-6 text-right page-result">{{ results }}</div>
-     </div>  
+      <div class="pagination-wrapper">
+        <div class="row">
+          <div class="col-sm-6 text-left page-link">{{ pagination }}</div>
+          <div class="col-sm-6 text-right page-result">{{ results }}</div>
+        </div>
+      </div>  
       {% else %}
       <p>{{ text_empty }}</p>
       {% endif %}
