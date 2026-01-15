@@ -8889,6 +8889,21 @@ h2.price {
 	flex-wrap: wrap;
 	gap: 15px;
 }
+
+/* Search page - pagination text above buttons */
+#product-search .pagination-wrapper {
+	flex-direction: column;
+	gap: 12px;
+}
+#product-search .pagination-wrapper .page-result {
+	width: 100%;
+	text-align: right;
+	margin-bottom: 8px;
+}
+#product-search .pagination-wrapper .page-link {
+	width: 100%;
+	justify-content: center;
+}
 .pagination > li:last-child {
 	margin: 0;
 }
