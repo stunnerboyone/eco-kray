@@ -1,7 +1,11 @@
 {{ header }}
-<div id="information-contact">
-
-  	{{ column_left }}
+<div id="information-contact" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
     {% if column_left and column_right %}
     {% set class = 'col-sm-6' %}
     {% elseif column_left or column_right %}
@@ -9,12 +13,7 @@
     {% else %}
     {% set class = 'col-sm-12' %}
     {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-    <ul class="breadcrumb">
-    {% for breadcrumb in breadcrumbs %}
-    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-    {% endfor %}
-    </ul> 
+    <div id="content" class="{{ class }}">{{ content_top }} 
       {# <h1>{{ heading_title }}</h1> #}
       {# <h3>{{ text_location }}</h3> #}
       
@@ -158,6 +157,6 @@
         </div>
       </div>
       {{ content_bottom }}</div>
-    {{ column_right }}
+    {{ column_right }}</div>
 </div>
 {{ footer }}
