@@ -17,10 +17,10 @@
       <h2 class="page-title">{{ heading_title }}</h2>
       <label class="control-label" for="input-search">{{ entry_search }}</label>
       <div class="row">
-        <div class="col-sm-4 search_term">
+        <div class="col-sm-5 search_term">
           <input type="text" name="search" value="{{ search }}" placeholder="{{ text_keyword }}" id="input-search" class="form-control" />
         </div>
-        <div class="col-sm-3 sort category_dropdown">
+        <div class="col-sm-4 sort category_dropdown">
           <select name="category_id" class="form-control">
             <option value="0">{{ text_category }}</option>
             {% for category_1 in categories %}
@@ -47,7 +47,7 @@
           </select>
         </div>
         <div class="col-sm-3">
-          <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary" />
+          <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary btn-block" />
         </div>
       </div>
       <h3>{{ text_search }}</h3>
