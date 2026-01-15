@@ -8881,6 +8881,18 @@ h2.price {
 	gap: 15px;
 }
 
+/* Search page - specific styles */
+#product-search .page-title {
+	margin-top: 20px;
+	margin-bottom: 25px;
+}
+
+#product-search .control-label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 500;
+}
+
 /* Search page - pagination text above buttons */
 #product-search .pagination-wrapper {
 	flex-direction: column;

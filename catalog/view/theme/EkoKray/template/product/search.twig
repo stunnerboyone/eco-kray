@@ -15,14 +15,15 @@
     {% endif %}
     <div id="content" class="{{ class }}">{{ content_top }}
       <h2 class="page-title">{{ heading_title }}</h2>
-      <label class="control-label" for="input-search">{{ entry_search }}</label>
       <div class="row">
         <div class="col-sm-5 search_term">
+          <label class="control-label" for="input-search">{{ entry_search }}</label>
           <input type="text" name="search" value="{{ search }}" placeholder="{{ text_keyword }}" id="input-search" class="form-control" />
         </div>
         <div class="col-sm-4 sort category_dropdown">
+          <label class="control-label">{{ text_category }}</label>
           <select name="category_id" class="form-control">
-            <option value="0">{{ text_category }}</option>
+            <option value="0">Оберіть категорію</option>
             {% for category_1 in categories %}
             {% if category_1.category_id == category_id %}
             <option value="{{ category_1.category_id }}" selected="selected">{{ category_1.name }}</option>
@@ -47,6 +48,7 @@
           </select>
         </div>
         <div class="col-sm-3">
+          <label class="control-label">&nbsp;</label>
           <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary btn-block" />
         </div>
       </div>
