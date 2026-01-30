@@ -91,7 +91,7 @@ class ControllerExtensionModuleFeatured extends Controller {
 						'rating'      => $rating,
 						'href'        => $this->url->link('product/product', 'product_id=' . $product_info['product_id']),
 						'quick'        => $this->url->link('product/quick_view','&product_id=' . $product_info['product_id']),
-						'percentsaving' => round((($product_info['price'] - $product_info['special'])/$product_info['price'])*100, 0),
+						'percentsaving' => ($product_info['price'] > 0 && $product_info['special'] > 0) ? round((($product_info['price'] - $product_info['special']) / $product_info['price']) * 100, 0) : 0,
 						'thumb_swap'  => $this->model_tool_image->resize($images , $setting['width'], $setting['height'])
 					);
 				}

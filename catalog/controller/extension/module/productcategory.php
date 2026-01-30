@@ -105,7 +105,7 @@ class ControllerExtensionModuleProductcategory extends Controller {
 							'special'     => $special,
 							'tax'         => $tax,
 							'rating'      => $rating,
-							'percentsaving' => round((($result['price'] - $result['special'])/$result['price'])*100, 0),
+							'percentsaving' => ($result['price'] > 0 && $result['special'] > 0) ? round((($result['price'] - $result['special']) / $result['price']) * 100, 0) : 0,
 							'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id']),
 							'quick'        => $this->url->link('product/quick_view','&product_id=' . $result['product_id']),
 							'thumb_swap'  => $this->model_tool_image->resize($images , $setting['width'], $setting['height'])

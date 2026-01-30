@@ -121,7 +121,7 @@ class ControllerExtensionModuleSpecial extends Controller {
 					'price'       => $price,
 					'specialTime' => ($result['special_end']=='0000-00-00' || is_null($result['special_end'])) ? false : $result['special_end'],
 					'special'     => $special,
-					'percentsaving' 	 => round((($result['price'] - $result['special'])/$result['price'])*100, 0),
+					'percentsaving' 	 => ($result['price'] > 0 && $result['special'] > 0) ? round((($result['price'] - $result['special']) / $result['price']) * 100, 0) : 0,
 					'tax'         => $tax,
 					'rating'      => $rating,
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id']),
