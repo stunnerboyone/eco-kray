@@ -9,6 +9,7 @@ class Sync1CCatalogImporter {
     private $log;
     private $seoUrlGenerator;
     private $imageLinker;
+    private $optionManager;
 
     // Category mapping configuration
     private $categoryKeywords = [
@@ -19,11 +20,12 @@ class Sync1CCatalogImporter {
         'Набори' => ['набір', 'набор']
     ];
 
-    public function __construct($db, $log, $seoUrlGenerator, $imageLinker = null) {
+    public function __construct($db, $log, $seoUrlGenerator, $imageLinker = null, $optionManager = null) {
         $this->db = $db;
         $this->log = $log;
         $this->seoUrlGenerator = $seoUrlGenerator;
         $this->imageLinker = $imageLinker;
+        $this->optionManager = $optionManager;
     }
 
     /**
@@ -193,6 +195,11 @@ class Sync1CCatalogImporter {
 
         // Auto-categorize based on product name
         $this->autoCategorizeProduct($product_id, $name);
+
+        // Assign options from product name (volume/weight)
+        if ($this->optionManager) {
+            $this->optionManager->assignOptionsFromName($product_id, $name);
+        }
 
         return $result;
     }
