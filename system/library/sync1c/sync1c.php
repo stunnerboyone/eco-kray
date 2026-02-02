@@ -12,7 +12,7 @@ require_once(__DIR__ . '/OfferImporter.php');
 require_once(__DIR__ . '/XmlValidator.php');
 require_once(__DIR__ . '/RateLimiter.php');
 require_once(__DIR__ . '/ImageLinker.php');
-require_once(__DIR__ . '/ProductOptionManager.php');
+require_once(__DIR__ . '/ProductFilterManager.php');
 
 class Sync1C {
     private $registry;
@@ -69,14 +69,14 @@ class Sync1C {
         // Image Linker (for automatic image linking from FTP)
         $imageLinker = new Sync1CImageLinker($this->db, $this->log, 'catalog/products/');
 
-        // Product Option Manager (for automatic option assignment from product name)
-        $optionManager = new Sync1CProductOptionManager($this->db, $this->log);
+        // Product Filter Manager (for automatic filter assignment from product name)
+        $filterManager = new Sync1CProductFilterManager($this->db, $this->log);
 
-        // Catalog Importer (with image linker and option manager)
-        $this->catalogImporter = new Sync1CCatalogImporter($this->db, $this->log, $this->seoUrlGenerator, $imageLinker, $optionManager);
+        // Catalog Importer (with image linker and filter manager)
+        $this->catalogImporter = new Sync1CCatalogImporter($this->db, $this->log, $this->seoUrlGenerator, $imageLinker, $filterManager);
 
-        // Offer Importer (with catalog importer for auto-categorization, image linker, SEO URL generator, and option manager)
-        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter, $imageLinker, $this->seoUrlGenerator, $optionManager);
+        // Offer Importer (with catalog importer for auto-categorization, image linker, SEO URL generator, and filter manager)
+        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter, $imageLinker, $this->seoUrlGenerator, $filterManager);
     }
 
     /**
