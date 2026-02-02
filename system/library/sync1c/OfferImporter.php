@@ -10,15 +10,15 @@ class Sync1COfferImporter {
     private $catalogImporter;
     private $imageLinker;
     private $seoUrlGenerator;
-    private $optionManager;
+    private $filterManager;
 
-    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null, $optionManager = null) {
+    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null, $filterManager = null) {
         $this->db = $db;
         $this->log = $log;
         $this->catalogImporter = $catalogImporter;
         $this->imageLinker = $imageLinker;
         $this->seoUrlGenerator = $seoUrlGenerator;
-        $this->optionManager = $optionManager;
+        $this->filterManager = $filterManager;
     }
 
     /**
@@ -142,9 +142,9 @@ class Sync1COfferImporter {
                 }
             }
 
-            // Assign options from product name (volume/weight)
-            if ($this->optionManager) {
-                $this->optionManager->assignOptionsFromName($product_id, $product_name);
+            // Assign filters from product name (volume/weight)
+            if ($this->filterManager) {
+                $this->filterManager->assignFiltersFromName($product_id, $product_name);
             }
         } else {
             $product_id = $query->row['product_id'];
@@ -195,9 +195,9 @@ class Sync1COfferImporter {
             }
         }
 
-        // Assign options from product name (volume/weight)
-        if ($this->optionManager) {
-            $this->optionManager->assignOptionsFromName($product_id, $product_name);
+        // Assign filters from product name (volume/weight)
+        if ($this->filterManager) {
+            $this->filterManager->assignFiltersFromName($product_id, $product_name);
         }
 
         // Track changes for summary
