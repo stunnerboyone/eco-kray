@@ -4,7 +4,7 @@ $_['heading_title']     = 'Пошук';
 $_['heading_tag']       = 'Тег – ';
 
 // Text
-$_['text_search']       = 'Товари, що відповідають критеріям пошуку';
+$_['text_search']       = '';
 $_['text_keyword']      = 'Ключові слова';
 $_['text_category']     = 'Усі категорії';
 $_['text_sub_category'] = 'Шукати в підкатегоріях';
