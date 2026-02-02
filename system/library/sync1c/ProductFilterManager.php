@@ -57,6 +57,9 @@ class Sync1CProductFilterManager {
 
         if (!$filters_assigned) {
             $this->log->write("FILTER: No volume/weight found in product name");
+        } else {
+            // Link filter groups to product categories (so filters show in catalog)
+            $this->linkFiltersToProductCategories($product_id);
         }
 
         return $filters_assigned;
@@ -175,6 +178,56 @@ class Sync1CProductFilterManager {
         $this->log->write("FILTER: Created new filter value: $value (ID: $filter_id)");
 
         return $filter_id;
+    }
+
+    /**
+     * Link filter groups to product categories
+     * This makes filters visible in catalog for these categories
+     *
+     * @param int $product_id Product ID
+     */
+    private function linkFiltersToProductCategories($product_id) {
+        // Get all categories this product belongs to
+        $query = $this->db->query("
+            SELECT category_id
+            FROM " . DB_PREFIX . "product_to_category
+            WHERE product_id = '" . (int)$product_id . "'
+        ");
+
+        if (!$query->num_rows) {
+            $this->log->write("FILTER: Product #$product_id has no categories");
+            return;
+        }
+
+        // Get all filter groups (Об'єм, Вага)
+        foreach ($this->filterGroupNames as $filter_type => $group_name) {
+            $filter_group_id = $this->getOrCreateFilterGroup($filter_type);
+            if (!$filter_group_id) {
+                continue;
+            }
+
+            // Link this filter group to each product category
+            foreach ($query->rows as $row) {
+                $category_id = $row['category_id'];
+
+                // Check if already linked
+                $check = $this->db->query("
+                    SELECT category_id
+                    FROM " . DB_PREFIX . "category_filter
+                    WHERE category_id = '" . (int)$category_id . "'
+                    AND filter_group_id = '" . (int)$filter_group_id . "'
+                ");
+
+                if (!$check->num_rows) {
+                    // Link filter group to category
+                    $this->db->query("INSERT INTO " . DB_PREFIX . "category_filter SET
+                        category_id = '" . (int)$category_id . "',
+                        filter_group_id = '" . (int)$filter_group_id . "'");
+
+                    $this->log->write("FILTER: Linked filter group '$group_name' to category #$category_id");
+                }
+            }
+        }
     }
 
     /**
