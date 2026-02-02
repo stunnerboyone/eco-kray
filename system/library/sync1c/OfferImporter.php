@@ -10,13 +10,15 @@ class Sync1COfferImporter {
     private $catalogImporter;
     private $imageLinker;
     private $seoUrlGenerator;
+    private $optionManager;
 
-    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null) {
+    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null, $optionManager = null) {
         $this->db = $db;
         $this->log = $log;
         $this->catalogImporter = $catalogImporter;
         $this->imageLinker = $imageLinker;
         $this->seoUrlGenerator = $seoUrlGenerator;
+        $this->optionManager = $optionManager;
     }
 
     /**
@@ -139,6 +141,11 @@ class Sync1COfferImporter {
                     $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
                 }
             }
+
+            // Assign options from product name (volume/weight)
+            if ($this->optionManager) {
+                $this->optionManager->assignOptionsFromName($product_id, $product_name);
+            }
         } else {
             $product_id = $query->row['product_id'];
         }
@@ -186,6 +193,11 @@ class Sync1COfferImporter {
             if ($seo_keyword) {
                 $this->imageLinker->linkImageBySeoUrl($product_id, $seo_keyword);
             }
+        }
+
+        // Assign options from product name (volume/weight)
+        if ($this->optionManager) {
+            $this->optionManager->assignOptionsFromName($product_id, $product_name);
         }
 
         // Track changes for summary
