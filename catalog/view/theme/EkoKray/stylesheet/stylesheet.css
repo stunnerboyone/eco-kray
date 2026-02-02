@@ -744,10 +744,10 @@ footer .social-block h5 {
 }
 
 .productpage .product-right ul.price-section {
-	background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
-	padding: 16px 20px;
-	border-radius: 12px;
-	border: 2px solid #e8e8e8;
+	background: none;
+	padding: 16px 0;
+	border-radius: 0;
+	border: none;
 	margin: 0 0 20px 0;
 }
 
