@@ -209,15 +209,21 @@ class Sync1CCatalogImporter {
         // Clear existing categories first
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
 
+        // Extract first word from product name
         $name_lower = mb_strtolower($product_name, 'UTF-8');
+        $words = preg_split('/[\s\-]+/', $name_lower, 2); // Split by space or hyphen, limit to 2 parts
+        $first_word = $words[0];
+
+        $this->log->write("  → First word: '$first_word'");
+
         $assigned_categories = [];
 
-        // Find matching categories
+        // Find matching categories based on FIRST WORD only
         foreach ($this->categoryKeywords as $category_name => $keywords) {
             foreach ($keywords as $keyword) {
-                if (mb_strpos($name_lower, $keyword, 0, 'UTF-8') !== false) {
+                if (mb_strpos($first_word, $keyword, 0, 'UTF-8') !== false) {
                     // Find category by name
-                    $this->log->write("  → Searching for category: '$category_name' (keyword: $keyword)");
+                    $this->log->write("  → Searching for category: '$category_name' (keyword: $keyword matched first word)");
 
                     $cat_query = $this->db->query("
                         SELECT c.category_id, cd.name
