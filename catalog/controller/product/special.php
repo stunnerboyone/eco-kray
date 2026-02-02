@@ -143,7 +143,7 @@ class ControllerProductSpecial extends Controller {
 				'rating'      => $result['rating'],
 				'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url),
 				'quick'        => $this->url->link('product/quick_view','&product_id=' . $result['product_id']),
-				'percentsaving' 	 => round((( $result['price'] -  $result['special'])/ $result['price'])*100, 0),
+				'percentsaving' 	 => ($result['price'] > 0 && $result['special'] > 0) ? round((($result['price'] - $result['special']) / $result['price']) * 100, 0) : 0,
 				'thumb_swap'  => $this->model_tool_image->resize($images, $this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_width'), 
 				$this->config->get('theme_' . $this->config->get('config_theme') . '_image_product_height')),
 			);

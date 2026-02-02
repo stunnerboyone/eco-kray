@@ -1,6 +1,11 @@
 <?php
-// Error Reporting
-error_reporting(E_ALL);
+// Error Reporting - only enable full error reporting in development
+// Error display is controlled by ENVIRONMENT constant in index.php
+if (defined('ENVIRONMENT') && ENVIRONMENT === 'development') {
+	error_reporting(E_ALL);
+} else {
+	error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+}
 
 // Check Version
 if (version_compare(phpversion(), '7.3.0', '<') == true) {
