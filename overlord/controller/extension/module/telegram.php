@@ -16,6 +16,10 @@ class ControllerExtensionModuleTelegram extends Controller {
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
             $this->model_setting_setting->editSetting('module_telegram', $this->request->post);
+
+            // Ensure event is registered
+            $this->ensureEventRegistered();
+
             $this->session->data['success'] = $this->language->get('text_success');
             $this->response->redirect($this->url->link('extension/module/telegram', 'user_token=' . $this->session->data['user_token'], true));
         }
@@ -209,17 +213,27 @@ class ControllerExtensionModuleTelegram extends Controller {
     }
 
     /**
+     * Ensure event is registered in database
+     */
+    private function ensureEventRegistered() {
+        $this->load->model('setting/event');
+
+        $event = $this->model_setting_event->getEventByCode('telegram_order_notification');
+
+        if (!$event) {
+            $this->model_setting_event->addEvent(
+                'telegram_order_notification',
+                'catalog/model/checkout/order/addOrderHistory/after',
+                'telegram/order'
+            );
+        }
+    }
+
+    /**
      * Module install
      */
     public function install() {
-        $this->load->model('setting/event');
-
-        // Register event for order notifications
-        $this->model_setting_event->addEvent(
-            'telegram_order_notification',
-            'catalog/model/checkout/order/addOrderHistory/after',
-            'telegram/order'
-        );
+        $this->ensureEventRegistered();
     }
 
     /**

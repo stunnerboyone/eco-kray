@@ -16,6 +16,8 @@ class ControllerTelegramOrder extends Controller {
      * @param array $args Event arguments [order_id, order_status_id, comment, notify]
      */
     public function index(&$route, &$args) {
+        $log = new Log('telegram.log');
+
         // Check if module is enabled
         if (!$this->config->get('module_telegram_status')) {
             return;
@@ -24,7 +26,10 @@ class ControllerTelegramOrder extends Controller {
         $order_id = isset($args[0]) ? (int)$args[0] : 0;
         $order_status_id = isset($args[1]) ? (int)$args[1] : 0;
 
+        $log->write('Telegram event triggered for order #' . $order_id . ', new status: ' . $order_status_id);
+
         if (!$order_id || !$order_status_id) {
+            $log->write('Telegram: skipped - invalid order_id or order_status_id');
             return;
         }
 
@@ -33,14 +38,23 @@ class ControllerTelegramOrder extends Controller {
         $order_info = $this->model_checkout_order->getOrder($order_id);
 
         if (!$order_info) {
+            $log->write('Telegram: skipped - order not found');
             return;
         }
 
-        // Only send notification for new orders (status changed from 0 to something)
-        if ($order_info['order_status_id'] != 0) {
+        // Only send notification for NEW orders (first status change)
+        // Check order history - if only 1 entry exists, this is a new order
+        $history = $this->model_checkout_order->getOrderHistories($order_id);
+
+        $log->write('Telegram: order #' . $order_id . ' has ' . count($history) . ' history entries');
+
+        if (count($history) > 1) {
+            // Not a new order, already has history
+            $log->write('Telegram: skipped - not a new order');
             return;
         }
 
+        $log->write('Telegram: sending notification for new order #' . $order_id);
         $this->sendNewOrderNotification($order_info);
     }
 
