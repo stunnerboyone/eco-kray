@@ -43,12 +43,13 @@ class ControllerTelegramOrder extends Controller {
         }
 
         // Only send notification for NEW orders (first status change)
-        // Check order history - if only 1 entry exists, this is a new order
-        $history = $this->model_checkout_order->getOrderHistories($order_id);
+        // Check order history count directly via SQL
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order_history` WHERE order_id = '" . (int)$order_id . "'");
+        $history_count = (int)$query->row['total'];
 
-        $log->write('Telegram: order #' . $order_id . ' has ' . count($history) . ' history entries');
+        $log->write('Telegram: order #' . $order_id . ' has ' . $history_count . ' history entries');
 
-        if (count($history) > 1) {
+        if ($history_count > 1) {
             // Not a new order, already has history
             $log->write('Telegram: skipped - not a new order');
             return;
