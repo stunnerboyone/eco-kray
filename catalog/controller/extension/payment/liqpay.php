@@ -5,46 +5,106 @@ class ControllerExtensionPaymentLiqPay extends Controller {
 
 		$this->load->model('checkout/order');
 
-		if(!isset($this->session->data['order_id'])) {
+		if (!isset($this->session->data['order_id'])) {
 			return false;
 		}
 
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 
-		$data['action'] = 'https://liqpay.ua/?do=clickNbuy';
+		if (!$order_info) {
+			return false;
+		}
 
-		$xml  = '<request>';
-		$xml .= '	<version>1.2</version>';
-		$xml .= '	<result_url>' . $this->url->link('checkout/success', '', true) . '</result_url>';
-		$xml .= '	<server_url>' . $this->url->link('extension/payment/liqpay/callback', '', true) . '</server_url>';
-		$xml .= '	<merchant_id>' . $this->config->get('payment_liqpay_merchant') . '</merchant_id>';
-		$xml .= '	<order_id>' . $this->session->data['order_id'] . '</order_id>';
-		$xml .= '	<amount>' . $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false) . '</amount>';
-		$xml .= '	<currency>' . $order_info['currency_code'] . '</currency>';
-		$xml .= '	<description>' . $this->config->get('config_name') . ' ' . $order_info['payment_firstname'] . ' ' . $order_info['payment_address_1'] . ' ' . $order_info['payment_address_2'] . ' ' . $order_info['payment_city'] . ' ' . $order_info['email'] . '</description>';
-		$xml .= '	<default_phone></default_phone>';
-		$xml .= '	<pay_way>' . $this->config->get('payment_liqpay_type') . '</pay_way>';
-		$xml .= '</request>';
+		// LiqPay API v3 checkout URL
+		$data['action'] = 'https://www.liqpay.ua/api/3/checkout';
 
-		$data['xml'] = base64_encode($xml);
-		$data['signature'] = base64_encode(sha1($this->config->get('payment_liqpay_signature') . $xml . $this->config->get('payment_liqpay_signature'), true));
+		// Prepare payment data for API v3
+		$amount = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
+
+		$description = $this->config->get('config_name') . ' - Замовлення #' . $this->session->data['order_id'];
+
+		$liqpay_data = array(
+			'version'     => 3,
+			'public_key'  => $this->config->get('payment_liqpay_merchant'),
+			'action'      => 'pay',
+			'amount'      => $amount,
+			'currency'    => $order_info['currency_code'],
+			'description' => $description,
+			'order_id'    => (string)$this->session->data['order_id'],
+			'result_url'  => $this->url->link('checkout/success', '', true),
+			'server_url'  => $this->url->link('extension/payment/liqpay/callback', '', true)
+		);
+
+		// Add payment type if specified
+		$pay_type = $this->config->get('payment_liqpay_type');
+		if ($pay_type && $pay_type != 'liqpay') {
+			$liqpay_data['paytypes'] = $pay_type;
+		}
+
+		// Encode data and create signature
+		$data['data'] = base64_encode(json_encode($liqpay_data));
+		$private_key = $this->config->get('payment_liqpay_signature');
+		$data['signature'] = base64_encode(sha1($private_key . $data['data'] . $private_key, true));
 
 		return $this->load->view('extension/payment/liqpay', $data);
 	}
 
 	public function callback() {
-		$xml = base64_decode($this->request->post['operation_xml']);
-		$signature = base64_encode(sha1($this->config->get('payment_liqpay_signature') . $xml . $this->config->get('payment_liqpay_signature'), true));
+		// Verify required parameters exist
+		if (!isset($this->request->post['data']) || !isset($this->request->post['signature'])) {
+			return;
+		}
 
-		$posleft = strpos($xml, 'order_id');
-		$posright = strpos($xml, '/order_id');
+		$data = $this->request->post['data'];
+		$received_signature = $this->request->post['signature'];
 
-		$order_id = substr($xml, $posleft + 9, $posright - $posleft - 10);
+		// Verify signature
+		$private_key = $this->config->get('payment_liqpay_signature');
+		$expected_signature = base64_encode(sha1($private_key . $data . $private_key, true));
 
-		if ($signature == $this->request->post['signature']) {
-			$this->load->model('checkout/order');
+		if ($received_signature !== $expected_signature) {
+			return;
+		}
 
-			$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('config_order_status_id'));
+		// Decode and parse response
+		$response = json_decode(base64_decode($data), true);
+
+		if (!$response || !isset($response['order_id']) || !isset($response['status'])) {
+			return;
+		}
+
+		$order_id = (int)$response['order_id'];
+		$status = $response['status'];
+
+		// Verify order exists
+		$this->load->model('checkout/order');
+		$order_info = $this->model_checkout_order->getOrder($order_id);
+
+		if (!$order_info) {
+			return;
+		}
+
+		// Process based on payment status
+		// success - successful payment
+		// sandbox - successful payment in test mode
+		if ($status === 'success' || $status === 'sandbox') {
+			$order_status_id = $this->config->get('payment_liqpay_order_status_id');
+
+			if (!$order_status_id) {
+				$order_status_id = $this->config->get('config_order_status_id');
+			}
+
+			$comment = 'LiqPay: Платіж успішний. ';
+
+			if (isset($response['payment_id'])) {
+				$comment .= 'ID транзакції: ' . $response['payment_id'] . '. ';
+			}
+
+			if (isset($response['amount']) && isset($response['currency'])) {
+				$comment .= 'Сума: ' . $response['amount'] . ' ' . $response['currency'];
+			}
+
+			$this->model_checkout_order->addOrderHistory($order_id, $order_status_id, $comment, true);
 		}
 	}
 }
