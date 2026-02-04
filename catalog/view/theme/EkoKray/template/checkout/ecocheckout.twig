@@ -1,0 +1,540 @@
+{{ header }}
+<div id="checkout-checkout" class="container">
+    <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <div class="row">
+        <div id="content" class="{{ class }}">
+            <h1>{{ heading_title }}</h1>
+
+            <form id="ecocheckout-form" class="ecocheckout" data-urls='{"searchCities": "{{ url_search_cities }}", "getDepartments": "{{ url_get_departments }}", "updateShipping": "{{ url_update_shipping }}", "updateCart": "{{ url_update_cart }}", "removeProduct": "{{ url_remove_product }}", "createOrder": "{{ url_create_order }}"}'>
+                <div class="row">
+                    <!-- Left Column: Customer Info & Delivery -->
+                    <div class="col-md-7 col-lg-8">
+                        <!-- Contact Info -->
+                        <div class="panel panel-default ecocheckout-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">{{ text_contact_info }}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group required">
+                                            <label class="control-label" for="input-firstname">{{ entry_firstname }}</label>
+                                            <input type="text" name="firstname" value="{{ customer.firstname }}" placeholder="{{ entry_firstname }}" id="input-firstname" class="form-control" required />
+                                            <div class="error-message" data-error="firstname"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="input-lastname">{{ entry_lastname }}</label>
+                                            <input type="text" name="lastname" value="{{ customer.lastname }}" placeholder="{{ entry_lastname }}" id="input-lastname" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group required">
+                                            <label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+                                            <input type="tel" name="telephone" value="{{ customer.telephone }}" placeholder="+380XXXXXXXXX" id="input-telephone" class="form-control" required />
+                                            <div class="error-message" data-error="telephone"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label" for="input-email">{{ entry_email }}</label>
+                                            <input type="email" name="email" value="{{ customer.email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery -->
+                        <div class="panel panel-default ecocheckout-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">{{ text_delivery }}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Shipping Methods -->
+                                <div class="form-group">
+                                    {% for method in shipping_methods %}
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="shipping_code" value="{{ method.code }}" data-type="{{ method.type }}" {% if loop.first %}checked{% endif %} />
+                                            <span class="shipping-title">{{ method.title }}</span>
+                                            <span class="shipping-cost" data-shipping="{{ method.code }}"></span>
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="error-message" data-error="shipping"></div>
+                                </div>
+
+                                <!-- Nova Poshta City Search -->
+                                <div class="form-group required" id="city-wrapper">
+                                    <label class="control-label" for="input-city">{{ entry_city }}</label>
+                                    <input type="text" name="city" value="{{ customer.city }}" placeholder="Введіть назву міста..." id="input-city" class="form-control" autocomplete="off" />
+                                    <input type="hidden" name="city_ref" value="{{ customer.city_ref }}" id="input-city-ref" />
+                                    <div class="city-suggestions" id="city-suggestions"></div>
+                                    <div class="error-message" data-error="city"></div>
+                                </div>
+
+                                <!-- Nova Poshta Department/Poshtomat Select -->
+                                <div class="form-group required" id="department-wrapper">
+                                    <label class="control-label" for="input-department">{{ entry_department }}</label>
+                                    <select name="department_ref" id="input-department" class="form-control" disabled>
+                                        <option value="">Спочатку оберіть місто</option>
+                                    </select>
+                                    <input type="hidden" name="department" value="{{ customer.department }}" id="input-department-name" />
+                                    <div class="error-message" data-error="department"></div>
+                                </div>
+
+                                <!-- Address for courier delivery -->
+                                <div class="form-group" id="address-wrapper" style="display: none;">
+                                    <label class="control-label" for="input-address">{{ entry_address }}</label>
+                                    <input type="text" name="address" value="{{ customer.address }}" placeholder="вул. Хрещатик, 1, кв. 1" id="input-address" class="form-control" />
+                                    <div class="error-message" data-error="address"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment -->
+                        <div class="panel panel-default ecocheckout-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">{{ text_payment }}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    {% for method in payment_methods %}
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="payment_code" value="{{ method.code }}" {% if loop.first %}checked{% endif %} />
+                                            {% if method.code == 'liqpay' %}
+                                            <img src="catalog/view/theme/EkoKray/image/liqpay.svg" alt="LiqPay" style="height: 20px; margin-right: 5px;" onerror="this.style.display='none'" />
+                                            {% endif %}
+                                            {{ method.title }}
+                                        </label>
+                                    </div>
+                                    {% endfor %}
+                                    <div class="error-message" data-error="payment"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="panel panel-default ecocheckout-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">{{ text_comment }}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <textarea name="comment" rows="3" class="form-control" placeholder="Ваші побажання до замовлення..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Cart Summary -->
+                    <div class="col-md-5 col-lg-4">
+                        <div class="panel panel-default ecocheckout-panel ecocheckout-cart">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">{{ text_cart }}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <!-- Products -->
+                                <div class="ecocheckout-products" id="ecocheckout-products">
+                                    {% for product in products %}
+                                    <div class="ecocheckout-product" data-cart-id="{{ product.cart_id }}">
+                                        <div class="product-image">
+                                            <a href="{{ product.href }}"><img src="{{ product.image }}" alt="{{ product.name }}" /></a>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="{{ product.href }}" class="product-name">{{ product.name }}</a>
+                                            {% for option in product.option %}
+                                            <small class="product-option">{{ option.name }}: {{ option.value }}</small>
+                                            {% endfor %}
+                                            <div class="product-price">{{ product.price }}</div>
+                                        </div>
+                                        <div class="product-quantity">
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-qty" data-action="minus">-</button>
+                                                </span>
+                                                <input type="text" name="quantity[{{ product.cart_id }}]" value="{{ product.quantity }}" class="form-control text-center qty-input" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default btn-qty" data-action="plus">+</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="product-total">{{ product.total }}</div>
+                                        <button type="button" class="btn btn-danger btn-xs btn-remove" data-cart-id="{{ product.cart_id }}" title="{{ button_remove }}">&times;</button>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Totals -->
+                                <div class="ecocheckout-totals" id="ecocheckout-totals">
+                                    <table class="table">
+                                        {% for total in totals %}
+                                        <tr>
+                                            <td class="text-left">{{ total.title }}</td>
+                                            <td class="text-right">{{ total.text }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Agreement & Submit -->
+                        <div class="ecocheckout-submit">
+                            {% if text_agree %}
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="agree" value="1" id="input-agree" />
+                                        {{ text_agree }}
+                                    </label>
+                                </div>
+                                <div class="error-message" data-error="agree"></div>
+                            </div>
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block" id="btn-order">
+                                <span class="btn-text">{{ button_order }}</span>
+                                <span class="btn-loading" style="display: none;">
+                                    <i class="fa fa-spinner fa-spin"></i> Обробка...
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<style>
+/* EcoCheckout Styles */
+.ecocheckout {
+    margin-bottom: 30px;
+}
+
+.ecocheckout-panel {
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.ecocheckout-panel .panel-heading {
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    padding: 15px 20px;
+}
+
+.ecocheckout-panel .panel-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ecocheckout-panel .panel-body {
+    padding: 20px;
+}
+
+/* Form Elements */
+.ecocheckout .form-group.required .control-label:after {
+    content: ' *';
+    color: #e74c3c;
+}
+
+.ecocheckout .form-control {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    height: auto;
+}
+
+.ecocheckout .form-control:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+/* City Autocomplete */
+#city-wrapper {
+    position: relative;
+}
+
+.city-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.city-suggestions.active {
+    display: block;
+}
+
+.city-suggestion {
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.city-suggestion:last-child {
+    border-bottom: none;
+}
+
+.city-suggestion:hover {
+    background: #f8f9fa;
+}
+
+.city-suggestion.loading {
+    text-align: center;
+    color: #999;
+}
+
+/* Shipping Methods */
+.ecocheckout .radio {
+    margin: 10px 0;
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.ecocheckout .radio:hover {
+    border-color: #4CAF50;
+    background: #f9fff9;
+}
+
+.ecocheckout .radio label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ecocheckout .radio input[type="radio"] {
+    margin-right: 10px;
+}
+
+.shipping-cost {
+    margin-left: auto;
+    font-weight: 600;
+    color: #4CAF50;
+}
+
+/* Cart Products */
+.ecocheckout-products {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.ecocheckout-product {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.ecocheckout-product:last-child {
+    border-bottom: none;
+}
+
+.ecocheckout-product .product-image {
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.ecocheckout-product .product-image img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+.ecocheckout-product .product-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ecocheckout-product .product-name {
+    display: block;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ecocheckout-product .product-option {
+    display: block;
+    color: #999;
+    font-size: 12px;
+}
+
+.ecocheckout-product .product-price {
+    color: #666;
+    font-size: 13px;
+}
+
+.ecocheckout-product .product-quantity {
+    width: 100px;
+    flex-shrink: 0;
+}
+
+.ecocheckout-product .product-total {
+    width: 80px;
+    text-align: right;
+    font-weight: 600;
+    color: #333;
+    flex-shrink: 0;
+}
+
+.ecocheckout-product .btn-remove {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: transparent;
+    border: none;
+    color: #e74c3c;
+    font-size: 18px;
+    padding: 0 5px;
+}
+
+.ecocheckout-product:hover .btn-remove {
+    opacity: 1;
+}
+
+/* Quantity Controls */
+.input-group-sm .btn-qty {
+    width: 28px;
+    padding: 4px;
+}
+
+.input-group-sm .qty-input {
+    width: 40px;
+    padding: 4px;
+}
+
+/* Totals */
+.ecocheckout-totals {
+    border-top: 2px solid #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.ecocheckout-totals .table {
+    margin: 0;
+}
+
+.ecocheckout-totals .table tr:last-child td {
+    font-weight: 700;
+    font-size: 18px;
+    color: #333;
+    border-top: 2px solid #4CAF50;
+    padding-top: 15px;
+}
+
+/* Submit Button */
+.ecocheckout-submit {
+    margin-top: 20px;
+}
+
+#btn-order {
+    background: #4CAF50;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+#btn-order:hover {
+    background: #43A047;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+#btn-order:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Error Messages */
+.error-message {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+}
+
+.error-message.active {
+    display: block;
+}
+
+.form-control.error {
+    border-color: #e74c3c;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .ecocheckout-cart {
+        margin-top: 20px;
+    }
+
+    .ecocheckout-product .product-image {
+        width: 50px;
+    }
+
+    .ecocheckout-product .product-quantity {
+        width: 90px;
+    }
+
+    .ecocheckout-product .product-total {
+        width: 70px;
+    }
+}
+
+@media (max-width: 767px) {
+    .ecocheckout-product {
+        flex-wrap: wrap;
+    }
+
+    .ecocheckout-product .product-info {
+        flex-basis: calc(100% - 70px);
+    }
+
+    .ecocheckout-product .product-quantity,
+    .ecocheckout-product .product-total {
+        flex-basis: 50%;
+        margin-top: 10px;
+    }
+
+    .ecocheckout-product .product-total {
+        text-align: left;
+    }
+}
+</style>
+{{ footer }}
