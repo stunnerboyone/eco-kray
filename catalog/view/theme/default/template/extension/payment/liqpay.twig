@@ -1,9 +1,11 @@
-<form action="{{ action }}" method="post">
-  <input type="hidden" name="operation_xml" value="{{ xml }}">
+<form action="{{ action }}" method="post" id="liqpay-form">
+  <input type="hidden" name="data" value="{{ data }}">
   <input type="hidden" name="signature" value="{{ signature }}">
   <div class="buttons">
     <div class="pull-right">
-      <input type="submit" value="{{ button_confirm }}" class="btn btn-primary" />
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-credit-card"></i> {{ button_confirm }}
+      </button>
     </div>
   </div>
 </form>
