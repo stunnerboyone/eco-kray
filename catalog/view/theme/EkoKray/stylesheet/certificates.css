@@ -1,0 +1,90 @@
+.certificates-section {
+  padding: 40px 0;
+}
+
+.certificates-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.certificates-carousel .certificates-slide {
+  padding: 10px;
+  text-align: center;
+}
+
+.certificates-carousel .certificates-slide img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.certificates-carousel .certificates-slide img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.certificates-carousel .owl-controls .owl-buttons div {
+  background: #c67d4e;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: background 0.3s ease;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+.certificates-carousel:hover .owl-controls .owl-buttons div {
+  opacity: 1;
+}
+
+.certificates-carousel .owl-controls .owl-buttons .owl-prev {
+  left: -15px;
+}
+
+.certificates-carousel .owl-controls .owl-buttons .owl-next {
+  right: -15px;
+}
+
+.certificates-carousel .owl-controls .owl-buttons div:hover {
+  background: #222;
+}
+
+@media (max-width: 991px) {
+  .certificates-section {
+    padding: 25px 0;
+  }
+
+  .certificates-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .certificates-carousel .owl-controls .owl-buttons div {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .certificates-section {
+    padding: 20px 0;
+  }
+
+  .certificates-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+}
