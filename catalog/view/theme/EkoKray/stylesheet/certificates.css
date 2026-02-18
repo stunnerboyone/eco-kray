@@ -1,5 +1,6 @@
 .certificates-section {
   padding: 40px 0;
+  width: 100%;
 }
 
 .certificates-title {
@@ -12,12 +13,12 @@
 }
 
 .certificates-carousel .certificates-slide {
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
 .certificates-carousel .certificates-slide img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
   border: 1px solid #e5e5e5;
   border-radius: 4px;
@@ -52,11 +53,11 @@
 }
 
 .certificates-carousel .owl-controls .owl-buttons .owl-prev {
-  left: -15px;
+  left: 0;
 }
 
 .certificates-carousel .owl-controls .owl-buttons .owl-next {
-  right: -15px;
+  right: 0;
 }
 
 .certificates-carousel .owl-controls .owl-buttons div:hover {

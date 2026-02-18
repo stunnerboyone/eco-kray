@@ -1,18 +1,16 @@
 <div class="certificates-section">
-  <div class="container">
-    <h2 class="certificates-title">Сертифікати</h2>
-    <div class="certificates-carousel owl-carousel owl-theme">
-      {% for banner in banners %}
-        <div class="certificates-slide">
-          {% if banner.link %}
-            <a href="{{ banner.link }}" target="_blank">
-              <img src="{{ banner.image }}" alt="{{ banner.title|e }}" loading="lazy" />
-            </a>
-          {% else %}
+  <h2 class="certificates-title">Сертифікати</h2>
+  <div class="certificates-carousel owl-carousel owl-theme">
+    {% for banner in banners %}
+      <div class="certificates-slide">
+        {% if banner.link %}
+          <a href="{{ banner.link }}" target="_blank">
             <img src="{{ banner.image }}" alt="{{ banner.title|e }}" loading="lazy" />
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
+          </a>
+        {% else %}
+          <img src="{{ banner.image }}" alt="{{ banner.title|e }}" loading="lazy" />
+        {% endif %}
+      </div>
+    {% endfor %}
   </div>
 </div>
