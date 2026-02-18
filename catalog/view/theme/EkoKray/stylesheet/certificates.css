@@ -40,7 +40,7 @@
 
 .certificates-carousel .certificates-slide img {
   border: 1px solid #e5e5e5;
-  border-radius: 4px;
+  border-radius: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
