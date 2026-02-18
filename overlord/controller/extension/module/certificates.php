@@ -89,18 +89,6 @@ class ControllerExtensionModuleCertificates extends Controller {
 			$data['name'] = '';
 		}
 
-		if (isset($this->request->post['banner_id'])) {
-			$data['banner_id'] = $this->request->post['banner_id'];
-		} elseif (!empty($module_info)) {
-			$data['banner_id'] = $module_info['banner_id'];
-		} else {
-			$data['banner_id'] = '';
-		}
-
-		$this->load->model('design/banner');
-
-		$data['banners'] = $this->model_design_banner->getBanners();
-
 		if (isset($this->request->post['width'])) {
 			$data['width'] = $this->request->post['width'];
 		} elseif (!empty($module_info)) {
@@ -124,6 +112,37 @@ class ControllerExtensionModuleCertificates extends Controller {
 		} else {
 			$data['status'] = '';
 		}
+
+		// Images
+		$this->load->model('tool/image');
+
+		$data['images'] = array();
+
+		if (isset($this->request->post['images'])) {
+			$images = $this->request->post['images'];
+		} elseif (!empty($module_info) && isset($module_info['images'])) {
+			$images = $module_info['images'];
+		} else {
+			$images = array();
+		}
+
+		foreach ($images as $image) {
+			if (is_file(DIR_IMAGE . $image['image'])) {
+				$thumb = $this->model_tool_image->resize($image['image'], 100, 100);
+			} else {
+				$thumb = $this->model_tool_image->resize('no_image.png', 100, 100);
+			}
+
+			$data['images'][] = array(
+				'image'      => $image['image'],
+				'title'      => $image['title'],
+				'link'       => isset($image['link']) ? $image['link'] : '',
+				'sort_order' => $image['sort_order'],
+				'thumb'      => $thumb
+			);
+		}
+
+		$data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
