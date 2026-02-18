@@ -1,5 +1,6 @@
 .certificates-section {
   padding: 40px 0;
+  width: 100%;
 }
 
 .certificates-title {
@@ -11,14 +12,33 @@
   text-transform: uppercase;
 }
 
+.certificates-carousel.owl-carousel {
+  display: block;
+  width: 100%;
+}
+
+.certificates-carousel .owl-wrapper-outer {
+  width: 100%;
+  overflow: hidden;
+}
+
+.certificates-carousel .owl-item {
+  box-sizing: border-box;
+}
+
 .certificates-carousel .certificates-slide {
-  padding: 10px;
+  padding: 5px;
   text-align: center;
 }
 
+.certificates-carousel .certificates-slide a,
 .certificates-carousel .certificates-slide img {
-  max-width: 100%;
+  display: block;
+  width: 100%;
   height: auto;
+}
+
+.certificates-carousel .certificates-slide img {
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -52,11 +72,11 @@
 }
 
 .certificates-carousel .owl-controls .owl-buttons .owl-prev {
-  left: -15px;
+  left: 0;
 }
 
 .certificates-carousel .owl-controls .owl-buttons .owl-next {
-  right: -15px;
+  right: 0;
 }
 
 .certificates-carousel .owl-controls .owl-buttons div:hover {

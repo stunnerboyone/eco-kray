@@ -58,17 +58,20 @@ $(document).ready(function(){
   });
 
     $(document).ready(function() {
-    $('.certificates-carousel').owlCarousel({
-      items: 4,
-      autoPlay: true,
-      singleItem: false,
-      navigation: true,
-      navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
-      pagination: false,
-      itemsDesktop: [1500, 3],
-      itemsDesktopSmall: [1199, 3],
-      itemsTablet: [700, 2],
-      itemsTabletSmall: [479, 1]
-    });
+    var $cert = $('.certificates-carousel');
+    if ($cert.length) {
+      var total = $cert.children('.certificates-slide').length;
+      $cert.owlCarousel({
+        items: Math.min(total, 4),
+        autoPlay: total > 4,
+        navigation: total > 4,
+        navigationText: ['<i class="fa fa-chevron-left fa-5x"></i>', '<i class="fa fa-chevron-right fa-5x"></i>'],
+        pagination: false,
+        itemsDesktop: [1500, Math.min(total, 3)],
+        itemsDesktopSmall: [1199, Math.min(total, 3)],
+        itemsTablet: [700, Math.min(total, 2)],
+        itemsTabletSmall: [479, 1]
+      });
+    }
   });
 </script>
