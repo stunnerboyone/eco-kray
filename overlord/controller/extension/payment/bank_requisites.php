@@ -1,0 +1,99 @@
+<?php
+class ControllerExtensionPaymentBankRequisites extends Controller {
+	private $error = array();
+
+	public function index() {
+		$this->load->language('extension/payment/bank_requisites');
+
+		$this->document->setTitle($this->language->get('heading_title'));
+
+		$this->load->model('setting/setting');
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+			$this->model_setting_setting->editSetting('payment_bank_requisites', $this->request->post);
+
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true));
+		}
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+
+		$data['breadcrumbs'] = array();
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_extension'),
+			'href' => $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true)
+		);
+
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/payment/bank_requisites', 'user_token=' . $this->session->data['user_token'], true)
+		);
+
+		$data['action'] = $this->url->link('extension/payment/bank_requisites', 'user_token=' . $this->session->data['user_token'], true);
+
+		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
+
+		if (isset($this->request->post['payment_bank_requisites_total'])) {
+			$data['payment_bank_requisites_total'] = $this->request->post['payment_bank_requisites_total'];
+		} else {
+			$data['payment_bank_requisites_total'] = $this->config->get('payment_bank_requisites_total');
+		}
+
+		if (isset($this->request->post['payment_bank_requisites_order_status_id'])) {
+			$data['payment_bank_requisites_order_status_id'] = $this->request->post['payment_bank_requisites_order_status_id'];
+		} else {
+			$data['payment_bank_requisites_order_status_id'] = $this->config->get('payment_bank_requisites_order_status_id');
+		}
+
+		$this->load->model('localisation/order_status');
+
+		$data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+
+		if (isset($this->request->post['payment_bank_requisites_geo_zone_id'])) {
+			$data['payment_bank_requisites_geo_zone_id'] = $this->request->post['payment_bank_requisites_geo_zone_id'];
+		} else {
+			$data['payment_bank_requisites_geo_zone_id'] = $this->config->get('payment_bank_requisites_geo_zone_id');
+		}
+
+		$this->load->model('localisation/geo_zone');
+
+		$data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
+
+		if (isset($this->request->post['payment_bank_requisites_status'])) {
+			$data['payment_bank_requisites_status'] = $this->request->post['payment_bank_requisites_status'];
+		} else {
+			$data['payment_bank_requisites_status'] = $this->config->get('payment_bank_requisites_status');
+		}
+
+		if (isset($this->request->post['payment_bank_requisites_sort_order'])) {
+			$data['payment_bank_requisites_sort_order'] = $this->request->post['payment_bank_requisites_sort_order'];
+		} else {
+			$data['payment_bank_requisites_sort_order'] = $this->config->get('payment_bank_requisites_sort_order');
+		}
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		$this->response->setOutput($this->load->view('extension/payment/bank_requisites', $data));
+	}
+
+	protected function validate() {
+		if (!$this->user->hasPermission('modify', 'extension/payment/bank_requisites')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+
+		return !$this->error;
+	}
+}
