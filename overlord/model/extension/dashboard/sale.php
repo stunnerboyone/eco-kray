@@ -1,10 +1,10 @@
 <?php
 class ModelExtensionDashboardSale extends Model {
 	public function getTotalSales($data = array()) {
-		$sql = "SELECT SUM(total) AS total FROM `" . DB_PREFIX . "order` WHERE order_status_id > '0'";
+		$sql = "SELECT SUM(ot.value) AS total FROM `" . DB_PREFIX . "order_total` ot LEFT JOIN `" . DB_PREFIX . "order` o ON (ot.order_id = o.order_id) WHERE ot.code = 'sub_total' AND o.order_status_id > '0'";
 
 		if (!empty($data['filter_date_added'])) {
-			$sql .= " AND DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+			$sql .= " AND DATE(o.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
 		}
 
 		$query = $this->db->query($sql);
