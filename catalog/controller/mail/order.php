@@ -245,6 +245,9 @@ class ControllerMailOrder extends Controller {
 		$order_totals = $this->model_checkout_order->getOrderTotals($order_info['order_id']);
 
 		foreach ($order_totals as $order_total) {
+			if ($order_total['code'] == 'sub_total') {
+				continue;
+			}
 			$data['totals'][] = array(
 				'title' => $order_total['title'],
 				'text'  => $this->currency->format($order_total['value'], $order_info['currency_code'], $order_info['currency_value']),
