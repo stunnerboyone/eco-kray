@@ -23,12 +23,6 @@ class ControllerExtensionPaymentBankRequisites extends Controller {
 			$data['error_warning'] = '';
 		}
 
-		if (isset($this->error['bank'])) {
-			$data['error_bank'] = $this->error['bank'];
-		} else {
-			$data['error_bank'] = array();
-		}
-
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
@@ -49,22 +43,6 @@ class ControllerExtensionPaymentBankRequisites extends Controller {
 		$data['action'] = $this->url->link('extension/payment/bank_requisites', 'user_token=' . $this->session->data['user_token'], true);
 
 		$data['cancel'] = $this->url->link('marketplace/extension', 'user_token=' . $this->session->data['user_token'] . '&type=payment', true);
-
-		$this->load->model('localisation/language');
-
-		$data['payment_bank_requisites_bank'] = array();
-
-		$languages = $this->model_localisation_language->getLanguages();
-
-		foreach ($languages as $language) {
-			if (isset($this->request->post['payment_bank_requisites_bank' . $language['language_id']])) {
-				$data['payment_bank_requisites_bank'][$language['language_id']] = $this->request->post['payment_bank_requisites_bank' . $language['language_id']];
-			} else {
-				$data['payment_bank_requisites_bank'][$language['language_id']] = $this->config->get('payment_bank_requisites_bank' . $language['language_id']);
-			}
-		}
-
-		$data['languages'] = $languages;
 
 		if (isset($this->request->post['payment_bank_requisites_total'])) {
 			$data['payment_bank_requisites_total'] = $this->request->post['payment_bank_requisites_total'];
@@ -114,16 +92,6 @@ class ControllerExtensionPaymentBankRequisites extends Controller {
 	protected function validate() {
 		if (!$this->user->hasPermission('modify', 'extension/payment/bank_requisites')) {
 			$this->error['warning'] = $this->language->get('error_permission');
-		}
-
-		$this->load->model('localisation/language');
-
-		$languages = $this->model_localisation_language->getLanguages();
-
-		foreach ($languages as $language) {
-			if (empty($this->request->post['payment_bank_requisites_bank' . $language['language_id']])) {
-				$this->error['bank'][$language['language_id']] = $this->language->get('error_bank');
-			}
 		}
 
 		return !$this->error;

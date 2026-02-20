@@ -8,7 +8,6 @@ $_['text_success']       = 'Success: You have modified payment by bank details!'
 $_['text_edit']          = 'Edit Payment by Bank Details';
 
 // Entry
-$_['entry_bank']         = 'Bank Details / Requisites';
 $_['entry_total']        = 'Total';
 $_['entry_order_status'] = 'Order Status';
 $_['entry_geo_zone']     = 'Geo Zone';
@@ -20,4 +19,3 @@ $_['help_total']         = 'The checkout total the order must reach before this 
 
 // Error
 $_['error_permission']   = 'Warning: You do not have permission to modify payment by bank details!';
-$_['error_bank']         = 'Bank Details / Requisites Required!';
