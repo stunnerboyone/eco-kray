@@ -415,6 +415,7 @@ class ControllerShippingNovaPoshta extends Controller
 		$data['totals'] = $this->getExtensions('total');
 		$data['payment_methods'] = $this->getExtensions('payment');
 		$data['shipping_methods'] = $this->getExtensions('shipping');
+		$data['license'] = true;
 
 		if (version_compare(VERSION, '2.3', '>=')) {
 			$data['header'] = $this->load->controller('common/header');
