@@ -5,810 +5,547 @@
     <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
     {% endfor %}
   </ul>
+
   {% if error_warning %}
   <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
     <button type="button" class="close" data-dismiss="alert">&times;</button>
   </div>
   {% endif %}
-  <div class="row">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-sm-9' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
-      <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_option }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-checkout-option">
-            <div class="panel-body"></div>
-          </div>
+
+  <h1>{{ heading_title }}</h1>
+
+  <div class="row unified-checkout">
+    {# ====== LEFT COLUMN: Customer + Shipping + Payment ====== #}
+    <div class="col-sm-7 col-md-8 checkout-left">
+
+      {# --- SECTION 1: Customer Info / Auth --- #}
+      <div class="checkout-section" id="section-customer">
+        <div class="checkout-section-heading">
+          <h3><i class="fa fa-user"></i> {{ text_your_details }}</h3>
         </div>
-        {% if not logged and account != 'guest' %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_account }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-payment-address">
-            <div class="panel-body"></div>
-          </div>
-        </div>
-        {% else %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_payment_address }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-payment-address">
-            <div class="panel-body"></div>
-          </div>
-        </div>
-        {% endif %}
-        {% if shipping_required %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_shipping_address }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-shipping-address">
-            <div class="panel-body"></div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_shipping_method }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-shipping-method">
-            <div class="panel-body"></div>
-          </div>
-        </div>
-        {% endif %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_payment_method }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-payment-method">
-            <div class="panel-body"></div>
-          </div>
-        </div>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">{{ text_checkout_confirm }}</h4>
-          </div>
-          <div class="panel-collapse collapse" id="collapse-checkout-confirm">
-            <div class="panel-body"></div>
-          </div>
+        <div class="checkout-section-body">
+          {% if logged %}
+            <div class="customer-logged-info">
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">{{ entry_firstname }}</label>
+                    <p class="form-control-static"><strong>{{ customer_firstname }}</strong></p>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">{{ entry_lastname }}</label>
+                    <p class="form-control-static"><strong>{{ customer_lastname }}</strong></p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">{{ entry_email }}</label>
+                    <p class="form-control-static">{{ customer_email }}</p>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label">{{ entry_telephone }}</label>
+                    <p class="form-control-static">{{ customer_telephone }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+            {# Auth tabs: Login / Guest #}
+            <ul class="nav nav-tabs" id="auth-tabs">
+              <li class="active"><a href="#tab-guest" data-toggle="tab">{{ text_guest }}</a></li>
+              <li><a href="#tab-login" data-toggle="tab">{{ text_i_am_returning_customer }}</a></li>
+            </ul>
+            <div class="tab-content">
+              {# Guest tab #}
+              <div class="tab-pane active" id="tab-guest">
+                <div class="guest-form" style="padding-top: 15px;">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group required">
+                        <label class="control-label" for="input-guest-firstname">{{ entry_firstname }}</label>
+                        <input type="text" name="firstname" value="" placeholder="{{ entry_firstname }}" id="input-guest-firstname" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group required">
+                        <label class="control-label" for="input-guest-lastname">{{ entry_lastname }}</label>
+                        <input type="text" name="lastname" value="" placeholder="{{ entry_lastname }}" id="input-guest-lastname" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group required">
+                        <label class="control-label" for="input-guest-email">{{ entry_email }}</label>
+                        <input type="email" name="email" value="" placeholder="{{ entry_email }}" id="input-guest-email" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group required">
+                        <label class="control-label" for="input-guest-telephone">{{ entry_telephone }}</label>
+                        <input type="tel" name="telephone" value="" placeholder="+380" id="input-guest-telephone" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" id="button-guest-save" class="btn btn-primary"><i class="fa fa-check"></i> {{ button_continue }}</button>
+                  <span id="guest-save-status" style="display:none; margin-left: 10px;" class="text-success"><i class="fa fa-check-circle"></i></span>
+                </div>
+              </div>
+
+              {# Login tab #}
+              <div class="tab-pane" id="tab-login">
+                <div class="login-form" style="padding-top: 15px;">
+                  <div class="form-group required">
+                    <label class="control-label" for="input-login-email">{{ entry_email }}</label>
+                    <input type="email" name="login_email" value="" placeholder="{{ entry_email }}" id="input-login-email" class="form-control" />
+                  </div>
+                  <div class="form-group required">
+                    <label class="control-label" for="input-login-password">{{ entry_password }}</label>
+                    <input type="password" name="login_password" value="" placeholder="{{ entry_password }}" id="input-login-password" class="form-control" />
+                  </div>
+                  <div class="form-group">
+                    <a href="{{ forgotten }}">{{ text_forgotten }}</a>
+                  </div>
+                  <button type="button" id="button-login" class="btn btn-primary"><i class="fa fa-sign-in"></i> {{ button_login }}</button>
+                </div>
+              </div>
+            </div>
+          {% endif %}
         </div>
       </div>
-      {{ content_bottom }}</div>
-    {{ column_right }}</div>
+
+      {% if shipping_required %}
+      {# --- SECTION 2: Shipping Method --- #}
+      <div class="checkout-section" id="section-shipping">
+        <div class="checkout-section-heading">
+          <h3><i class="fa fa-truck"></i> {{ text_shipping_method }}</h3>
+        </div>
+        <div class="checkout-section-body" id="shipping-methods-container">
+          {% if shipping_methods %}
+            {% for shipping_method in shipping_methods %}
+              {% if shipping_method.error %}
+                <div class="alert alert-warning">{{ shipping_method.error }}</div>
+              {% else %}
+                {% if shipping_method.title %}
+                  <p><strong>{{ shipping_method.title }}</strong></p>
+                {% endif %}
+                {% for quote in shipping_method.quote %}
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="shipping_method" value="{{ quote.code }}" {% if quote.code == shipping_code %}checked="checked"{% endif %} />
+                    {{ quote.title }}
+                    {% if quote.text %}<span class="shipping-cost"> - {{ quote.text }}</span>{% endif %}
+                  </label>
+                </div>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <div class="alert alert-info">{{ error_no_shipping }}</div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {# --- SECTION 3: Payment Method --- #}
+      <div class="checkout-section" id="section-payment">
+        <div class="checkout-section-heading">
+          <h3><i class="fa fa-credit-card"></i> {{ text_payment_method }}</h3>
+        </div>
+        <div class="checkout-section-body" id="payment-methods-container">
+          {% if payment_methods %}
+            {% for code, payment_method in payment_methods %}
+            <div class="radio">
+              <label>
+                <input type="radio" name="payment_method" value="{{ code }}" {% if code == payment_code %}checked="checked"{% endif %} />
+                {{ payment_method.title }}
+              </label>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="alert alert-info">{{ error_no_payment }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      {# --- SECTION 4: Comment --- #}
+      <div class="checkout-section" id="section-comment">
+        <div class="checkout-section-heading">
+          <h3><i class="fa fa-comment"></i> {{ text_comments }}</h3>
+        </div>
+        <div class="checkout-section-body">
+          <textarea name="comment" rows="4" class="form-control" placeholder="{{ text_comments }}">{{ comment }}</textarea>
+        </div>
+      </div>
+
+      {# --- Agreement & Confirm --- #}
+      <div class="checkout-section" id="section-confirm">
+        {% if text_agree %}
+        <div class="checkout-section-body">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="agree" value="1" /> {{ text_agree }}
+            </label>
+          </div>
+        </div>
+        {% endif %}
+        <div class="checkout-confirm-area">
+          <div id="payment-form-container"></div>
+          <button type="button" id="button-confirm" class="btn btn-primary btn-lg btn-block">
+            <i class="fa fa-lock"></i> {{ button_confirm }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    {# ====== RIGHT COLUMN: Cart / Order Summary ====== #}
+    <div class="col-sm-5 col-md-4 checkout-right">
+      <div class="checkout-section checkout-cart-section" id="section-cart">
+        <div class="checkout-section-heading">
+          <h3><i class="fa fa-shopping-cart"></i> {{ text_cart }}</h3>
+        </div>
+        <div class="checkout-section-body" id="cart-items-container">
+          {% for product in products %}
+          <div class="cart-item" data-cart-id="{{ product.cart_id }}">
+            <div class="cart-item-image">
+              <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" /></a>
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">
+                <a href="{{ product.href }}">{{ product.name }}</a>
+                {% if not product.stock and (config_stock_warning or not config_stock_checkout) %}
+                  <span class="text-danger">***</span>
+                {% endif %}
+              </div>
+              {% for option in product.option %}
+              <div class="cart-item-option"><small>{{ option.name }}: {{ option.value }}</small></div>
+              {% endfor %}
+              <div class="cart-item-price">{{ product.price }}</div>
+              <div class="cart-item-quantity">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-minus" type="button" data-cart-id="{{ product.cart_id }}"><i class="fa fa-minus"></i></button>
+                  </span>
+                  <input type="text" class="form-control text-center qty-input" value="{{ product.quantity }}" data-cart-id="{{ product.cart_id }}" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-default btn-plus" type="button" data-cart-id="{{ product.cart_id }}"><i class="fa fa-plus"></i></button>
+                  </span>
+                </div>
+              </div>
+              <div class="cart-item-total">{{ product.total }}</div>
+              <button class="btn btn-danger btn-xs btn-remove" data-cart-id="{{ product.cart_id }}"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+          {% endfor %}
+
+          {% for voucher in vouchers %}
+          <div class="cart-item">
+            <div class="cart-item-details">
+              <div class="cart-item-name">{{ voucher.description }}</div>
+              <div class="cart-item-total">{{ voucher.amount }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {# Order Totals #}
+        <div class="checkout-totals" id="checkout-totals">
+          {% for total in totals %}
+          <div class="checkout-total-row">
+            <span class="total-label">{{ total.title }}:</span>
+            <span class="total-value">{{ total.text }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 <script type="text/javascript"><!--
-$(document).on('change', 'input[name=\'account\']', function() {
-	if ($('#collapse-payment-address').parent().find('.panel-heading .panel-title > *').is('a')) {
-		if (this.value == 'register') {
-			$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_account }} <i class="fa fa-caret-down"></i></a>');
-		} else {
-			$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_address }} <i class="fa fa-caret-down"></i></a>');
-		}
-	} else {
-		if (this.value == 'register') {
-			$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('{{ text_checkout_account }}');
-		} else {
-			$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_address }}');
-		}
-	}
-});
-
-{% if not logged %}
 $(document).ready(function() {
-    $.ajax({
-        url: 'index.php?route=checkout/login',
-        dataType: 'html',
-        success: function(html) {
-           $('#collapse-checkout-option .panel-body').html(html);
 
-			$('#collapse-checkout-option').parent().find('.panel-heading .panel-title').html('<a href="#collapse-checkout-option" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_option }} <i class="fa fa-caret-down"></i></a>');
-
-			$('a[href=\'#collapse-checkout-option\']').trigger('click');
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+    // ========== CART: Decrease quantity ==========
+    $(document).on('click', '.btn-minus', function() {
+        var cartId = $(this).data('cart-id');
+        var input = $('input.qty-input[data-cart-id="' + cartId + '"]');
+        var qty = parseInt(input.val()) - 1;
+        if (qty < 1) qty = 1;
+        input.val(qty);
+        updateCartItem(cartId, qty);
     });
-});
-{% else %}
-$(document).ready(function() {
-    $.ajax({
-        url: 'index.php?route=checkout/payment_address',
-        dataType: 'html',
-        success: function(html) {
-            $('#collapse-payment-address .panel-body').html(html);
 
-			$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_address }} <i class="fa fa-caret-down"></i></a>');
-
-			$('a[href=\'#collapse-payment-address\']').trigger('click');
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+    // ========== CART: Increase quantity ==========
+    $(document).on('click', '.btn-plus', function() {
+        var cartId = $(this).data('cart-id');
+        var input = $('input.qty-input[data-cart-id="' + cartId + '"]');
+        var qty = parseInt(input.val()) + 1;
+        input.val(qty);
+        updateCartItem(cartId, qty);
     });
-});
-{% endif %}
 
-// Checkout
-$(document).delegate('#button-account', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/' + $('input[name=\'account\']:checked').val(),
-        dataType: 'html',
-        beforeSend: function() {
-        	$('#button-account').button('loading');
-		},
-        complete: function() {
-			$('#button-account').button('reset');
-        },
-        success: function(html) {
-            $('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
-
-            $('#collapse-payment-address .panel-body').html(html);
-
-			if ($('input[name=\'account\']:checked').val() == 'register') {
-				$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_account }} <i class="fa fa-caret-down"></i></a>');
-			} else {
-				$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_address }} <i class="fa fa-caret-down"></i></a>');
-			}
-
-			$('a[href=\'#collapse-payment-address\']').trigger('click');
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+    // ========== CART: Manual quantity change ==========
+    $(document).on('change', '.qty-input', function() {
+        var cartId = $(this).data('cart-id');
+        var qty = parseInt($(this).val());
+        if (qty < 1 || isNaN(qty)) qty = 1;
+        $(this).val(qty);
+        updateCartItem(cartId, qty);
     });
-});
 
-// Login
-$(document).delegate('#button-login', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/login/save',
-        type: 'post',
-        data: $('#collapse-checkout-option :input'),
-        dataType: 'json',
-        beforeSend: function() {
-        	$('#button-login').button('loading');
-		},
-        complete: function() {
-            $('#button-login').button('reset');
-        },
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-            $('.form-group').removeClass('has-error');
-
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#collapse-checkout-option .panel-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
-
-				// Highlight any found errors
-				$('input[name=\'email\']').parent().addClass('has-error');
-				$('input[name=\'password\']').parent().addClass('has-error');
-		   }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+    // ========== CART: Remove item ==========
+    $(document).on('click', '.btn-remove', function() {
+        var cartId = $(this).data('cart-id');
+        removeCartItem(cartId);
     });
-});
 
-// Register
-$(document).delegate('#button-register', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/register/save',
-        type: 'post',
-        data: $('#collapse-payment-address input[type=\'text\'], #collapse-payment-address input[type=\'date\'], #collapse-payment-address input[type=\'datetime-local\'], #collapse-payment-address input[type=\'time\'], #collapse-payment-address input[type=\'password\'], #collapse-payment-address input[type=\'hidden\'], #collapse-payment-address input[type=\'checkbox\']:checked, #collapse-payment-address input[type=\'radio\']:checked, #collapse-payment-address textarea, #collapse-payment-address select'),
-        dataType: 'json',
-        beforeSend: function() {
-			$('#button-register').button('loading');
-		},
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-            $('.form-group').removeClass('has-error');
-
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-register').button('reset');
-
-                if (json['error']['warning']) {
-                    $('#collapse-payment-address .panel-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+    // ========== SHIPPING METHOD: Selection ==========
+    $(document).on('change', 'input[name="shipping_method"]', function() {
+        var code = $(this).val();
+        $.ajax({
+            url: 'index.php?route=checkout/checkout/saveShipping',
+            type: 'post',
+            data: { shipping_method: code },
+            dataType: 'json',
+            success: function(json) {
+                if (json['error']) {
+                    alert(json['error']);
                 }
-
-				for (i in json['error']) {
-					var element = $('#input-payment-' + i.replace('_', '-'));
-
-					if ($(element).parent().hasClass('input-group')) {
-						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
-					}
-				}
-
-				// Highlight any found errors
-				$('.text-danger').parent().addClass('has-error');
-            } else {
-                {% if shipping_required %}
-                var shipping_address = $('#collapse-payment-address input[name=\'shipping_address\']:checked').prop('value');
-
-                if (shipping_address) {
-                    $.ajax({
-                        url: 'index.php?route=checkout/shipping_method',
-                        dataType: 'html',
-                        success: function(html) {
-							// Add the shipping address
-                            $.ajax({
-                                url: 'index.php?route=checkout/shipping_address',
-                                dataType: 'html',
-                                success: function(html) {
-                                    $('#collapse-shipping-address .panel-body').html(html);
-
-									$('#collapse-shipping-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_address }} <i class="fa fa-caret-down"></i></a>');
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                                }
-                            });
-
-							$('#collapse-shipping-method .panel-body').html(html);
-
-							$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_method }} <i class="fa fa-caret-down"></i></a>');
-
-   							$('a[href=\'#collapse-shipping-method\']').trigger('click');
-
-							$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_shipping_method }}');
-							$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-							$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: 'index.php?route=checkout/shipping_address',
-                        dataType: 'html',
-                        success: function(html) {
-                            $('#collapse-shipping-address .panel-body').html(html);
-
-							$('#collapse-shipping-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_address }} <i class="fa fa-caret-down"></i></a>');
-
-							$('a[href=\'#collapse-shipping-address\']').trigger('click');
-
-							$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_shipping_method }}');
-							$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-							$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                        }
-                    });
+                if (json['totals']) {
+                    updateTotals(json['totals']);
                 }
-                {% else %}
-                $.ajax({
-                    url: 'index.php?route=checkout/payment_method',
-                    dataType: 'html',
-                    success: function(html) {
-                        $('#collapse-payment-method .panel-body').html(html);
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_method }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-payment-method\']').trigger('click');
-
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                });
-                {% endif %}
-
-                $.ajax({
-                    url: 'index.php?route=checkout/payment_address',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-register').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-payment-address .panel-body').html(html);
-
-						$('#collapse-payment-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_address }} <i class="fa fa-caret-down"></i></a>');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                });
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+        });
     });
-});
 
-// Payment Address
-$(document).delegate('#button-payment-address', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/payment_address/save',
-        type: 'post',
-        data: $('#collapse-payment-address input[type=\'text\'], #collapse-payment-address input[type=\'date\'], #collapse-payment-address input[type=\'datetime-local\'], #collapse-payment-address input[type=\'time\'], #collapse-payment-address input[type=\'password\'], #collapse-payment-address input[type=\'checkbox\']:checked, #collapse-payment-address input[type=\'radio\']:checked, #collapse-payment-address input[type=\'hidden\'], #collapse-payment-address textarea, #collapse-payment-address select'),
-        dataType: 'json',
-        beforeSend: function() {
-        	$('#button-payment-address').button('loading');
-		},
-        complete: function() {
-			$('#button-payment-address').button('reset');
-        },
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
-
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                if (json['error']['warning']) {
-                    $('#collapse-payment-address .panel-body').prepend('<div class="alert alert-warning alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+    // ========== PAYMENT METHOD: Selection ==========
+    $(document).on('change', 'input[name="payment_method"]', function() {
+        var code = $(this).val();
+        $.ajax({
+            url: 'index.php?route=checkout/checkout/savePayment',
+            type: 'post',
+            data: { payment_method: code },
+            dataType: 'json',
+            success: function(json) {
+                if (json['error']) {
+                    alert(json['error']);
                 }
-
-				for (i in json['error']) {
-					var element = $('#input-payment-' + i.replace('_', '-'));
-
-					if ($(element).parent().hasClass('input-group')) {
-						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
-					}
-				}
-
-				// Highlight any found errors
-				$('.text-danger').parent().parent().addClass('has-error');
-            } else {
-                {% if shipping_required %}
-                $.ajax({
-                    url: 'index.php?route=checkout/shipping_address',
-                    dataType: 'html',
-                    success: function(html) {
-                        $('#collapse-shipping-address .panel-body').html(html);
-
-						$('#collapse-shipping-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_address }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-shipping-address\']').trigger('click');
-
-						$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_shipping_method }}');
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                }).done(function() {
-					$.ajax({
-						url: 'index.php?route=checkout/payment_address',
-						dataType: 'html',
-						success: function(html) {
-							$('#collapse-payment-address .panel-body').html(html);
-						},
-						error: function(xhr, ajaxOptions, thrownError) {
-							alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-						}
-					});
-				});
-                {% else %}
-                $.ajax({
-                    url: 'index.php?route=checkout/payment_method',
-                    dataType: 'html',
-                    success: function(html) {
-                        $('#collapse-payment-method .panel-body').html(html);
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_method }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-payment-method\']').trigger('click');
-
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                }).done(function() {
-					$.ajax({
-						url: 'index.php?route=checkout/payment_address',
-						dataType: 'html',
-						success: function(html) {
-							$('#collapse-payment-address .panel-body').html(html);
-						},
-						error: function(xhr, ajaxOptions, thrownError) {
-							alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-						}
-					});				
-				});
-                {% endif %}
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+        });
     });
-});
 
-// Shipping Address
-$(document).delegate('#button-shipping-address', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/shipping_address/save',
-        type: 'post',
-        data: $('#collapse-shipping-address input[type=\'text\'], #collapse-shipping-address input[type=\'date\'], #collapse-shipping-address input[type=\'datetime-local\'], #collapse-shipping-address input[type=\'time\'], #collapse-shipping-address input[type=\'password\'], #collapse-shipping-address input[type=\'checkbox\']:checked, #collapse-shipping-address input[type=\'radio\']:checked, #collapse-shipping-address textarea, #collapse-shipping-address select'),
-        dataType: 'json',
-        beforeSend: function() {
-			$('#button-shipping-address').button('loading');
-	    },
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
+    // ========== LOGIN ==========
+    $(document).on('click', '#button-login', function() {
+        var btn = $(this);
+        btn.button('loading');
 
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-shipping-address').button('reset');
+        $.ajax({
+            url: 'index.php?route=checkout/login/save',
+            type: 'post',
+            data: {
+                email: $('#input-login-email').val(),
+                password: $('#input-login-password').val()
+            },
+            dataType: 'json',
+            success: function(json) {
+                btn.button('reset');
+                $('.alert-dismissible').remove();
 
-                if (json['error']['warning']) {
-                    $('#collapse-shipping-address .panel-body').prepend('<div class="alert alert-warning alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                if (json['redirect']) {
+                    location = json['redirect'];
+                } else if (json['error']) {
+                    $('#tab-login').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                 }
-
-				for (i in json['error']) {
-					var element = $('#input-shipping-' + i.replace('_', '-'));
-
-					if ($(element).parent().hasClass('input-group')) {
-						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
-					}
-				}
-
-				// Highlight any found errors
-				$('.text-danger').parent().parent().addClass('has-error');
-            } else {
-                $.ajax({
-                    url: 'index.php?route=checkout/shipping_method',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-shipping-address').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-shipping-method .panel-body').html(html);
-
-						$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_method }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-shipping-method\']').trigger('click');
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-						
-                        $.ajax({
-                            url: 'index.php?route=checkout/shipping_address',
-                            dataType: 'html',
-                            success: function(html) {
-                                $('#collapse-shipping-address .panel-body').html(html);
-                            },
-                            error: function(xhr, ajaxOptions, thrownError) {
-                                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                            }
-                        });
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                }).done(function() {
-					$.ajax({
-						url: 'index.php?route=checkout/payment_address',
-						dataType: 'html',
-						success: function(html) {
-							$('#collapse-payment-address .panel-body').html(html);
-						},
-						error: function(xhr, ajaxOptions, thrownError) {
-							alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-						}
-					});
-				});
+            },
+            error: function() {
+                btn.button('reset');
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+        });
     });
-});
 
-// Guest
-$(document).delegate('#button-guest', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/guest/save',
-        type: 'post',
-        data: $('#collapse-payment-address input[type=\'text\'], #collapse-payment-address input[type=\'date\'], #collapse-payment-address input[type=\'datetime-local\'], #collapse-payment-address input[type=\'time\'], #collapse-payment-address input[type=\'checkbox\']:checked, #collapse-payment-address input[type=\'radio\']:checked, #collapse-payment-address input[type=\'hidden\'], #collapse-payment-address textarea, #collapse-payment-address select'),
-        dataType: 'json',
-        beforeSend: function() {
-       		$('#button-guest').button('loading');
-	    },
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
+    // ========== GUEST SAVE ==========
+    $(document).on('click', '#button-guest-save', function() {
+        var btn = $(this);
+        btn.button('loading');
 
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-guest').button('reset');
+        $.ajax({
+            url: 'index.php?route=checkout/checkout/saveGuest',
+            type: 'post',
+            data: {
+                firstname: $('#input-guest-firstname').val(),
+                lastname: $('#input-guest-lastname').val(),
+                email: $('#input-guest-email').val(),
+                telephone: $('#input-guest-telephone').val()
+            },
+            dataType: 'json',
+            success: function(json) {
+                btn.button('reset');
+                $('.text-danger', '#tab-guest').remove();
+                $('.form-group', '#tab-guest').removeClass('has-error');
 
-                if (json['error']['warning']) {
-                    $('#collapse-payment-address .panel-body').prepend('<div class="alert alert-warning alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
-                }
-
-				for (i in json['error']) {
-					var element = $('#input-payment-' + i.replace('_', '-'));
-
-					if ($(element).parent().hasClass('input-group')) {
-						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
-					}
-				}
-
-				// Highlight any found errors
-				$('.text-danger').parent().addClass('has-error');
-            } else {
-                {% if shipping_required %}
-                var shipping_address = $('#collapse-payment-address input[name=\'shipping_address\']:checked').prop('value');
-
-                if (shipping_address) {
-                    $.ajax({
-                        url: 'index.php?route=checkout/shipping_method',
-                        dataType: 'html',
-                        complete: function() {
-                            $('#button-guest').button('reset');
-                        },
-                        success: function(html) {
-							// Add the shipping address
-                            $.ajax({
-                                url: 'index.php?route=checkout/guest_shipping',
-                                dataType: 'html',
-                                success: function(html) {
-                                    $('#collapse-shipping-address .panel-body').html(html);
-
-									$('#collapse-shipping-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_address }} <i class="fa fa-caret-down"></i></a>');
-                                },
-                                error: function(xhr, ajaxOptions, thrownError) {
-                                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                                }
-                            });
-
-						    $('#collapse-shipping-method .panel-body').html(html);
-
-							$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_method }} <i class="fa fa-caret-down"></i></a>');
-
-							$('a[href=\'#collapse-shipping-method\']').trigger('click');
-
-							$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-							$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        url: 'index.php?route=checkout/guest_shipping',
-                        dataType: 'html',
-                        complete: function() {
-                            $('#button-guest').button('reset');
-                        },
-                        success: function(html) {
-                            $('#collapse-shipping-address .panel-body').html(html);
-
-							$('#collapse-shipping-address').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-address" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_address }} <i class="fa fa-caret-down"></i></a>');
-
-							$('a[href=\'#collapse-shipping-address\']').trigger('click');
-
-							$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_shipping_method }}');
-							$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-							$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                        },
-                        error: function(xhr, ajaxOptions, thrownError) {
-                            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                        }
-                    });
-                }
-                {% else %}
-                $.ajax({
-                    url: 'index.php?route=checkout/payment_method',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-guest').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-payment-method .panel-body').html(html);
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_method }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-payment-method\']').trigger('click');
-
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                if (json['error']) {
+                    for (var key in json['error']) {
+                        var el = $('#input-guest-' + key);
+                        el.parent().addClass('has-error');
+                        el.after('<div class="text-danger">' + json['error'][key] + '</div>');
                     }
-                });
-                {% endif %}
-            }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-    });
-});
-
-// Guest Shipping
-$(document).delegate('#button-guest-shipping', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/guest_shipping/save',
-        type: 'post',
-        data: $('#collapse-shipping-address input[type=\'text\'], #collapse-shipping-address input[type=\'date\'], #collapse-shipping-address input[type=\'datetime-local\'], #collapse-shipping-address input[type=\'time\'], #collapse-shipping-address input[type=\'password\'], #collapse-shipping-address input[type=\'checkbox\']:checked, #collapse-shipping-address input[type=\'radio\']:checked, #collapse-shipping-address textarea, #collapse-shipping-address select'),
-        dataType: 'json',
-        beforeSend: function() {
-        	$('#button-guest-shipping').button('loading');
-		},
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-			$('.form-group').removeClass('has-error');
-
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-guest-shipping').button('reset');
-
-                if (json['error']['warning']) {
-                    $('#collapse-shipping-address .panel-body').prepend('<div class="alert alert-danger alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                } else if (json['success']) {
+                    $('#guest-save-status').show().delay(3000).fadeOut();
+                    btn.removeClass('btn-primary').addClass('btn-success');
+                    btn.html('<i class="fa fa-check"></i> {{ button_continue }}');
                 }
-
-				for (i in json['error']) {
-					var element = $('#input-shipping-' + i.replace('_', '-'));
-
-					if ($(element).parent().hasClass('input-group')) {
-						$(element).parent().after('<div class="text-danger">' + json['error'][i] + '</div>');
-					} else {
-						$(element).after('<div class="text-danger">' + json['error'][i] + '</div>');
-					}
-				}
-
-				// Highlight any found errors
-				$('.text-danger').parent().addClass('has-error');
-            } else {
-                $.ajax({
-                    url: 'index.php?route=checkout/shipping_method',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-guest-shipping').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-shipping-method .panel-body').html(html);
-
-						$('#collapse-shipping-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-shipping-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_shipping_method }} <i class="fa fa-caret-down"></i>');
-
-						$('a[href=\'#collapse-shipping-method\']').trigger('click');
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('{{ text_checkout_payment_method }}');
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                });
+            },
+            error: function() {
+                btn.button('reset');
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+        });
     });
-});
 
-$(document).delegate('#button-shipping-method', 'click', function() {
-    $.ajax({
-        url: 'index.php?route=checkout/shipping_method/save',
-        type: 'post',
-        data: $('#collapse-shipping-method input[type=\'radio\']:checked, #collapse-shipping-method textarea'),
-        dataType: 'json',
-        beforeSend: function() {
-        	$('#button-shipping-method').button('loading');
-		},
-        success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
+    // ========== CONFIRM ORDER ==========
+    $(document).on('click', '#button-confirm', function() {
+        var btn = $(this);
+        btn.button('loading');
 
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-shipping-method').button('reset');
+        // Collect data
+        var data = {
+            comment: $('textarea[name="comment"]').val()
+        };
 
-                if (json['error']['warning']) {
-                    $('#collapse-shipping-method .panel-body').prepend('<div class="alert alert-danger alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+        if ($('input[name="agree"]').length) {
+            if ($('input[name="agree"]').is(':checked')) {
+                data['agree'] = 1;
+            }
+        }
+
+        $.ajax({
+            url: 'index.php?route=checkout/checkout/confirmOrder',
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function(json) {
+                btn.button('reset');
+                $('.alert-dismissible', '#section-confirm').remove();
+
+                if (json['error']) {
+                    $('#section-confirm .checkout-confirm-area').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                } else if (json['redirect']) {
+                    location = json['redirect'];
+                } else if (json['payment_html']) {
+                    $('#payment-form-container').html(json['payment_html']);
+                    btn.hide();
                 }
-            } else {
-                $.ajax({
-                    url: 'index.php?route=checkout/payment_method',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-shipping-method').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-payment-method .panel-body').html(html);
-
-						$('#collapse-payment-method').parent().find('.panel-heading .panel-title').html('<a href="#collapse-payment-method" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_payment_method }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-payment-method\']').trigger('click');
-
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('{{ text_checkout_confirm }}');
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                });
+            },
+            error: function() {
+                btn.button('reset');
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
+        });
     });
+
+    // Auto-select first shipping method
+    if ($('input[name="shipping_method"]:checked').length === 0) {
+        var firstShipping = $('input[name="shipping_method"]').first();
+        if (firstShipping.length) {
+            firstShipping.prop('checked', true).trigger('change');
+        }
+    } else {
+        $('input[name="shipping_method"]:checked').trigger('change');
+    }
+
+    // Auto-select first payment method
+    if ($('input[name="payment_method"]:checked').length === 0) {
+        var firstPayment = $('input[name="payment_method"]').first();
+        if (firstPayment.length) {
+            firstPayment.prop('checked', true).trigger('change');
+        }
+    } else {
+        $('input[name="payment_method"]:checked').trigger('change');
+    }
+
 });
 
-$(document).delegate('#button-payment-method', 'click', function() {
+function updateCartItem(cartId, qty) {
     $.ajax({
-        url: 'index.php?route=checkout/payment_method/save',
+        url: 'index.php?route=checkout/checkout/updateCart',
         type: 'post',
-        data: $('#collapse-payment-method input[type=\'radio\']:checked, #collapse-payment-method input[type=\'checkbox\']:checked, #collapse-payment-method textarea'),
+        data: { cart_id: cartId, quantity: qty },
         dataType: 'json',
-        beforeSend: function() {
-         	$('#button-payment-method').button('loading');
-		},
         success: function(json) {
-            $('.alert-dismissible, .text-danger').remove();
-
-            if (json['redirect']) {
-                location = json['redirect'];
-            } else if (json['error']) {
-                $('#button-payment-method').button('reset');
-                
-                if (json['error']['warning']) {
-                    $('#collapse-payment-method .panel-body').prepend('<div class="alert alert-danger alert-dismissible">' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
-                }
-            } else {
-                $.ajax({
-                    url: 'index.php?route=checkout/confirm',
-                    dataType: 'html',
-                    complete: function() {
-                        $('#button-payment-method').button('reset');
-                    },
-                    success: function(html) {
-                        $('#collapse-checkout-confirm .panel-body').html(html);
-
-						$('#collapse-checkout-confirm').parent().find('.panel-heading .panel-title').html('<a href="#collapse-checkout-confirm" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle">{{ text_checkout_confirm }} <i class="fa fa-caret-down"></i></a>');
-
-						$('a[href=\'#collapse-checkout-confirm\']').trigger('click');
-					},
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-                    }
-                });
+            if (json['success'] && json['cart_data']) {
+                refreshCartDisplay(json['cart_data']);
             }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
     });
-});
+}
+
+function removeCartItem(cartId) {
+    $.ajax({
+        url: 'index.php?route=checkout/checkout/removeCart',
+        type: 'post',
+        data: { cart_id: cartId },
+        dataType: 'json',
+        success: function(json) {
+            if (json['success'] && json['cart_data']) {
+                if (!json['cart_data']['has_products']) {
+                    location = 'index.php?route=checkout/cart';
+                    return;
+                }
+                refreshCartDisplay(json['cart_data']);
+            }
+        }
+    });
+}
+
+function refreshCartDisplay(cartData) {
+    // Rebuild cart items
+    var html = '';
+    for (var i = 0; i < cartData.products.length; i++) {
+        var p = cartData.products[i];
+        html += '<div class="cart-item" data-cart-id="' + p.cart_id + '">';
+        html += '  <div class="cart-item-image"><a href="' + p.href + '"><img src="' + p.thumb + '" alt="' + p.name + '" /></a></div>';
+        html += '  <div class="cart-item-details">';
+        html += '    <div class="cart-item-name"><a href="' + p.href + '">' + p.name + '</a></div>';
+        if (p.option) {
+            for (var j = 0; j < p.option.length; j++) {
+                html += '<div class="cart-item-option"><small>' + p.option[j].name + ': ' + p.option[j].value + '</small></div>';
+            }
+        }
+        html += '    <div class="cart-item-price">' + p.price + '</div>';
+        html += '    <div class="cart-item-quantity">';
+        html += '      <div class="input-group input-group-sm">';
+        html += '        <span class="input-group-btn"><button class="btn btn-default btn-minus" type="button" data-cart-id="' + p.cart_id + '"><i class="fa fa-minus"></i></button></span>';
+        html += '        <input type="text" class="form-control text-center qty-input" value="' + p.quantity + '" data-cart-id="' + p.cart_id + '" />';
+        html += '        <span class="input-group-btn"><button class="btn btn-default btn-plus" type="button" data-cart-id="' + p.cart_id + '"><i class="fa fa-plus"></i></button></span>';
+        html += '      </div>';
+        html += '    </div>';
+        html += '    <div class="cart-item-total">' + p.total + '</div>';
+        html += '    <button class="btn btn-danger btn-xs btn-remove" data-cart-id="' + p.cart_id + '"><i class="fa fa-times"></i></button>';
+        html += '  </div>';
+        html += '</div>';
+    }
+    $('#cart-items-container').html(html);
+
+    // Update totals
+    if (cartData.totals) {
+        updateTotals(cartData.totals);
+    }
+}
+
+function updateTotals(totals) {
+    var html = '';
+    for (var i = 0; i < totals.length; i++) {
+        html += '<div class="checkout-total-row' + (i === totals.length - 1 ? ' total-grand' : '') + '">';
+        html += '  <span class="total-label">' + totals[i].title + ':</span>';
+        html += '  <span class="total-value">' + totals[i].text + '</span>';
+        html += '</div>';
+    }
+    $('#checkout-totals').html(html);
+}
 //--></script>
 {{ footer }}
