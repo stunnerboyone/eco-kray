@@ -2979,12 +2979,6 @@ class ControllerShippingNovaPoshta extends Controller
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
-		// Validate API key format (must be 32 characters)
-		if (isset($this->request->post[$extension_code]['key_api']) && utf8_strlen($this->request->post[$extension_code]['key_api']) != 32) {
-			$this->error['warning'] = $this->language->get('error_settings_saving');
-			$this->error['error_key_api'] = $this->language->get('error_key_api');
-		}
-
 		return !$this->error;
 	}
 
