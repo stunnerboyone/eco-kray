@@ -7,14 +7,16 @@
 class Sync1COfferImporter {
     private $db;
     private $log;
+    private $cache;
     private $catalogImporter;
     private $imageLinker;
     private $seoUrlGenerator;
     private $filterManager;
 
-    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null, $filterManager = null) {
+    public function __construct($db, $log, $catalogImporter = null, $imageLinker = null, $seoUrlGenerator = null, $filterManager = null, $cache = null) {
         $this->db = $db;
         $this->log = $log;
+        $this->cache = $cache;
         $this->catalogImporter = $catalogImporter;
         $this->imageLinker = $imageLinker;
         $this->seoUrlGenerator = $seoUrlGenerator;
@@ -181,6 +183,11 @@ class Sync1COfferImporter {
             quantity = '" . (int)$quantity . "',
             date_modified = NOW()
             WHERE product_id = '" . (int)$product_id . "'");
+
+        // Clear product cache so updated prices appear immediately on the storefront
+        if ($this->cache) {
+            $this->cache->delete('product');
+        }
 
         // Auto-categorize product based on name (update categories if needed)
         if ($this->catalogImporter) {
