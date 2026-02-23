@@ -184,6 +184,12 @@ class Sync1COfferImporter {
             date_modified = NOW()
             WHERE product_id = '" . (int)$product_id . "'");
 
+        // Remove any active special prices — 1C is the source of truth for pricing.
+        // Stale product_special records would otherwise override the new price on the storefront.
+        if ($old_price != $price) {
+            $this->db->query("DELETE FROM " . DB_PREFIX . "product_special WHERE product_id = '" . (int)$product_id . "'");
+        }
+
         // Clear product cache so updated prices appear immediately on the storefront
         if ($this->cache) {
             $this->cache->delete('product');
