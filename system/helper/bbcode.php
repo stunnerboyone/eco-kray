@@ -46,23 +46,23 @@ function bbcode_decode($string) {
 		
 	// URL
 	$pattern[9] = '/\[url\](.*?)\[\/url\]/is';
-	$replace[9] = '<a href="$1" rel="nofollow" target="_blank">$1</a>';
-		
+	$replace[9] = '<a href="$1" target="_blank">$1</a>';
+
 	// URL (named)
 	$pattern[10] = '/\[url\=([^\[]+?)\](.*?)\[\/url\]/is';
-	$replace[10] = '<a href="$1" rel="nofollow" target="_blank">$2</a>';	
-	
+	$replace[10] = '<a href="$1" target="_blank">$2</a>';
+
 	// Font Size
 	$pattern[11] = '/\[size\=([\-\+]?\d+)\](.*?)\[\/size\]/is';
 	$replace[11] = '<span style="font-size: $1%;">$2</span>';
-	
+
 	// Font Color
 	$pattern[12] = '/\[color\=(#[0-9a-f]{3}|#[0-9a-f]{6}|[a-z\-]+)\](.*?)\[\/color\]/is';
-	$replace[12] = '<span style="color: $1;">$2</span>';	
-	
+	$replace[12] = '<span style="color: $1;">$2</span>';
+
 	// YouTube
-	$pattern[9] = '/\[youtube\](.*?)\[\/youtube\]/is';
-	$replace[9] = '<iframe width="560" height="315" src="http://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>';
+	$pattern[13] = '/\[youtube\](.*?)\[\/youtube\]/is';
+	$replace[13] = '<iframe width="560" height="315" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>';
 		
     $string = preg_replace($pattern, $replace, $string);  
 	   

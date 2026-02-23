@@ -24,6 +24,7 @@ class ControllerInformationInformation extends Controller {
 			$this->document->setTitle($information_info['meta_title']);
 			$this->document->setDescription($information_info['meta_description']);
 			$this->document->setKeywords($information_info['meta_keyword']);
+			$this->document->addLink($this->url->link('information/information', 'information_id=' . $information_id, true), 'canonical');
 
 			$data['breadcrumbs'][] = array(
 				'text' => $information_info['title'],
