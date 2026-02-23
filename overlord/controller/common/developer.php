@@ -60,7 +60,7 @@ class ControllerCommonDeveloper extends Controller {
 				foreach ($directories as $directory) {
 					$files = glob($directory . '/*');
 
-					foreach ($files as $file) { 
+					foreach ($files as $file) {
 						if (is_file($file)) {
 							unlink($file);
 						}
@@ -71,6 +71,9 @@ class ControllerCommonDeveloper extends Controller {
 					}
 				}
 			}
+
+			// Also clear product data cache (prices, stock, etc.)
+			$this->cache->delete('product');
 
 			$json['success'] = sprintf($this->language->get('text_cache'), $this->language->get('text_theme'));
 		}
