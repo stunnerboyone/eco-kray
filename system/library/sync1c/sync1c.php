@@ -76,7 +76,7 @@ class Sync1C {
         $this->catalogImporter = new Sync1CCatalogImporter($this->db, $this->log, $this->seoUrlGenerator, $imageLinker, $filterManager);
 
         // Offer Importer (with catalog importer for auto-categorization, image linker, SEO URL generator, and filter manager)
-        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter, $imageLinker, $this->seoUrlGenerator, $filterManager);
+        $this->offerImporter = new Sync1COfferImporter($this->db, $this->log, $this->catalogImporter, $imageLinker, $this->seoUrlGenerator, $filterManager, $this->registry->get('cache'));
     }
 
     /**
