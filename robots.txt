@@ -15,4 +15,4 @@ Disallow: /*?filter_description=
 Disallow: /*&filter_description=
 
 # Sitemap
-Sitemap: https://stunnerboyone.live/sitemap.xml
+Sitemap: https://eco-kray.com.ua/sitemap.xml
