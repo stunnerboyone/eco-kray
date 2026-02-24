@@ -1,0 +1,71 @@
+<div class="well" style="margin: 15px;">
+
+  {% if receipt_id %}
+
+    <table class="table table-bordered table-striped" style="margin-bottom: 10px;">
+      <tbody>
+
+        <tr>
+          <td style="width: 30%; font-weight: bold;">{{ label_status }}</td>
+          <td>
+            {% if status == 'DONE' %}
+              <span class="label label-success" style="font-size: 13px;">{{ status }}</span>
+            {% elseif status == 'CREATED' %}
+              <span class="label label-warning" style="font-size: 13px;">{{ status }}</span>
+            {% else %}
+              <span class="label label-danger" style="font-size: 13px;">{{ status }}</span>
+            {% endif %}
+          </td>
+        </tr>
+
+        <tr>
+          <td style="font-weight: bold;">{{ label_receipt_id }}</td>
+          <td>
+            <code>{{ receipt_id }}</code>
+          </td>
+        </tr>
+
+        {% if fiscal_code %}
+        <tr>
+          <td style="font-weight: bold;">{{ label_fiscal_code }}</td>
+          <td>
+            <strong style="font-size: 15px; color: #27ae60;">{{ fiscal_code }}</strong>
+          </td>
+        </tr>
+        {% endif %}
+
+        {% if fiscal_date %}
+        <tr>
+          <td style="font-weight: bold;">{{ label_date }}</td>
+          <td>{{ fiscal_date }}</td>
+        </tr>
+        {% endif %}
+
+        <tr>
+          <td style="font-weight: bold;">{{ label_total }}</td>
+          <td>{{ total }} грн</td>
+        </tr>
+
+        {% if tax_url %}
+        <tr>
+          <td style="font-weight: bold;">{{ label_tax_url }}</td>
+          <td>
+            <a href="{{ tax_url }}" target="_blank" class="btn btn-xs btn-default">
+              <i class="fa fa-external-link"></i> {{ text_verify }}
+            </a>
+          </td>
+        </tr>
+        {% endif %}
+
+      </tbody>
+    </table>
+
+  {% else %}
+
+    <div class="alert alert-warning" style="margin: 0;">
+      <i class="fa fa-exclamation-triangle"></i> {{ text_no_receipt }}
+    </div>
+
+  {% endif %}
+
+</div>
