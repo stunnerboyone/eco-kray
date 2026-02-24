@@ -104,17 +104,7 @@ class ControllerExtensionDashboardSale extends Controller {
 
 		$sale_total = $this->model_extension_dashboard_sale->getTotalSales();
 
-		if ($sale_total > 1000000000000) {
-			$data['total'] = round($sale_total / 1000000000000, 1) . 'T';
-		} elseif ($sale_total > 1000000000) {
-			$data['total'] = round($sale_total / 1000000000, 1) . 'B';
-		} elseif ($sale_total > 1000000) {
-			$data['total'] = round($sale_total / 1000000, 1) . 'M';
-		} elseif ($sale_total > 1000) {
-			$data['total'] = round($sale_total / 1000, 1) . 'K';
-		} else {
-			$data['total'] = round($sale_total);
-		}
+		$data['total'] = $this->currency->format($sale_total, $this->config->get('config_currency'));
 
 		$data['sale'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'], true);
 
