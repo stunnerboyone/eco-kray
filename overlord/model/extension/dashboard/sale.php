@@ -1,7 +1,7 @@
 <?php
 class ModelExtensionDashboardSale extends Model {
 	public function getTotalSales($data = array()) {
-		$sql = "SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "order` o WHERE o.order_status_id > '0'";
+		$sql = "SELECT SUM(o.total) AS total FROM `" . DB_PREFIX . "order` o WHERE o.order_status_id > '0'";
 
 		if (!empty($data['filter_date_added'])) {
 			$sql .= " AND DATE(o.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
