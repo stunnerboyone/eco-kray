@@ -5,8 +5,6 @@ class ControllerProductSpecial extends Controller {
 
 		$this->load->model('catalog/product');
 
-		$this->load->model('catalog/category');
-
 		$this->load->model('tool/image');
 
 		if (isset($this->request->get['sort'])) {
@@ -124,7 +122,6 @@ class ControllerProductSpecial extends Controller {
 				$rating = false;
 			}
 
-			$categories_info = array('name' => '');
 			$categories = $this->model_catalog_product->getCategories($result['product_id']);
 					if ($categories){
 						$categories_info = $this->model_catalog_category->getCategory($categories[0]['category_id']);
