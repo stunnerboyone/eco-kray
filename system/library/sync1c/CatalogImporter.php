@@ -38,6 +38,7 @@ class Sync1CCatalogImporter {
         $stats = ['categories' => 0, 'products' => 0, 'updated' => 0];
 
         $this->log->write("=== CATALOG IMPORT STARTED ===");
+        $time_start = microtime(true);
 
         // Clean orphaned 1C links (products deleted but links remain)
         $this->cleanOrphanedLinks();
@@ -63,7 +64,8 @@ class Sync1CCatalogImporter {
             }
         }
 
-        $this->log->write("=== CATALOG IMPORT COMPLETED ===");
+        $elapsed = round(microtime(true) - $time_start, 2);
+        $this->log->write("=== CATALOG IMPORT COMPLETED in {$elapsed}s ===");
         $msg = "Categories: {$stats['categories']}, Products added: {$stats['products']}, Updated: {$stats['updated']}";
         $this->log->write("Summary: $msg");
 
@@ -211,17 +213,13 @@ class Sync1CCatalogImporter {
      * @param string $product_name Product name
      */
     public function autoCategorizeProduct($product_id, $product_name) {
-        $this->log->write("Auto-categorizing: $product_name");
-
         // Clear existing categories first
         $this->db->query("DELETE FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");
 
         // Extract first word from product name
         $name_lower = mb_strtolower($product_name, 'UTF-8');
-        $words = preg_split('/[\s\-]+/', $name_lower, 2); // Split by space or hyphen, limit to 2 parts
+        $words = preg_split('/[\s\-]+/', $name_lower, 2);
         $first_word = $words[0];
-
-        $this->log->write("  → First word: '$first_word'");
 
         $assigned_categories = [];
 
@@ -229,11 +227,8 @@ class Sync1CCatalogImporter {
         foreach ($this->categoryKeywords as $category_name => $keywords) {
             foreach ($keywords as $keyword) {
                 if (mb_strpos($first_word, $keyword, 0, 'UTF-8') !== false) {
-                    // Find category by name
-                    $this->log->write("  → Searching for category: '$category_name' (keyword: $keyword matched first word)");
-
                     $cat_query = $this->db->query("
-                        SELECT c.category_id, cd.name
+                        SELECT c.category_id
                         FROM " . DB_PREFIX . "category c
                         LEFT JOIN " . DB_PREFIX . "category_description cd ON c.category_id = cd.category_id
                         WHERE cd.name = '" . $this->db->escape($category_name) . "'
@@ -241,27 +236,16 @@ class Sync1CCatalogImporter {
                         LIMIT 1
                     ");
 
-                    $this->log->write("  → Query returned: " . $cat_query->num_rows . " rows");
-
                     if ($cat_query->num_rows) {
                         $category_id = $cat_query->row['category_id'];
                         $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category
                             SET product_id = '" . (int)$product_id . "',
                             category_id = '" . (int)$category_id . "'");
                         $assigned_categories[] = $category_name;
-                        $this->log->write("  ✓ Added to category: $category_name (ID: $category_id)");
                     } else {
-                        // Debug: Try to find ANY category
-                        $debug_query = $this->db->query("SELECT cd.name FROM " . DB_PREFIX . "category_description cd WHERE cd.language_id = 4 LIMIT 5");
-                        $found_cats = [];
-                        if ($debug_query->num_rows) {
-                            foreach ($debug_query->rows as $row) {
-                                $found_cats[] = $row['name'];
-                            }
-                        }
-                        $this->log->write("  ! Category '$category_name' not found. Sample categories in DB: " . implode(', ', $found_cats));
+                        $this->log->write("WARNING: Category '$category_name' not found in DB (product: $product_name)");
                     }
-                    break; // Found keyword, move to next category
+                    break;
                 }
             }
         }
@@ -282,13 +266,10 @@ class Sync1CCatalogImporter {
                 SET product_id = '" . (int)$product_id . "',
                 category_id = '" . (int)$main_cat_id . "'");
             $assigned_categories[] = 'Наша продукція';
-            $this->log->write("  → Added to category: Наша продукція");
         }
 
         if (empty($assigned_categories)) {
-            $this->log->write("  ! No categories matched");
-        } else {
-            $this->log->write("  ✓ Assigned to: " . implode(', ', $assigned_categories));
+            $this->log->write("WARNING: No categories matched for: $product_name");
         }
     }
 
