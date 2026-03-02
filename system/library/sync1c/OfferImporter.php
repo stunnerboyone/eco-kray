@@ -38,7 +38,8 @@ class Sync1COfferImporter {
             return "success\nNo offers to import";
         }
 
-        $this->log->write("=== PRODUCT EXPORT STARTED ===");
+        $this->log->write("=== OFFERS IMPORT STARTED ===");
+        $time_start = microtime(true);
 
         foreach ($xml->ПакетПредложений->Предложения->Предложение as $offer) {
             $result = $this->importOffer($offer);
@@ -46,14 +47,9 @@ class Sync1COfferImporter {
             if ($result['status'] === 'updated') {
                 $stats['updated']++;
                 $synced_product_ids[] = $result['product_id'];
-                $exported_products[] = $result['product_name'];
 
-                // Log export details
-                $this->log->write("EXPORTED: {$result['product_name']} {$result['price']} UAH {$result['quantity']} units");
-
-                // Log changes if any
                 if (!empty($result['changes'])) {
-                    $this->log->write("  └─ Changes: " . implode(", ", $result['changes']));
+                    $this->log->write("UPDATED: {$result['product_name']} — " . implode(", ", $result['changes']));
                 }
             } elseif ($result['status'] === 'not_found') {
                 $stats['not_found']++;
@@ -64,22 +60,11 @@ class Sync1COfferImporter {
         // Zero out quantity for products linked to 1C but not present in this sync
         $stats['zeroed'] = $this->zeroMissingProducts($synced_product_ids);
 
-        $this->log->write("=== PRODUCT EXPORT COMPLETED ===");
-        $this->log->write("Total exported: {$stats['updated']} products");
+        $elapsed = round(microtime(true) - $time_start, 2);
+        $this->log->write("=== OFFERS IMPORT COMPLETED in {$elapsed}s ===");
 
         if ($stats['not_found'] > 0) {
             $this->log->write("ERROR: {$stats['not_found']} products not found in database");
-        }
-
-        if ($stats['zeroed'] > 0) {
-            $this->log->write("ZEROED: {$stats['zeroed']} products not in sync set to quantity 0");
-        }
-
-        if (count($exported_products) > 0) {
-            $this->log->write("--- Exported Products List ---");
-            foreach ($exported_products as $idx => $product) {
-                $this->log->write(($idx + 1) . ". $product");
-            }
         }
 
         $msg = "Updated: {$stats['updated']}, Not found: {$stats['not_found']}, Zeroed: {$stats['zeroed']}";
@@ -103,11 +88,13 @@ class Sync1COfferImporter {
 
         // Find all 1C-linked products that were not synced and have quantity > 0
         $query = $this->db->query("
-            SELECT p1c.product_id
+            SELECT p1c.product_id, pd.name
             FROM " . DB_PREFIX . "product_to_1c p1c
             INNER JOIN " . DB_PREFIX . "product p ON p1c.product_id = p.product_id
+            LEFT JOIN " . DB_PREFIX . "product_description pd ON p.product_id = pd.product_id
             WHERE p.quantity > 0
             $exclude_clause
+            GROUP BY p1c.product_id
         ");
 
         if (!$query->num_rows) {
@@ -125,6 +112,11 @@ class Sync1COfferImporter {
 
         if ($this->cache) {
             $this->cache->delete('product');
+        }
+
+        $this->log->write("ZEROED quantity for " . count($ids_to_zero) . " products not in sync:");
+        foreach ($query->rows as $row) {
+            $this->log->write("  - #{$row['product_id']} {$row['name']}");
         }
 
         return count($ids_to_zero);
