@@ -30,8 +30,9 @@ class Sync1COfferImporter {
      * @return string Result message
      */
     public function import($xml) {
-        $stats = ['updated' => 0, 'not_found' => 0];
+        $stats = ['updated' => 0, 'not_found' => 0, 'zeroed' => 0];
         $exported_products = [];
+        $synced_product_ids = [];
 
         if (!isset($xml->ПакетПредложений->Предложения->Предложение)) {
             return "success\nNo offers to import";
@@ -44,6 +45,7 @@ class Sync1COfferImporter {
 
             if ($result['status'] === 'updated') {
                 $stats['updated']++;
+                $synced_product_ids[] = $result['product_id'];
                 $exported_products[] = $result['product_name'];
 
                 // Log export details
@@ -59,11 +61,18 @@ class Sync1COfferImporter {
             }
         }
 
+        // Zero out quantity for products linked to 1C but not present in this sync
+        $stats['zeroed'] = $this->zeroMissingProducts($synced_product_ids);
+
         $this->log->write("=== PRODUCT EXPORT COMPLETED ===");
         $this->log->write("Total exported: {$stats['updated']} products");
 
         if ($stats['not_found'] > 0) {
             $this->log->write("ERROR: {$stats['not_found']} products not found in database");
+        }
+
+        if ($stats['zeroed'] > 0) {
+            $this->log->write("ZEROED: {$stats['zeroed']} products not in sync set to quantity 0");
         }
 
         if (count($exported_products) > 0) {
@@ -73,10 +82,52 @@ class Sync1COfferImporter {
             }
         }
 
-        $msg = "Updated: {$stats['updated']}, Not found: {$stats['not_found']}";
+        $msg = "Updated: {$stats['updated']}, Not found: {$stats['not_found']}, Zeroed: {$stats['zeroed']}";
         $this->log->write("Summary: $msg");
 
         return "success\n$msg";
+    }
+
+    /**
+     * Set quantity = 0 for all 1C-linked products NOT present in the current sync
+     *
+     * @param array $synced_product_ids Product IDs that were updated in this sync
+     * @return int Number of products zeroed
+     */
+    private function zeroMissingProducts(array $synced_product_ids) {
+        $exclude_clause = '';
+        if (!empty($synced_product_ids)) {
+            $ids = implode(',', array_map('intval', $synced_product_ids));
+            $exclude_clause = "AND p1c.product_id NOT IN ($ids)";
+        }
+
+        // Find all 1C-linked products that were not synced and have quantity > 0
+        $query = $this->db->query("
+            SELECT p1c.product_id
+            FROM " . DB_PREFIX . "product_to_1c p1c
+            INNER JOIN " . DB_PREFIX . "product p ON p1c.product_id = p.product_id
+            WHERE p.quantity > 0
+            $exclude_clause
+        ");
+
+        if (!$query->num_rows) {
+            return 0;
+        }
+
+        $ids_to_zero = array_column($query->rows, 'product_id');
+        $ids_str = implode(',', array_map('intval', $ids_to_zero));
+
+        $this->db->query("
+            UPDATE " . DB_PREFIX . "product
+            SET quantity = 0, date_modified = NOW()
+            WHERE product_id IN ($ids_str)
+        ");
+
+        if ($this->cache) {
+            $this->cache->delete('product');
+        }
+
+        return count($ids_to_zero);
     }
 
     /**
